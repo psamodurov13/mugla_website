@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ title }} - {{ block.super }}{% endblock %}
-
 
 {% block content %}
 
 <div class="bgded" style="background-image:url('{% static 'images/demo/backgrounds/01.png' %}');">
   <div id="pageintro" class="hoc clear">
+    <!-- ################################################################################################ -->
     <article>
-      <h3 class="heading">{{ title }}</h3>
+      <h3 class="heading">Cities</h3>
       <p>Rhoncus a odio fusce eu lorem vehicula euismod mauris eget sodales mi duis habitant morbi tristique senectus et netus et malesuada fames.</p>
       <footer><a class="btn" href="#">Turpis egestas</a></footer>
     </article>
+    <!-- ################################################################################################ -->
   </div>
 </div>
-
-
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 <div class="wrapper row3">
   <main class="hoc container clear">
     <!-- main body -->
+    <!-- ################################################################################################ -->
     <div class="sectiontitle">
       <h6 class="heading">Donec tortor eget mauris sagittis</h6>
       <p>Convallis morbi eget leo elit praesent at libero et arcu</p>
@@ -55,14 +57,17 @@
         </ul>
       </div>
     </div>
+    <!-- ################################################################################################ -->
     <!-- / main body -->
     <div class="clear"></div>
   </main>
 </div>
-
-
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 <div class="wrapper row2">
   <section class="hoc container clear">
+    <!-- ################################################################################################ -->
     <div class="sectiontitle">
       <h6 class="heading">Laoreet vitae faucibus</h6>
       <p>Mollis nunc curabitur dapibus lacus a eros fermentum et</p>
@@ -112,12 +117,15 @@
       </li>
     </ul>
     <footer class="center"><a class="btn" href="#">Vestibulum molestie</a></footer>
+    <!-- ################################################################################################ -->
   </section>
 </div>
-
-
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 <div class="wrapper row3">
   <figure class="hoc container clear">
+    <!-- ################################################################################################ -->
     <figcaption class="sectiontitle">
       <h6 class="heading">Purus vehicula pulvinar</h6>
       <p>Imperdiet vel duis aliquet urna vel urna molestie sit amet</p>
@@ -130,12 +138,15 @@
       <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
       <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
     </ul>
+    <!-- ################################################################################################ -->
   </figure>
 </div>
-
-
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 <div class="wrapper row2">
   <section class="hoc container clear testimonials">
+    <!-- ################################################################################################ -->
     <div class="sectiontitle">
       <h6 class="heading">Dapibus magna viverra</h6>
       <p>Amet gravida sem sed sit amet risus nisl curabitur mattis</p>
@@ -149,48 +160,53 @@
       </figure>
     </article>
     <footer class="center"><a class="btn" href="#">View More Testimonials &raquo;</a></footer>
+    <!-- ################################################################################################ -->
   </section>
 </div>
-
-
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 <div class="wrapper row3">
   <section class="hoc container clear">
+    <!-- ################################################################################################ -->
     <div class="sectiontitle">
       <h6 class="heading">Morbi vitae vestibulum</h6>
       <p>Et orci a nunc ullamcorper lobortis sit amet vel mi etiam</p>
     </div>
     <div class="group latest">
-      {% for post in posts %}
-      <article class="one_half">
-        <a href="{{ post.get_absolute_url }}">
-        {% if post.photo %}
-            <img src="{{ post.photo.url }}" width="474">
-        {% else %}
-            <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg"
-            width="474">
-        {% endif %}
-        </a>
+      <article class="one_half first"><a href="#"><img src="images/demo/474x356.png" alt=""></a>
         <div class="excerpt">
-          <h6 class="heading">{{ post.title }}</h6>
-          <p>{{ post.description }}</p>
+          <h6 class="heading">Arcu leo volutpat a libero</h6>
+          <p>Nec sodales tincidunt elit sed in vestibulum justo cras sed ipsum quis justo pulvinar hendrerit non nec orci in a quam&hellip;</p>
           <div class="clear">
-            <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
-            <div class="created">{{ post.created_at }}</div>
+            <footer class=" fl_right"><a href="#">Read More</a></footer>
             <ul class="nospace meta fl_left">
-              <li><i class="fa fa-user"></i> <a href="#">{{ post.author }}</a></li>
-              <li><i class="fa fa-tag"></i> <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a></li>
+              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
+              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>
             </ul>
-
           </div>
         </div>
       </article>
-      {% endfor %}
+      <article class="one_half"><a href="#"><img src="images/demo/474x356.png" alt=""></a>
+        <div class="excerpt">
+          <h6 class="heading">Varius blandit purus</h6>
+          <p>Sed ultrices velit etiam eleifend nulla vestibulum dapibus ex nec luctus est donec lectus lacus varius vitae ut viverra&hellip;</p>
+          <div class="clear">
+            <footer class=" fl_right"><a href="#">Read More</a></footer>
+            <ul class="nospace meta fl_left">
+              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
+              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
     </div>
-
-    {% include 'inc/_pagination.html' %}
-
-    <footer class="center" style="margin-top: 20px;"><a class="btn" href="#">View More Posts &raquo;</a></footer>
+    <footer class="center"><a class="btn" href="#">View More Posts &raquo;</a></footer>
+    <!-- ################################################################################################ -->
   </section>
 </div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
 
 {% endblock %}

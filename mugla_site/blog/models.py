@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from mugla_site.utils import CustomStr
 from cities.models import City
 
@@ -6,6 +8,9 @@ from cities.models import City
 class Category(CustomStr, models.Model):
     title = models.CharField(max_length=50, verbose_name='Категория')
     slug = models.SlugField(max_length=50, verbose_name='URL', unique=True)
+
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Категория'
@@ -16,6 +21,9 @@ class Category(CustomStr, models.Model):
 class Tags(CustomStr, models.Model):
     title = models.CharField(max_length=50, verbose_name='Тег')
     slug = models.SlugField(max_length=50, verbose_name='URL', unique=True)
+
+    def get_absolute_url(self):
+        return reverse('tag', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Тег'
@@ -37,7 +45,20 @@ class Post(CustomStr, models.Model):
     cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='post')
     is_published = models.BooleanField(default=False, verbose_name='Опубликован')
 
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'slug': self.slug})
+
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
         ordering = ['-created_at']
+
+
+def show_categories():
+    categories = Category.objects.all()
+    return categories
+
+
+def show_tags():
+    tags = Tags.objects.all()
+    return tags

@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from .models import *
 
 from blog.models import Post, Category, Tags
-from mugla_site.utils import CKEditorForm, BaseAdmin
+from mugla_site.utils import CKEditorForm, BaseAdmin, dublicate_post
 
 
 class PostAdminForm(CKEditorForm, forms.ModelForm):
@@ -25,15 +25,7 @@ class PostAdmin(BaseAdmin, admin.ModelAdmin):
     fields = ('title', 'slug', 'category', 'content', 'description', 'photo', 'get_photo', 'is_published', 'tags',
               'cities', 'views', 'created_at', 'author')
     readonly_fields = ('get_photo', 'views', 'created_at')
-    save_on_top = True
 
-    def get_photo(self, obj):
-        if obj.photo:
-            return mark_safe(f'<img src="{obj.photo.url}" width="50">')
-        else:
-            return 'no photo'
-
-    get_photo.short_description = 'Фото'
 
 
 admin.site.register(Category, BaseAdmin)

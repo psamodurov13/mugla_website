@@ -71,6 +71,10 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            'libraries': {
+                'menu_tag': 'templatetags.menu',
+                'tags_tag': 'templatetags.tags',
+            },
         },
     },
 ]
@@ -204,3 +208,10 @@ CKEDITOR_CONFIGS = {
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'django-cache',
+    }
+}

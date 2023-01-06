@@ -23,16 +23,6 @@ class CityAdmin(BaseAdmin, admin.ModelAdmin):
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
     fields = ('title', 'slug', 'content', 'description', 'photo', 'get_photo', 'telegram')
-    readonly_fields = ('get_photo', )
-    save_on_top = True
-
-    def get_photo(self, obj):
-        if obj.photo:
-            return mark_safe(f'<img src="{obj.photo.url}" width="50">')
-        else:
-            return 'no photo'
-
-    get_photo.short_description = 'Фото'
 
 
 admin.site.register(City, CityAdmin)

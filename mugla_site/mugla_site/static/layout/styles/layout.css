@@ -106,7 +106,7 @@ File: Layout CSS
 #comments li{margin:0 0 10px 0; padding:15px;}
 #comments .avatar{float:right; margin:0 0 10px 10px; padding:3px; border:1px solid;}
 #comments address{font-weight:bold;}
-#comments time{font-size:smaller;}
+#comments time {font-size:smaller;}
 #comments .comcont{display:block; margin:0; padding:0;}
 #comments .comcont p{margin:10px 5px 10px 0; padding:0;}
 
@@ -455,3 +455,5 @@ table a, #comments a{background-color:inherit;}
 	#header section, #header section > div{display:block; width:100%;}
 	#header section > div{width:100%; margin-bottom:30px; text-align:center;}
 }
+
+.created {font-size:smaller;}

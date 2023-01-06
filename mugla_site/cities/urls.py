@@ -2,5 +2,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', index, name='cities')
+    path('', index, name='cities'),
+    path('city/<str:slug>/', get_city, name='city')
 ]

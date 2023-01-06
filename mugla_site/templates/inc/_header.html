@@ -1,0 +1,36 @@
+{% load menu_tag %}
+<div class="wrapper row0">
+  <div id="topbar" class="hoc clear">
+    <ul class="nospace">
+      <li><i class="fa fa-envelope-o"></i> info@domain.com</li>
+      <li><a href="{% url 'home' %}"><i class="fa fa-lg fa-home"></i></a></li>
+      <li><a href="#" title="Help Centre"><i class="fa fa-life-bouy"></i></a></li>
+      <li><a href="#" title="Login"><i class="fa fa-lg fa-sign-in"></i></a></li>
+      <li><a href="#" title="Sign Up"><i class="fa fa-lg fa-edit"></i></a></li>
+    </ul>
+  </div>
+</div>
+
+
+<div class="wrapper row1">
+  <header id="header" class="hoc clear">
+    <section>
+      <div><i class="fa fa-phone"></i> +00 (123) 456 7890</div>
+      <div>
+        <h1 id="logo"><a href="{% url 'home' %}">Nalpure</a></h1>
+      </div>
+      <div>
+        <form class="clear" method="post" action="#">
+          <fieldset>
+            <legend>Search:</legend>
+            <input type="search" value="" placeholder="Search Here&hellip;">
+            <button class="fa fa-search" type="submit" title="Search"><em>Search</em></button>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+
+          {% show_menu %}
+
+  </header>
+</div>

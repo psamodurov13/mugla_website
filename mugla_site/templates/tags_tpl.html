@@ -1,0 +1,5 @@
+<div class="tags">
+  {% for item in tags %}
+  <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+  {% endfor %}
+</div>
