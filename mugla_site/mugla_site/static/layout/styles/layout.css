@@ -102,19 +102,21 @@ File: Layout CSS
 .latest article .excerpt .meta li:last-child::after{margin:0; content:"";}
 
 /* Comments */
-#comments ul{margin:0 0 40px 0; padding:0; list-style:none;}
-#comments li{margin:0 0 10px 0; padding:15px;}
-#comments .avatar{float:right; margin:0 0 10px 10px; padding:3px; border:1px solid;}
-#comments address{font-weight:bold;}
-#comments time {font-size:smaller;}
-#comments .comcont{display:block; margin:0; padding:0;}
-#comments .comcont p{margin:10px 5px 10px 0; padding:0;}
+#comments ul, #custom-form ul{margin:0 0 40px 0; padding:0; list-style:none;}
+#comments li, #custom-form li{margin:0 0 10px 0; padding:15px;}
+#comments .avatar, #custom-form .avatar{float:right; margin:0 0 10px 10px; padding:3px; border:1px solid;}
+#comments address, #custom-form address{font-weight:bold;}
+#comments time, #custom-form time {font-size:smaller;}
+#comments .comcont, #custom-form .comcont {display:block; margin:0; padding:0;}
+#comments .comcont p, #custom-form .comcont p{margin:10px 5px 10px 0; padding:0;}
 
-#comments form{display:block; width:100%;}
-#comments input, #comments textarea{width:100%; padding:10px; border:1px solid;}
-#comments textarea{overflow:auto;}
-#comments div{margin-bottom:15px;}
-#comments input[type="submit"], #comments input[type="reset"]{display:inline-block; width:auto; min-width:150px; margin:0; padding:8px 5px; cursor:pointer;}
+#comments form, #custom-form form{display:block; width:100%;}
+#comments input, #comments textarea, #custom-form input, #custom-form textarea, #custom-form button{width:100%; padding:10px; border:1px solid;}
+#comments textarea, #custom-form textarea{overflow:auto;}
+#comments div, #custom-form div{margin-bottom:15px;}
+#comments input[type="submit"], #comments input[type="reset"],
+#custom-form input[type="submit"], #custom-form input[type="reset"],
+#custom-form button {display:inline-block; width:auto; min-width:150px; margin:0; padding:8px 5px; cursor:pointer;}
 
 /* Sidebar */
 .container .sidebar{}
@@ -363,12 +365,17 @@ input:focus, textarea:focus, *:required:focus{border-color:#FFA41F;}
 
 
 /* Tables + Comments */
-table, th, td, #comments .avatar, #comments input, #comments textarea{border-color:#D7D7D7;}
-#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#FFA41F;}
+table, th, td, #comments .avatar, #comments input, #comments textarea, #custom-form input, #custom-form textarea,
+#custom-form button{border-color:#D7D7D7;}
+#comments input:focus, #comments textarea:focus, #comments *:required:focus,
+#custom-form input:focus, #custom-form textarea:focus, #custom-form *:required:focus,
+#custom-form button:focus{border-color:#FFA41F;}
 th{color:#FFFFFF; background-color:#373737;}
-tr, #comments li, #comments input[type="submit"], #comments input[type="reset"]{color:inherit; background-color:#FBFBFB;}
-tr:nth-child(even), #comments li:nth-child(even){color:inherit; background-color:#F7F7F7;}
-table a, #comments a{background-color:inherit;}
+tr, #comments li, #comments input[type="submit"], #comments input[type="reset"],
+#custom-form li, #custom-form input[type="submit"], #custom-form input[type="reset"],
+#custom-form button{color:inherit; background-color:#FBFBFB;}
+tr:nth-child(even), #comments li:nth-child(even), #custom-form li:nth-child(even){color:inherit; background-color:#F7F7F7;}
+table a, #comments a, #custom-form a{background-color:inherit;}
 
 
 /* ------------------------------------------------------------------------------------------------------------ */
@@ -457,3 +464,27 @@ table a, #comments a{background-color:inherit;}
 }
 
 .created {font-size:smaller;}
+.alert-success {
+--bs-alert-color: #146c43;
+--bs-alert-bg: #d1e7dd;
+--bs-alert-border-color: #a3cfbb;
+--bs-alert-link-color: #146c43;
+}
+.alert-error {
+--bs-alert-color: #b02a37;
+--bs-alert-bg: #f8d7da;
+--bs-alert-border-color: #f1aeb5;
+--bs-alert-link-color: #b02a37;
+}
+.alert {
+--bs-alert-border-radius: 0.375rem;
+--bs-alert-link-color: inherit;
+position: relative;
+padding: 1rem;
+margin: 1rem 0;
+color: var(--bs-alert-color);
+background-color: var(--bs-alert-bg);
+border: var(--bs-alert-border);
+border-radius: var(--bs-alert-border-radius);
+}
+}

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "blog.apps.BlogConfig",
     "cities.apps.CitiesConfig",
+    "users.apps.UsersConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',
