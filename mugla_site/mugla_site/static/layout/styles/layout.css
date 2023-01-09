@@ -23,7 +23,7 @@ File: Layout CSS
 
 /* Top Bar
 --------------------------------------------------------------------------------------------------------------- */
-#topbar{padding:15px 0; text-transform:uppercase; text-align:center; font-weight:700;}
+#topbar{padding:15px 0; text-transform:uppercase; text-align:center;}
 
 #topbar *{margin:0;}
 #topbar ul li{display:inline-block; margin-right:15px;}
@@ -464,6 +464,22 @@ table a, #comments a, #custom-form a{background-color:inherit;}
 }
 
 .created {font-size:smaller;}
+#topbar {
+display: flex;
+justify-content: space-between;
+}
+#topbar .btn {
+margin: 0 5px;
+border: 1px solid #ffffff;
+padding: 10px 18px;
+}
+#topbar .btn:hover {
+background-color: #000000;
+border: 1px solid #000000;
+}
+#topbar .email {
+padding: 10px 0;
+}
 .alert-success {
 --bs-alert-color: #146c43;
 --bs-alert-bg: #d1e7dd;
@@ -487,4 +503,23 @@ background-color: var(--bs-alert-bg);
 border: var(--bs-alert-border);
 border-radius: var(--bs-alert-border-radius);
 }
+
+.after-content {
+display: flex;
+justify-content: space-between;
+background-color: #F7F7F7;
+padding: 10px;
+}
+
+.after-content .author-info img {
+width: 50px;
+border-radius: 100%;
+}
+
+.after-content .info {
+text-align: right;
+}
+
+.after-content i {
+margin-right: 5px;
 }

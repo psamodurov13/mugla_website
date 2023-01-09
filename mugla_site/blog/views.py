@@ -55,5 +55,6 @@ class TagPost(Blog):
         return Post.objects.filter(tags__slug=self.kwargs['slug']).order_by('pk')
 
 
-def get_post(request, slug):
-    return render(request, 'blog/post.html')
+class PostPage(DetailView):
+    model = Post
+    context_object_name = 'post'

@@ -3,7 +3,7 @@
 {% load tags_tag %}
 {% load post_tags_tag %}
 
-{% block title %}{{ title }} - {{ block.super }}{% endblock %}
+{% block title %}{{ post.title }} - {{ block.super }}{% endblock %}
 
 
 {% block content %}
@@ -16,7 +16,7 @@
       <li><a href="#">Ipsum</a></li>
       <li><a href="#">Dolor</a></li>
     </ul>
-    <h6 class="heading">{{ title }}</h6>
+    <h6 class="heading">{{ post.title }}</h6>
   </section>
 </div>
 
@@ -25,34 +25,22 @@
   <main class="hoc container clear">
     <!-- main body -->
     <div class="content three_quarter first">
-      <div class="group latest">
-        {% for post in posts %}
-          <article class="one_half">
-            <a href="{{ post.get_absolute_url }}">
-              {% if post.photo %}
-                <img src="{{ post.photo.url }}" width="474">
-              {% else %}
-                <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg" width="474">
-              {% endif %}
-            </a>
-            <div class="excerpt">
-              <h6 class="heading">{{ post.title }}</h6>
-              <p>{{ post.description }}</p>
-              <div class="clear">
-                <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
-                <div class="created">{{ post.created_at }}</div>
-                <ul class="nospace meta fl_left">
-                  <li><i class="fa fa-user"></i> <a href="#">{{ post.author.username }}</a></li>
-                  <li><i class="fa fa-tag"></i>
-                    {% show_post_tags post %}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </article>
-        {% endfor %}
+      {{ post.content|safe }}
+      <div class="after-content">
+        <div class="author-info">
+          <img src="{{ post.author.profile.image.url }}">
+          <a href="#">{{ post.author }}</a>
+        </div>
+        <div class="info">
+          <div class="tags-info">
+            <i class="fa fa-tag"></i>{% show_post_tags post %}
+          </div>
+          <div class="date">
+            <i class="fa fa-calendar"></i><span>{{ post.created_at }}</span>
+          </div>
+        </div>
+
       </div>
-      {% include 'inc/_pagination.html' %}
 
     </div>
 

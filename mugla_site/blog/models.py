@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
@@ -34,7 +35,7 @@ class Tags(CustomStr, models.Model):
 class Post(CustomStr, models.Model):
     title = models.CharField(max_length=255, verbose_name='Пост')
     slug = models.SlugField(max_length=255, verbose_name='URL', unique=True)
-    author = models.CharField(max_length=100, verbose_name='Автор')
+    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='posts', verbose_name='Автор')
     content = models.TextField(verbose_name='Контент')
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
@@ -62,3 +63,5 @@ def show_categories():
 def show_tags():
     tags = Tags.objects.all()
     return tags
+
+

@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+
 from django import forms
+from .models import *
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class UserRegisterForm(UserCreationForm):
@@ -17,3 +20,34 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(label='Имя пользователя', widget=forms.TextInput())
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput())
+
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    whatsapp = PhoneNumberField()
+
+    class Meta:
+        model = Profile
+        fields = ['name', 'surname', 'image', 'birthday', 'city', 'whatsapp', 'telegram', 'instagram']
+        widgets = {
+            'name': forms.TextInput(),
+            'surname': forms.TextInput(),
+            'image': forms.FileInput(),
+            'birthday': forms.DateInput(format='%d.%m.%Y', attrs={'id': 'datepicker'}),
+            'city': forms.Select(),
+            # 'whatsapp': forms.NumberInput(),
+            'telegram': forms.TextInput(),
+            'instagram': forms.TextInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['city'].empty_label = 'Выберите город'
+

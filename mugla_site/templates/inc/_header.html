@@ -1,14 +1,26 @@
 {% load menu_tag %}
 {% load cache %}
 <div class="wrapper row0">
-  <div id="topbar" class="hoc clear">
-    <ul class="nospace">
-      <li><i class="fa fa-envelope-o"></i> info@domain.com</li>
-      <li><a href="{% url 'home' %}"><i class="fa fa-lg fa-home"></i></a></li>
-      <li><a href="#" title="Help Centre"><i class="fa fa-life-bouy"></i></a></li>
-      <li><a href="{% url 'login' %}" title="Login"><i class="fa fa-lg fa-sign-in"></i></a></li>
-      <li><a href="{% url 'register' %}" title="Sign Up"><i class="fa fa-lg fa-edit"></i></a></li>
-    </ul>
+  <div id="topbar" class="hoc">
+<!--    <ul class="nospace">-->
+<!--      <li></li>-->
+<!--      <li><a href="{% url 'home' %}"><i class="fa fa-lg fa-home"></i></a></li>-->
+<!--      <li><a href="#" title="Help Centre"><i class="fa fa-life-bouy"></i></a></li>-->
+<!--      <li><a href="{% url 'login' %}" title="Login"><i class="fa fa-lg fa-sign-in"></i></a></li>-->
+<!--      <li><a href="{% url 'register' %}" title="Sign Up"><i class="fa fa-lg fa-edit"></i></a></li>-->
+<!--    </ul>-->
+      <div class="email"><i class="fa fa-envelope-o"></i> info@domain.com</div>
+      {% if request.user.is_authenticated %}
+      <div>
+          <a class="btn" href="{% url 'profile' %}">Мой профиль</a>
+          <a class="btn" href="{% url 'logout' %}">Выйти</a>
+      </div>
+      {% else %}
+      <div>
+          <a class="btn" href="{% url 'login' %}">Войти</a>
+          <a class="btn" href="{% url 'register' %}">Зарегистрироваться</a>
+      </div>
+      {% endif %}
   </div>
 </div>
 

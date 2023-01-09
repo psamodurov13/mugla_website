@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
@@ -216,3 +217,7 @@ CACHES = {
         'LOCATION': BASE_DIR / 'django-cache',
     }
 }
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
+
+LOGIN_URL = 'login'
