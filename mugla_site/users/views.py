@@ -55,14 +55,16 @@ def profile(request):
             p_form.save()
             messages.success(request, f'Ваш профиль успешно обновлен.')
             return redirect('profile')
-
+        else:
+            messages.error(request, f'Ваш профиль не обновлен. Проверьте форму')
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'title': 'Ваш профиль'
     }
     return render(request, 'users/profile.html', context)
 

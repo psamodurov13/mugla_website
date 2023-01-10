@@ -32,19 +32,22 @@ class UserUpdateForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
     whatsapp = PhoneNumberField()
+    hidden = forms.RadioSelect()
+    # birthday = forms.DateField(input_formats=['%d.%m.%Y'], widget=forms.DateInput(attrs={'id': 'datepicker'}))
 
     class Meta:
         model = Profile
-        fields = ['name', 'surname', 'image', 'birthday', 'city', 'whatsapp', 'telegram', 'instagram']
+        fields = ['name', 'surname', 'image', 'birthday', 'city', 'whatsapp', 'telegram', 'instagram', 'hidden']
         widgets = {
             'name': forms.TextInput(),
             'surname': forms.TextInput(),
             'image': forms.FileInput(),
-            'birthday': forms.DateInput(format='%d.%m.%Y', attrs={'id': 'datepicker'}),
+            'birthday': forms.DateInput(attrs={'id': 'datepicker'}),
             'city': forms.Select(),
             # 'whatsapp': forms.NumberInput(),
             'telegram': forms.TextInput(),
             'instagram': forms.TextInput(),
+            # 'hidden': forms.RadioSelect()
         }
 
     def __init__(self, *args, **kwargs):

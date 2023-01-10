@@ -218,6 +218,6 @@ CACHES = {
     }
 }
 
-DATE_INPUT_FORMATS = ['%d-%m-%Y']
+DATE_INPUT_FORMATS = ['%d.%m.%Y']
 
 LOGIN_URL = 'login'

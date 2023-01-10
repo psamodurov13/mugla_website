@@ -26,11 +26,27 @@
     <!-- main body -->
     <div class="content">
         <div class="profile">
+            <h2 class="account-heading">Ваш профиль</h2>
+            <div class="profile-info">
+            <div class="profile-img">
             <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-            <div class="media-body">
-              <h2 class="account-heading">{{ user.username }}</h2>
-              <p class="text-secondary">{{ user.email }}</p>
             </div>
+            <div class="media-body">
+                <p class="text-secondary"><span class="param-name">Имя пользователя</span>: {{ user.username }}</p>
+                <p class="text-secondary"><span class="param-name">e-mail</span>: <a href="mailto:{{ user.email }}">
+                    {{ user.email }}</a></p>
+                <p class="text-secondary"><span class="param-name">Имя</span>: {{ user.profile.name }}</p>
+                <p class="text-secondary"><span class="param-name">Фамилия</span>: {{ user.profile.surname }}</p>
+                <p class="text-secondary"><span class="param-name">Дата рождения</span>: {{ user.profile.birthday }}</p>
+                <p class="text-secondary"><span class="param-name">Город</span>:
+                    <a href="{{ user.profile.city.get_absolute_url }}">{{ user.profile.city }}</a></p>
+                <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ user.profile.whatsapp|stringformat:'s'|slice:'1:'}}">{{ user.profile.whatsapp }}</a></p>
+                <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ user.profile.telegram }}">{{ user.profile.telegram }}</a></p>
+                <p class="text-secondary"><span class="param-name">Instagram</span>: <a target="_blank" href="https://instagram.com/{{ user.profile.instagram }}">{{ user.profile.instagram }}</a></p>
+                <p class="text-secondary"><span class="param-name">Контакты скрыты</span>: {{ user.profile.hidden }}</p>
+            </div>
+            </div>
+            <h2 class="account-heading">Редактировать информацию</h2>
             <div id="custom-form">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -38,26 +54,17 @@
                     <legend class="border-bottom mb-4">Ваш профиль</legend>
                     {{ u_form.as_p }}
                     {{ p_form.as_p }}
+
                 </fieldset>
                 <div class="form-group">
                     <button class="btn btn-outline-info" type="submit">Обновить</button>
                 </div>
+
             </form>
+
             </div>
         </div>
     </div>
-<!--
-user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(default=User.email)
-    name = models.CharField(max_length=255, blank=True)
-    surname = models.CharField(max_length=255, blank=True)
-    birthday = models.DateField(blank=True)
-    avatar = models.ImageField(upload_to='images/profile/', blank=True)
-    city = models.ForeignKey(City, on_delete=models.PROTECT)
-    whatsapp = models.IntegerField(blank=True)
-    telegram = models.CharField(max_length=255, blank=True)
-    instagram = models.CharField(max_length=255, blank=True)
--->
     <!-- / main body -->
     <div class="clear"></div>
   </main>

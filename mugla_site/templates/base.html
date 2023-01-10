@@ -7,6 +7,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="{% static 'layout/styles/layout.css' %}" rel="stylesheet" type="text/css" media="all">
+
+
+
 </head>
 <body id="top">
 
@@ -21,10 +24,30 @@
 {% include 'inc/_footer.html' %}
 {% endcache %}
 <!-- JAVASCRIPTS -->
+
 <script src="{% static 'layout/scripts/jquery.min.js' %}"></script>
 <script src="{% static 'layout/scripts/jquery.backtotop.js' %}"></script>
 <script src="{% static 'layout/scripts/jquery.mobilemenu.js' %}"></script>
 <script src="{% static 'layout/scripts/active.js' %}"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<!-- Fengyuan Chen's Datepicker -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+<!-- Подключение jQuery плагина Masked Input -->
+<script src="{% static 'mask-input/jquery.maskedinput.min.js' %}"></script>
+
+<script>
+    $(function () {
+        $("#datepicker").datepicker({
+        format:'dd.mm.yyyy',
+        });
+        $("#datepicker").mask("99.99.9999");
+    });
+</script>
 
 </body>
 </html>
