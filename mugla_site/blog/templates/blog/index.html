@@ -4,8 +4,7 @@
 {% block title %}{{ title }} - {{ block.super }}{% endblock %}
 
 
-{% block content %}
-
+{% block background %}
 <div class="bgded" style="background-image:url('{% static 'images/demo/backgrounds/01.png' %}');">
   <div id="pageintro" class="hoc clear">
     <article>
@@ -15,6 +14,11 @@
     </article>
   </div>
 </div>
+{% endblock %}
+
+{% block content %}
+
+
 
 
 <div class="wrapper row3">

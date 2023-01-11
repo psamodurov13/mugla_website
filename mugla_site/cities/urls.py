@@ -3,5 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='cities'),
-    path('city/<str:slug>/', get_city, name='city')
+    path('city/<str:slug>/', CityPage.as_view(), name='city')
 ]

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
 {% load cache %}
+{% load cropping %}
+
 <html lang="">
 <head>
 <title>{% block title %}Mugla RUS{% endblock %}</title>
@@ -17,7 +19,21 @@
 {% include 'inc/_header.html' %}
 
 
+{% block background %}
+      {% block breadcrumbs %}
+      {% endblock %}
+{% endblock %}
+
+{% block wraper_start %}
+{% endblock %}
+
 {% block content %}
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block wraper_end %}
 {% endblock %}
 
 {% cache 20 footer %}

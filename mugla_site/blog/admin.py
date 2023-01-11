@@ -6,6 +6,7 @@ from .models import *
 
 from blog.models import Post, Category, Tags
 from mugla_site.utils import CKEditorForm, BaseAdmin, dublicate_post
+from image_cropping import ImageCroppingMixin
 
 
 class PostAdminForm(CKEditorForm, forms.ModelForm):
@@ -15,19 +16,22 @@ class PostAdminForm(CKEditorForm, forms.ModelForm):
         fields = '__all__'
 
 
-class PostAdmin(BaseAdmin, admin.ModelAdmin):
+class PostAdmin(ImageCroppingMixin, BaseAdmin):
     form = PostAdminForm
     list_display = ('id', 'title', 'category', 'created_at', 'is_published', 'author')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
     list_editable = ('is_published', 'category')
     list_filter = ('is_published', 'category', 'author', 'cities')
-    fields = ('title', 'slug', 'category', 'content', 'description', 'photo', 'get_photo', 'is_published', 'tags',
-              'cities', 'views', 'created_at', 'author')
+    fields = ('title', 'slug', 'category', 'content', 'description', 'photo', 'cropping', 'cropping_thumb',
+              'get_photo', 'is_published', 'tags', 'cities', 'views', 'created_at', 'author')
     readonly_fields = ('get_photo', 'views', 'created_at')
 
 
+class CategoryAdmin(ImageCroppingMixin, BaseAdmin):
+    list_display = ('id', 'title', 'photo', 'cropping')
 
-admin.site.register(Category, BaseAdmin)
+
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tags, BaseAdmin)
 admin.site.register(Post, PostAdmin)

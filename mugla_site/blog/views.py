@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from .models import Post, Category, Tags
+from image_cropping.utils import get_backend
 
 
 class Home(ListView):
@@ -37,7 +38,8 @@ class Blog(ListView):
 class CategoryPost(Blog):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Category.objects.get(slug=self.kwargs['slug'])
+        context['instance'] = Category.objects.get(slug=self.kwargs['slug'])
+        context['title'] = context['instance'].title
         return context
 
     def get_queryset(self):
@@ -47,7 +49,7 @@ class CategoryPost(Blog):
 class TagPost(Blog):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Tags.objects.get(slug=self.kwargs['slug'])
+        context['instance'] = Tags.objects.get(slug=self.kwargs['slug'])
         return context
 
     def get_queryset(self):
@@ -58,3 +60,4 @@ class TagPost(Blog):
 class PostPage(DetailView):
     model = Post
     context_object_name = 'post'
+

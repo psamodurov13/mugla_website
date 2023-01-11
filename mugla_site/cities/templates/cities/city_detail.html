@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load cropping %}
 
 
-{% block content %}
 
-<div class="bgded" style="background-image:url('{% static 'images/demo/backgrounds/01.png' %}');">
+{% block background %}
+
+<div class="bgded" style="background-image:url('{% cropped_thumbnail city 'cropping' %}');">
   <div id="pageintro" class="hoc clear">
-    <!-- ################################################################################################ -->
     <article>
-      <h3 class="heading">Cities</h3>
+      <h3 class="heading">{{ city.title }}</h3>
       <p>Rhoncus a odio fusce eu lorem vehicula euismod mauris eget sodales mi duis habitant morbi tristique senectus et netus et malesuada fames.</p>
       <footer><a class="btn" href="#">Turpis egestas</a></footer>
     </article>
-    <!-- ################################################################################################ -->
   </div>
 </div>
+
+{% endblock %}
+
+{% block content %}
+
+
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->

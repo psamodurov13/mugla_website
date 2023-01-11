@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django.db import models
+from image_cropping import ImageRatioField
 
 from django.utils.safestring import mark_safe
 
@@ -11,6 +13,15 @@ class CustomStr():
             return self.title
         else:
             return self
+
+
+class BaseModel(CustomStr, models.Model):
+    slug = models.SlugField(max_length=255, verbose_name='URL', unique=True)
+    photo = models.ImageField(upload_to='photo/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    cropping = ImageRatioField('photo', '1950x687', size_warning=True, verbose_name='Обрезанное фото для фона')
+
+    class Meta:
+        abstract = True
 
 
 def dublicate_post(modeladmin, request, queryset):
@@ -65,3 +76,6 @@ class BaseAdmin(PrePopulatedSlug, admin.ModelAdmin):
             return '-'
 
     get_photo.short_description = 'Фото'
+
+
+
