@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load cropping %}
+{% load post_tags_tag %}
 
+{% block title %}{{ city.title }} - {{ block.super }}{% endblock %}
 
 
 {% block background %}
@@ -10,8 +12,8 @@
   <div id="pageintro" class="hoc clear">
     <article>
       <h3 class="heading">{{ city.title }}</h3>
-      <p>Rhoncus a odio fusce eu lorem vehicula euismod mauris eget sodales mi duis habitant morbi tristique senectus et netus et malesuada fames.</p>
-      <footer><a class="btn" href="#">Turpis egestas</a></footer>
+      <p>{{ city.description }}</p>
+      <footer><a class="btn" href="{{ city.telegram }}"><i class="fa fa-telegram" aria-hidden="true"></i> Telegram-чат</a></footer>
     </article>
   </div>
 </div>
@@ -176,38 +178,69 @@
   <section class="hoc container clear">
     <!-- ################################################################################################ -->
     <div class="sectiontitle">
-      <h6 class="heading">Morbi vitae vestibulum</h6>
+      <h6 class="heading">Новости</h6>
       <p>Et orci a nunc ullamcorper lobortis sit amet vel mi etiam</p>
     </div>
+
     <div class="group latest">
-      <article class="one_half first"><a href="#"><img src="images/demo/474x356.png" alt=""></a>
-        <div class="excerpt">
-          <h6 class="heading">Arcu leo volutpat a libero</h6>
-          <p>Nec sodales tincidunt elit sed in vestibulum justo cras sed ipsum quis justo pulvinar hendrerit non nec orci in a quam&hellip;</p>
-          <div class="clear">
-            <footer class=" fl_right"><a href="#">Read More</a></footer>
-            <ul class="nospace meta fl_left">
-              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
-              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>
-            </ul>
-          </div>
-        </div>
-      </article>
-      <article class="one_half"><a href="#"><img src="images/demo/474x356.png" alt=""></a>
-        <div class="excerpt">
-          <h6 class="heading">Varius blandit purus</h6>
-          <p>Sed ultrices velit etiam eleifend nulla vestibulum dapibus ex nec luctus est donec lectus lacus varius vitae ut viverra&hellip;</p>
-          <div class="clear">
-            <footer class=" fl_right"><a href="#">Read More</a></footer>
-            <ul class="nospace meta fl_left">
-              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>
-              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>
-            </ul>
-          </div>
-        </div>
-      </article>
-    </div>
-    <footer class="center"><a class="btn" href="#">View More Posts &raquo;</a></footer>
+        {% for post in posts|slice:4 %}
+          <article class="one_half">
+            <a href="{{ post.get_absolute_url }}">
+              {% if post.photo %}
+                <img src="{% cropped_thumbnail post 'cropping_thumb' %}">
+              {% else %}
+                <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">
+              {% endif %}
+            </a>
+            <div class="excerpt">
+              <h6 class="heading">{{ post.title }}</h6>
+              <p>{{ post.description }}</p>
+              <div class="clear">
+                <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
+                <div class="created">{{ post.created_at }}</div>
+                <ul class="nospace meta fl_left">
+                  <li><i class="fa fa-user"></i> <a href="#">{{ post.author.username }}</a></li>
+                  <li><i class="fa fa-tag"></i>
+                    {% show_post_tags post %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    <footer class="center"><a class="btn" href="{% url 'city_post' city.slug %}">Все новости города</a></footer>
+
+<!--    -->
+<!--    <div class="group latest">-->
+<!--      <article class="one_half first"><a href="#"><img src="images/demo/474x356.png" alt=""></a>-->
+<!--        <div class="excerpt">-->
+<!--          <h6 class="heading">Arcu leo volutpat a libero</h6>-->
+<!--          <p>Nec sodales tincidunt elit sed in vestibulum justo cras sed ipsum quis justo pulvinar hendrerit non nec orci in a quam&hellip;</p>-->
+<!--          <div class="clear">-->
+<!--            <footer class=" fl_right"><a href="#">Read More</a></footer>-->
+<!--            <ul class="nospace meta fl_left">-->
+<!--              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>-->
+<!--              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </article>-->
+<!--      <article class="one_half"><a href="#"><img src="images/demo/474x356.png" alt=""></a>-->
+<!--        <div class="excerpt">-->
+<!--          <h6 class="heading">Varius blandit purus</h6>-->
+<!--          <p>Sed ultrices velit etiam eleifend nulla vestibulum dapibus ex nec luctus est donec lectus lacus varius vitae ut viverra&hellip;</p>-->
+<!--          <div class="clear">-->
+<!--            <footer class=" fl_right"><a href="#">Read More</a></footer>-->
+<!--            <ul class="nospace meta fl_left">-->
+<!--              <li><i class="fa fa-user"></i> <a href="#">Admin</a></li>-->
+<!--              <li><i class="fa fa-tag"></i> <a href="#">Tag Name</a></li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </article>-->
+<!--    </div>-->
+
     <!-- ################################################################################################ -->
   </section>
 </div>
