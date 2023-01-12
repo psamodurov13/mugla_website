@@ -1,5 +1,8 @@
+<div class="pb-5">
+<h6>Теги</h6>
 <div class="tags">
   {% for item in tags %}
   <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
   {% endfor %}
+</div>
 </div>

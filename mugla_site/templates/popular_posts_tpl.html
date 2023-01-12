@@ -1,0 +1,14 @@
+{% load cropping %}
+<div class="pb-5">
+<h6>Популярное</h6>
+{% for post in posts %}
+<div class="card mb-3">
+    <a href="{{ post.get_absolute_url }}"><img src="{% cropped_thumbnail post 'cropping' scale=0.5 %}" class="card-img-top" alt="..."></a>
+  <div class="card-body">
+<!--    <h5 class="card-title">{{ post.title}}</h5>-->
+    <p class="card-text"><a href="{{ post.get_absolute_url }}">{{ post.title}}</a></p>
+    <p class="card-text"><small class="text-muted">{{ post.description|truncatewords:20 }}</small></p>
+  </div>
+</div>
+{% endfor %}
+</div>

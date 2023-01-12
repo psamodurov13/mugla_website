@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load cropping %}
+{% load post_tags_tag %}
 
 {% block title %}{{ title }} - {{ block.super }}{% endblock %}
 
 
 {% block background %}
-<div class="bgded" style="background-image:url('{% static 'images/demo/backgrounds/01.png' %}');">
+<div class="bgded" style="background-image:url('{% cropped_thumbnail page 'cropping' %}');">
   <div id="pageintro" class="hoc clear">
     <article>
       <h3 class="heading">{{ title }}</h3>
-      <p>Rhoncus a odio fusce eu lorem vehicula euismod mauris eget sodales mi duis habitant morbi tristique senectus et netus et malesuada fames.</p>
+      <p>{{ page.description }}</p>
       <footer><a class="btn" href="#">Turpis egestas</a></footer>
     </article>
   </div>
@@ -165,7 +166,7 @@
       <p>Et orci a nunc ullamcorper lobortis sit amet vel mi etiam</p>
     </div>
     <div class="group latest">
-      {% for post in posts %}
+      {% for post in posts|slice:4 %}
       <article class="one_half">
         <a href="{{ post.get_absolute_url }}">
         {% if post.photo %}
@@ -183,7 +184,7 @@
             <div class="created">{{ post.created_at }}</div>
             <ul class="nospace meta fl_left">
               <li><i class="fa fa-user"></i> <a href="#">{{ post.author }}</a></li>
-              <li><i class="fa fa-tag"></i> <a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a></li>
+              <li><i class="fa fa-tag"></i> {% show_post_tags post %}</li>
             </ul>
 
           </div>

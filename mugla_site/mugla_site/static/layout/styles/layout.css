@@ -94,7 +94,7 @@ File: Layout CSS
 .testimonials figcaption em{font-size:.8rem;}
 
 .latest{margin-bottom:80px;}
-.latest article{max-width:474px;}
+.latest article{max-width:100%;}
 .latest article img{width:100%;}/* Force the image to have the full width of parent at all times */
 .latest article .excerpt{padding:30px; border:solid; border-width:0 1px 1px 1px;}
 .latest article .excerpt .meta li{display:inline-block; font-size:.8rem;}
@@ -565,7 +565,7 @@ text-align: right;
 }
 
 .after-content i {
-margin-right: 5px;
+margin: 0 5px 0 10px;
 }
 
 /* Profile styles */
@@ -586,4 +586,19 @@ font-style: italic;
 
 .text-secondary {
 margin: 7px;
+}
+.tags a {
+padding: 5px;
+border: 1px solid;
+line-height: 35px;
+border-radius: 0.375rem;
+}
+.tags a:hover {
+border-color: #000000;
+background-color: #000000;
+color: #fff;
+}
+
+.card, .card img {
+border-radius: 0;
 }

@@ -59,8 +59,5 @@ def show_categories():
     return categories
 
 
-def show_tags():
-    tags = Tags.objects.all()
-    return tags
 
 

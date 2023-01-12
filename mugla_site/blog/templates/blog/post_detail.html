@@ -1,15 +1,14 @@
 {% extends 'blog/blog.html' %}
 {% load static %}
-{% load tags_tag %}
 {% load post_tags_tag %}
 
-{% block title %}{{ post.title }} - {{ block.super }}{% endblock %}
+{% block title %}{{ post.title }} {{ block.super }}{% endblock %}
 
 {% block h1 %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
-    <div class="content three_quarter first">
+    <div class="content col-sm-12 col-md-9 p-3">
       {{ post.content|safe }}
       <div class="after-content">
         <div class="author-info">
@@ -17,10 +16,13 @@
           <a href="#">{{ post.author }}</a>
         </div>
         <div class="info">
+          {% if post.tags.exists %}
           <div class="tags-info">
             <i class="fa fa-tag"></i>{% show_post_tags post %}
           </div>
+          {% endif %}
           <div class="date">
+            <i class="fa fa-eye"></i><span>{{ post.views }}</span>
             <i class="fa fa-calendar"></i><span>{{ post.created_at }}</span>
           </div>
         </div>
@@ -29,4 +31,8 @@
 
     </div>
 
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar_blog_post.html' %}
 {% endblock %}
