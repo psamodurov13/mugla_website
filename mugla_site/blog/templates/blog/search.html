@@ -5,7 +5,7 @@
 {% load thumbnail %}
 
 
-{% block title %}{{ title }} - {{ block.super }}{% endblock %}
+{% block title %}Поиск - {{ block.super }}{% endblock %}
 
 
 
@@ -38,6 +38,8 @@
               </div>
             </div>
           </article>
+        {% empty %}
+        <h6>По запросу ничего не найдено</h6>
         {% endfor %}
       </div>
       {% include 'inc/_pagination.html' %}

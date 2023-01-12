@@ -13,6 +13,7 @@ def register(request):
     if request.method == 'POST' and 'register-button' in request.POST:
         form = UserRegisterForm(request.POST)
         if form.is_valid():
+            print(form.__dict__)
             user = form.save()
             login(request, user)
             messages.success(request, 'Вы успешно зарегистрировались')
