@@ -25,6 +25,7 @@ urlpatterns = [
     path('cities/', include('cities.urls')),
     path('users/', include('users.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('companies/', include('companies.urls')),
 ]
 
 if settings.DEBUG:

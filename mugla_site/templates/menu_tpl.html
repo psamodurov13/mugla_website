@@ -15,7 +15,13 @@
                 {% endfor %}
             </ul>
         </li>
-        <li><a href="#">Link Text</a></li>
+        <li><a class="drop" href="{% url 'companies' %}">Компании</a>
+            <ul>
+                {% for item in company_types %}
+                <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
         <li><a href="#">Link Text</a></li>
         <li><a href="#">Link Text</a></li>
         <li><a href="#">Long Link Text</a></li>

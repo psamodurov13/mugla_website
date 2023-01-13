@@ -12,26 +12,26 @@
     {% block content %}
     <div class="content col-sm-12 col-md-9">
       <div class="latest row row-cols-1 row-cols-md-2">
-        {% for post in posts %}
+        {% for company in companies %}
           <article class="col p-3">
-            <a href="{{ post.get_absolute_url }}">
+            <a href="{{ company.get_absolute_url }}">
               {% if post.photo %}
-                <img src="{% cropped_thumbnail post 'cropping_thumb' %}">
+                <img src="{% cropped_thumbnail company 'cropping_thumb' %}">
               {% else %}
                 <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">
               {% endif %}
             </a>
             <div class="excerpt">
-              <h6 class="heading">{{ post.title }}</h6>
-              <p>{{ post.description }}</p>
+              <h6 class="heading">{{ company.title }}</h6>
+              <p>{{ company.description }}</p>
               <div class="clear">
-                <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
-                <div class="created">{{ post.created_at }}</div>
+                <footer class=" fl_right"><a href="{{ company.get_absolute_url }}">Читать далее</a></footer>
+                <div class="created">{{ company.created_at }}</div>
                 <ul class="nospace meta fl_left">
-                  <li><i class="fa fa-user"></i> <a href="#">{{ post.author.username }}</a></li>
-                  {% if post.tags.exists %}
+                  <li><i class="fa fa-user"></i> <a href="#">{{ company.author.username }}</a></li>
+                  {% if company.tags.exists %}
                   <li><i class="fa fa-tag"></i>
-                    {% show_post_tags post %}
+                    {% show_post_tags company %}
                   </li>
                   {% endif %}
                 </ul>

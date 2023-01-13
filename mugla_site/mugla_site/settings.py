@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "cities.apps.CitiesConfig",
     "users.apps.UsersConfig",
     "home.apps.HomeConfig",
+    "companies.apps.CompaniesConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',
@@ -80,6 +81,7 @@ TEMPLATES = [
             'libraries': {
                 'menu_tag': 'templatetags.menu',
                 'sidebar_tags': 'templatetags.sidebar',
+                'tags_list_tag': 'templatetags.tags_list',
             },
         },
     },
