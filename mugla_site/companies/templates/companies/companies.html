@@ -15,7 +15,7 @@
         {% for company in companies %}
           <article class="col p-3">
             <a href="{{ company.get_absolute_url }}">
-              {% if post.photo %}
+              {% if company.photo %}
                 <img src="{% cropped_thumbnail company 'cropping_thumb' %}">
               {% else %}
                 <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from django.db import models
+from django.db import models, IntegrityError
 from image_cropping import ImageRatioField
 
 from django.utils.safestring import mark_safe
@@ -45,8 +45,12 @@ def dublicate_post(modeladmin, request, queryset):
         count = len(all_re)
         item.pk = None
         # Add number in the slug
-        item.slug = f'{clean_slug}-{count}'
-        item.save()
+        try:
+            item.slug = f'{clean_slug}-{count}'
+            item.save()
+        except IntegrityError:
+            item.slug = f'{item.slug}-{count}'
+            item.save()
 
 
 dublicate_post.short_description = "Дублировать объект"

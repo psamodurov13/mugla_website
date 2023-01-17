@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     'easy_thumbnails',
     'image_cropping',
+    'fancybox',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
             ],
             'libraries': {
                 'menu_tag': 'templatetags.menu',

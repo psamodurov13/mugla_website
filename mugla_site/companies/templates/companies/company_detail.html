@@ -1,0 +1,65 @@
+{% extends 'companies/companies.html' %}
+
+{% load static %}
+{% load tags_list_tag %}
+{% load cropping %}
+
+{% block title %}{{ company.title }} {{ block.super }}{% endblock %}
+
+{% block h1 %}{{ company.title }}{% endblock %}
+
+{% block content %}
+
+    <div class="content col-sm-12 col-md-9 p-3">
+        <div class="company-info">
+            <div class="company-img">
+            <img class="company-img" src="{% cropped_thumbnail company 'cropping_thumb' %}">
+            </div>
+            <div class="media-body px-3">
+                <p class="text-secondary"><span class="param-name">Описание</span>: {{ company.description }}</p>
+                <p class="text-secondary"><span class="param-name">Тип</span>: {{ company.type }}</p>
+                <p class="text-secondary"><span class="param-name">web-site</span>: <a href="{{ company.site }}">
+                    {{ company.site }}</a></p>
+                <p class="text-secondary"><span class="param-name">Описание</span>: {{ company.description }}</p>
+                <p class="text-secondary"><span class="param-name">Город</span>:
+                    <a href="{{ company.city.get_absolute_url }}">{{ company.city }}</a></p>
+                <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ company.whatsapp|stringformat:'s'|slice:'1:'}}">{{ company.whatsapp }}</a></p>
+                <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ company.telegram }}">{{ company.telegram }}</a></p>
+            </div>
+        </div>
+        {{ company.content|safe }}
+        <figcaption class="sectiontitle">
+            <h6 class="heading">Purus vehicula pulvinar</h6>
+            <p>Imperdiet vel duis aliquet urna vel urna molestie sit amet</p>
+        </figcaption>
+        <ul class="gallery nospace group overview">
+            {% for img in gallery %}
+            <li class="one_third"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></li>
+            {% endfor %}
+        </ul>
+      <div class="after-content">
+        <div class="author-info">
+          <img src="{{ company.author.profile.image.url }}">
+          <a href="#">{{ company.author }}</a>
+        </div>
+        <div class="info">
+          {% if company.tags.exists %}
+          <div class="tags-info">
+            <i class="fa fa-tag"></i>{% show_post_tags company %}
+          </div>
+          {% endif %}
+          <div class="date">
+            <i class="fa fa-eye"></i><span>{{ company.views }}</span>
+            <i class="fa fa-calendar"></i><span>{{ company.created_at }}</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar_blog_post.html' %}
+{% endblock %}
