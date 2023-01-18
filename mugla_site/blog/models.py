@@ -2,22 +2,29 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from image_cropping import ImageRatioField
+from mptt.models import MPTTModel, TreeForeignKey
 
 from mugla_site.utils import BaseModel
 
 from cities.models import City
 
 
-class Category(BaseModel, models.Model):
+class Category(BaseModel, MPTTModel):
     title = models.CharField(max_length=50, verbose_name='Категория')
+    parent = TreeForeignKey('self', blank=True, null=True, on_delete=models.PROTECT, related_name='children')
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'slug': self.slug})
 
+    class MPTTMeta:
+        order_insertion_by = ['title']
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-        ordering = ['title']
+        ordering = ['parent', 'title']
+
+
 
 
 class Tags(BaseModel, models.Model):
@@ -39,7 +46,7 @@ class Post(BaseModel, models.Model):
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     views = models.IntegerField(default=0, verbose_name='Количество просмотров')
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='posts', verbose_name='Категория')
+    category = TreeForeignKey(Category, on_delete=models.PROTECT, related_name='posts', verbose_name='Категория')
     tags = models.ManyToManyField(Tags, verbose_name='Теги', blank=True, related_name='post')
     cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='post')
     is_published = models.BooleanField(default=False, verbose_name='Опубликован')

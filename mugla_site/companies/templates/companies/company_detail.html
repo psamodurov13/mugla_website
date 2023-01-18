@@ -12,15 +12,14 @@
 
     <div class="content col-sm-12 col-md-9 p-3">
         <div class="company-info">
-            <div class="company-img">
-            <img class="company-img" src="{% cropped_thumbnail company 'cropping_thumb' %}">
+            <div class="company-img col-md-4">
+                <img class="company-img" src="{% cropped_thumbnail company 'cropping_thumb' %}">
             </div>
             <div class="media-body px-3">
                 <p class="text-secondary"><span class="param-name">Описание</span>: {{ company.description }}</p>
-                <p class="text-secondary"><span class="param-name">Тип</span>: {{ company.type }}</p>
+                <p class="text-secondary"><span class="param-name">Тип</span>: <a href="{{ company.type.get_absolute_url }}">{{ company.type }}</a></p>
                 <p class="text-secondary"><span class="param-name">web-site</span>: <a href="{{ company.site }}">
                     {{ company.site }}</a></p>
-                <p class="text-secondary"><span class="param-name">Описание</span>: {{ company.description }}</p>
                 <p class="text-secondary"><span class="param-name">Город</span>:
                     <a href="{{ company.city.get_absolute_url }}">{{ company.city }}</a></p>
                 <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ company.whatsapp|stringformat:'s'|slice:'1:'}}">{{ company.whatsapp }}</a></p>

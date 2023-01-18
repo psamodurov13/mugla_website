@@ -21,7 +21,7 @@ class CompaniesList(ListView):
         return context
 
     def get_queryset(self):
-        return Company.objects.filter(is_published=True).order_by('pk')
+        return Company.objects.filter(is_published=True).prefetch_related('tags').select_related('author').order_by('pk')
 
 
 class TypeCompany(CompaniesList):
@@ -36,7 +36,7 @@ class TypeCompany(CompaniesList):
             Q(type__slug=self.kwargs['slug']) |
             Q(type__slug__in=[i.slug for i in Type.objects.filter(parent__slug=self.kwargs['slug'])])
         )
-        return companies.order_by('pk')
+        return companies.prefetch_related('tags').select_related('author').order_by('pk')
 
 
 class TagCompany(CompaniesList):
@@ -46,7 +46,8 @@ class TagCompany(CompaniesList):
         return context
 
     def get_queryset(self):
-        return Company.objects.filter(tags__slug=self.kwargs['slug']).order_by('pk')
+        return Company.objects.filter(tags__slug=self.kwargs['slug']).prefetch_related(
+            'tags').select_related('author').order_by('pk')
 
 
 class CityCompanies(CompaniesList):
@@ -57,7 +58,7 @@ class CityCompanies(CompaniesList):
         return context
 
     def get_queryset(self):
-        return Company.objects.filter(cities__slug=self.kwargs['slug'])
+        return Company.objects.filter(cities__slug=self.kwargs['slug']).prefetch_related('tags').select_related('author')
 
 
 class CompanyPage(DetailView):

@@ -346,7 +346,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#FFA41F;}
 
 /* Navigation */
 #mainav li a{color:inherit;}
-#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#FFA41F; background-color:inherit;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#FFA41F; /* background-color:inherit; */}
 #mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.6); border-color:rgba(0,0,0,.3);}
 #mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#FFA41F;}
 #mainav form select{color:#FFFFFF; background-color:#000000; border-color:rgba(255,255,255,.3);}
@@ -570,7 +570,7 @@ margin: 0 5px 0 10px;
 
 /* Profile styles */
 
-.profile-info {
+.profile-info, .company-info {
 display: flex;
 margin-bottom: 30px;
 }

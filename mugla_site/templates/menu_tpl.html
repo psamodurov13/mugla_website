@@ -1,3 +1,4 @@
+{% load mptt_tags %}
 <nav id="mainav">
     <ul class="clear">
         <li><a href="{% url 'home' %}">Home</a></li>
@@ -10,16 +11,35 @@
         </li>
         <li><a class="drop" href="{% url 'blog' %}">Новости</a>
             <ul>
-                {% for item in categories %}
-                <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
-                {% endfor %}
+                {% recursetree categories %}
+                <li>
+                    {% if node.is_leaf_node %}
+                    <a href="{{node.get_absolute_url}}">{{node.title}}</a>
+                    {% elif not node.is_leaf_node %}
+                    <a class="drop" href="{{node.get_absolute_url}}">{{node.title}}</a>
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% endrecursetree %}
             </ul>
         </li>
         <li><a class="drop" href="{% url 'companies' %}">Компании</a>
             <ul>
-                {% for item in company_types %}
-                <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
-                {% endfor %}
+                {% recursetree company_types %}
+                <li>
+                    {% if node.is_leaf_node %}
+                    <a href="{{node.get_absolute_url}}">{{node.title}}</a>
+                    {% elif not node.is_leaf_node %}
+                    <a class="drop" href="{{node.get_absolute_url}}">{{node.title}}</a>
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% endrecursetree %}
+
             </ul>
         </li>
         <li><a href="#">Link Text</a></li>
@@ -27,3 +47,6 @@
         <li><a href="#">Long Link Text</a></li>
     </ul>
 </nav>
+
+{% load mptt_tags %}
+

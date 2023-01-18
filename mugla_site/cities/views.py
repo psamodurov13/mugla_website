@@ -16,5 +16,5 @@ class CityPage(DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        context['posts'] = Post.objects.filter(cities=self.object.pk)
+        context['posts'] = Post.objects.filter(cities=self.object.pk).prefetch_related('tags').select_related('author')
         return self.render_to_response(context)

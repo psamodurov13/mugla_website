@@ -13,6 +13,6 @@ def view_home(request):
     context = {
         'title': page.title,
         'page': page,
-        'posts': Post.objects.all()
+        'posts': Post.objects.all().prefetch_related('tags').select_related('author')
     }
     return render(request, 'home/index.html', context)

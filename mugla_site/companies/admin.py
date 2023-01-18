@@ -7,6 +7,8 @@ from .models import *
 from blog.models import Post, Category, Tags
 from mugla_site.utils import CKEditorForm, BaseAdmin, dublicate_post
 from image_cropping import ImageCroppingMixin
+from mptt.admin import MPTTModelAdmin
+from mptt.admin import DraggableMPTTAdmin
 
 
 class CompanyAdminForm(CKEditorForm, forms.ModelForm):
@@ -35,15 +37,26 @@ class CompanyAdmin(ImageCroppingMixin, BaseAdmin):
     inlines = [GalleryInline, ]
 
 
-class TypeAdmin(ImageCroppingMixin, BaseAdmin):
-    list_display = ('id', 'title', 'parent')
+class TypeAdmin(ImageCroppingMixin, BaseAdmin, DraggableMPTTAdmin):
+    pass
+    # list_display = ('id', 'title', 'parent')
+    #
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super(TypeAdmin, self).get_form(request, obj, **kwargs)
+    #     form.base_fields['parent'].queryset = Type.objects.exclude(title=obj)
+    #     return form
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(TypeAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['parent'].queryset = Type.objects.exclude(title=obj)
-        return form
 
-
-admin.site.register(Type, TypeAdmin)
 admin.site.register(CompanyTags, BaseAdmin)
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(
+    Type,
+    TypeAdmin,
+    list_display=(
+        'tree_actions',
+        'indented_title',
+    ),
+    list_display_links=(
+        'indented_title',
+    ),
+)

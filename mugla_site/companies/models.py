@@ -3,17 +3,21 @@ from django.db import models
 from django.urls import reverse
 from image_cropping import ImageRatioField
 from phonenumber_field.modelfields import PhoneNumberField
+from mptt.models import MPTTModel, TreeForeignKey
 
 from mugla_site.utils import BaseModel
 from cities.models import City
 
 
-class Type(BaseModel, models.Model):
+class Type(BaseModel, MPTTModel):
     title = models.CharField(max_length=50, verbose_name='Тип организации')
-    parent = models.ForeignKey('self', blank=True, null=True, on_delete=models.PROTECT, related_name='children')
+    parent = TreeForeignKey('self', blank=True, null=True, on_delete=models.PROTECT, related_name='children')
 
     def get_absolute_url(self):
         return reverse('type', kwargs={'slug': self.slug})
+
+    class MPTTMeta:
+        order_insertion_by = ['title']
 
     class Meta:
         verbose_name = 'Тип организации'
@@ -21,7 +25,7 @@ class Type(BaseModel, models.Model):
         ordering = ['title']
 
 
-class CompanyTags(BaseModel, models.Model):
+class CompanyTags(BaseModel):
     title = models.CharField(max_length=50, verbose_name='Тег')
 
     def get_absolute_url(self):
@@ -40,7 +44,7 @@ class Company(BaseModel, models.Model):
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     views = models.IntegerField(default=0, verbose_name='Количество просмотров')
-    type = models.ForeignKey(Type, on_delete=models.PROTECT, related_name='companies', verbose_name='Тип организации')
+    type = TreeForeignKey(Type, on_delete=models.PROTECT, related_name='companies', verbose_name='Тип организации')
     tags = models.ManyToManyField(CompanyTags, verbose_name='Теги', blank=True, related_name='companies')
     cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='companies')
     is_published = models.BooleanField(default=False, verbose_name='Опубликован')

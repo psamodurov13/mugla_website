@@ -11,6 +11,8 @@ class CustomStr():
     def __str__(self):
         if self.title:
             return self.title
+        elif self.name:
+            return self.name
         else:
             return self
 

@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView
 
 from cities.models import City
 from .models import Post, Category, Tags
-from django.db.models import F
+from django.db.models import F, Q
 from image_cropping.utils import get_backend
 
 
@@ -20,7 +20,7 @@ class Home(ListView):
         return context
 
     def get_queryset(self):
-        return Post.objects.filter(is_published=True).order_by('pk')
+        return Post.objects.filter(is_published=True).prefetch_related('tags').select_related('author').order_by('pk')
 
 
 class Blog(ListView):
@@ -36,7 +36,7 @@ class Blog(ListView):
         return context
 
     def get_queryset(self):
-        return Post.objects.filter(is_published=True).order_by('pk')
+        return Post.objects.filter(is_published=True).prefetch_related('tags').select_related('author').order_by('pk')
 
 
 class CategoryPost(Blog):
@@ -47,7 +47,11 @@ class CategoryPost(Blog):
         return context
 
     def get_queryset(self):
-        return Post.objects.filter(category__slug=self.kwargs['slug']).order_by('pk')
+        posts = Post.objects.filter(
+            Q(category__slug=self.kwargs['slug'])|
+            Q(category__slug__in=[i.slug for i in Category.objects.filter(parent__slug=self.kwargs['slug'])])
+        )
+        return posts.order_by('pk')
 
 
 class TagPost(Blog):

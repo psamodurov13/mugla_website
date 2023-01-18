@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'image_cropping',
     'fancybox',
+    'mptt',
 ]
 
 MIDDLEWARE = [
@@ -236,3 +237,5 @@ THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 IMAGE_CROPPING_SIZE_WARNING = True
+
+MPTT_ADMIN_LEVEL_INDENT = 20

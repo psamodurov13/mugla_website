@@ -2,6 +2,9 @@ from django import forms
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.utils.safestring import mark_safe
+from mptt.admin import MPTTModelAdmin
+from mptt.admin import DraggableMPTTAdmin
+
 from .models import *
 
 from blog.models import Post, Category, Tags
@@ -28,10 +31,22 @@ class PostAdmin(ImageCroppingMixin, BaseAdmin):
     readonly_fields = ('get_photo', 'views', 'created_at')
 
 
-class CategoryAdmin(ImageCroppingMixin, BaseAdmin):
-    list_display = ('id', 'title', 'photo', 'cropping')
+class CategoryAdmin(ImageCroppingMixin, BaseAdmin, DraggableMPTTAdmin):
+    list_display = ('id', 'title', 'get_photo')
 
 
-admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tags, BaseAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(
+    Category,
+    CategoryAdmin,
+    list_display=(
+        'tree_actions',
+        'indented_title',
+        'get_photo',
+        'id'
+    ),
+    list_display_links=(
+        'indented_title',
+    ),
+)
