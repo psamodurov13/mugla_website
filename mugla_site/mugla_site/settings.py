@@ -28,9 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -153,11 +151,12 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Media vars
 MEDIA_ROOT = BASE_DIR / 'media/'
 MEDIA_URL = '/media/'
 
+# CKEditor settings
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
@@ -229,13 +228,37 @@ CACHES = {
 }
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y']
-
 LOGIN_URL = 'login'
 
-
+# Cropping settings
 THUMBNAIL_PROCESSORS = (
     'image_cropping.thumbnail_processors.crop_corners',
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 IMAGE_CROPPING_SIZE_WARNING = True
 
+# MPTT tree settings
 MPTT_ADMIN_LEVEL_INDENT = 20
+
+# SMTP settings
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'psamodurov13@gmail.com'
+# EMAIL_HOST_PASSWORD = 'gihafuqnunvrnnye'
+# EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'psamodurov13@yandex.ru'
+EMAIL_HOST_PASSWORD = 'ezvisxekybxyanab'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+# REDIS settings
+REDIS_HOST = '0.0.0.0'
+REDIS_PORT = '6379'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+# CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

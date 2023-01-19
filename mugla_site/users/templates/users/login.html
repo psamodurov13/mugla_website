@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'users/index.html' %}
 {% load static %}
 
 {% block title %}{{ title }} - {{ block.super }}{% endblock %}
@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <div class="content">
+    <div class="content col-sm-12 col-md-9 p-3">
         <div id="custom-form">
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}

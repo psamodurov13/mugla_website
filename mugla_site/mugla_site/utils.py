@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib import admin
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django.core.mail import send_mail
 from django.db import models, IntegrityError
 from image_cropping import ImageRatioField
+import time
 
 from django.utils.safestring import mark_safe
 
@@ -82,6 +84,10 @@ class BaseAdmin(PrePopulatedSlug, admin.ModelAdmin):
             return '-'
 
     get_photo.short_description = 'Фото'
+
+
+def send(user_email, subject, text):
+    send_mail(subject, text, 'psamodurov13@yandex.ru', [user_email], fail_silently=False)
 
 
 

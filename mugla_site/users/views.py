@@ -1,20 +1,38 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from mugla_site.utils import send
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 
+from .tasks import send_email_registration
+
 
 def register(request):
     if request.method == 'POST' and 'register-button' in request.POST:
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            print(form.__dict__)
             user = form.save()
+            # send(form.instance.email, 'Subject', 'Text mail')
+            send_email_registration.delay(
+                user.email,
+                'Вы зарегистрированы на сайте',
+                f'Спасибо за регистрацию.\n'
+                f'Ваш логин: {user.username}\n'
+                f'Ваш e-mail: {user.email}\n'
+            )
+            send_email_registration.delay(
+                'psamodurov13@gmail.com',
+                'Зарегистрирован новый пользователь',
+                f'Зарегистрирован пользователь\n'
+                f'Логин: {user.username}\n'
+                f'e-mail: {user.email}\n'
+            )
             login(request, user)
             messages.success(request, 'Вы успешно зарегистрировались')
             return redirect('home')
@@ -61,7 +79,6 @@ def profile(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
-
     context = {
         'u_form': u_form,
         'p_form': p_form,
