@@ -12,7 +12,7 @@
             {% csrf_token %}
             {{ form.non_field.errors }}
             {{ form.as_p }}
-
+            <a href="{% url 'password_reset' %}" class="reset-password-link">Восстановить пароль</a>
             <button type="submit" class="custom-btn" name="login-button">Войти</button>
         </form>
         </div>

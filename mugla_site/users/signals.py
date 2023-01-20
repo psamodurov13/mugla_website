@@ -7,7 +7,12 @@ from .models import Profile
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        print(instance)
+        print(instance.__dict__)
+        new_profile = Profile.objects.create(user=instance)
+        new_profile.slug = instance.username
+        new_profile.save()
+
 
 
 @receiver(post_save, sender=User)

@@ -603,6 +603,10 @@ color: #fff;
 border-radius: 0;
 }
 
+.reset-password-link {
+display: block;
+}
+
 /* Sidebar styles */
 
 .sidebar .btn {

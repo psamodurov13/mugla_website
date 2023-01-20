@@ -8,6 +8,8 @@ from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdat
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
+    PasswordResetCompleteView
 from django.views.generic.detail import DetailView
 
 from .models import Profile
@@ -41,7 +43,7 @@ def register(request):
                 f'Логин: {user.username}\n'
                 f'e-mail: {user.email}\n'
             )
-            return redirect('profile')
+            return redirect('profile', user.username)
         else:
             messages.error(request, 'Ошибка регистрации')
     else:
@@ -91,6 +93,26 @@ def edit_profile(request):
         'title': 'Редактирование профиля'
     }
     return render(request, 'users/edit_profile.html', context)
+
+
+class ResetPassword(PasswordResetView):
+    template_name = 'users/password_reset_form.html'
+    email_template_name = 'users/password_reset_email.html'
+
+
+class ConfirmResetPassword(PasswordResetConfirmView):
+    template_name = 'users/password_reset_confirm.html'
+
+
+class DoneResetPasword(PasswordResetDoneView):
+    template_name = 'users/password_reset_done.html'
+
+
+class CompleteResetPassword(PasswordResetCompleteView):
+    template_name = 'users/password_reset_complete.html'
+
+
+
 
 
 
