@@ -71,7 +71,6 @@ class CompanyPage(DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
-        print(CompanyGallery.objects.filter(company=self.object.id)[0].image.url)
         context['gallery'] = CompanyGallery.objects.filter(company=self.object.id)
         return context
 

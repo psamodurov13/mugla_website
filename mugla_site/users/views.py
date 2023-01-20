@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 from mugla_site.utils import send
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
@@ -10,7 +10,14 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 
+from .models import Profile
 from .tasks import send_email_registration
+
+
+class ProfileView(DetailView):
+    model = Profile
+    template_name = 'users/profile.html'
+    context_object_name = 'profile'
 
 
 def register(request):
@@ -18,7 +25,8 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # send(form.instance.email, 'Subject', 'Text mail')
+            login(request, user)
+            messages.success(request, 'Вы успешно зарегистрировались')
             send_email_registration.delay(
                 user.email,
                 'Вы зарегистрированы на сайте',
@@ -33,9 +41,7 @@ def register(request):
                 f'Логин: {user.username}\n'
                 f'e-mail: {user.email}\n'
             )
-            login(request, user)
-            messages.success(request, 'Вы успешно зарегистрировались')
-            return redirect('home')
+            return redirect('profile')
         else:
             messages.error(request, 'Ошибка регистрации')
     else:
@@ -63,7 +69,7 @@ def user_logout(request):
 
 
 @login_required
-def profile(request):
+def edit_profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
@@ -73,7 +79,7 @@ def profile(request):
             u_form.save()
             p_form.save()
             messages.success(request, f'Ваш профиль успешно обновлен.')
-            return redirect('profile')
+            return redirect('profile', request.user.username)
         else:
             messages.error(request, f'Ваш профиль не обновлен. Проверьте форму')
     else:
@@ -82,9 +88,9 @@ def profile(request):
     context = {
         'u_form': u_form,
         'p_form': p_form,
-        'title': 'Ваш профиль'
+        'title': 'Редактирование профиля'
     }
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/edit_profile.html', context)
 
 
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.urls import reverse
 
 from cities.models import City
 from phonenumber_field.modelfields import PhoneNumberField
@@ -9,7 +10,8 @@ from image_cropping import ImageCropField, ImageRatioField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Имя пользователя')
-    image = ImageCropField(upload_to='profile_pics', verbose_name='Исходное фото')
+    slug = models.SlugField(max_length=255, verbose_name='URL')
+    image = ImageCropField(upload_to='profile_pics', default='default.jpg', verbose_name='Исходное фото')
     cropping_avatar = ImageRatioField('image', '300x300', verbose_name='Обрезанное фото')
     name = models.CharField(max_length=255, blank=True, verbose_name='Имя')
     surname = models.CharField(max_length=255, blank=True, verbose_name='Фамилия')
@@ -23,6 +25,14 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+    def get_absolute_url(self):
+        print('DICT - ', self.__dict__)
+        return reverse('profile', kwargs={'slug': self.user.username})
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
 

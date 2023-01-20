@@ -28,7 +28,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['email']
 
 
 class ProfileUpdateForm(ImageCroppingMixin, forms.ModelForm):
@@ -37,7 +37,8 @@ class ProfileUpdateForm(ImageCroppingMixin, forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['image', 'cropping_avatar', 'name', 'surname', 'birthday', 'city', 'whatsapp', 'telegram',
+                  'instagram', 'hidden']
         widgets = {
             'name': forms.TextInput(),
             'surname': forms.TextInput(),

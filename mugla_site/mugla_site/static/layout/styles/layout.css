@@ -602,3 +602,15 @@ color: #fff;
 .card, .card img {
 border-radius: 0;
 }
+
+/* Sidebar styles */
+
+.sidebar .btn {
+color: #FFA41F;
+background: none;
+}
+
+.sidebar .btn:hover {
+color: #fff;
+background: #FFA41F;
+}

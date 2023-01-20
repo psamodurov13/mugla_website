@@ -12,7 +12,7 @@
       <div class="email"><i class="fa fa-envelope-o"></i> info@domain.com</div>
       {% if request.user.is_authenticated %}
       <div>
-          <a class="btn" href="{% url 'profile' %}">Мой профиль</a>
+          <a class="btn" href="{% url 'profile' slug=user.username %}">Мой профиль</a>
           <a class="btn" href="{% url 'logout' %}">Выйти</a>
       </div>
       {% else %}
