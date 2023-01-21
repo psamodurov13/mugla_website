@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView
 
 from mugla_site.utils import send
@@ -9,11 +10,11 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
+    PasswordResetCompleteView, PasswordChangeView, PasswordChangeDoneView
 from django.views.generic.detail import DetailView
 
 from .models import Profile
-from .tasks import send_email_registration
+from .tasks import send_email_to_user
 
 
 class ProfileView(DetailView):
@@ -29,14 +30,14 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Вы успешно зарегистрировались')
-            send_email_registration.delay(
+            send_email_to_user.delay(
                 user.email,
                 'Вы зарегистрированы на сайте',
                 f'Спасибо за регистрацию.\n'
                 f'Ваш логин: {user.username}\n'
                 f'Ваш e-mail: {user.email}\n'
             )
-            send_email_registration.delay(
+            send_email_to_user.delay(
                 'psamodurov13@gmail.com',
                 'Зарегистрирован новый пользователь',
                 f'Зарегистрирован пользователь\n'
@@ -58,7 +59,7 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, f'Добро пожаловать, {user.username}')
-            return redirect('home')
+            return redirect('profile', user.username)
     else:
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form, 'title': 'Вход'})
@@ -110,6 +111,20 @@ class DoneResetPasword(PasswordResetDoneView):
 
 class CompleteResetPassword(PasswordResetCompleteView):
     template_name = 'users/password_reset_complete.html'
+
+
+class ChangePassword(PasswordChangeView):
+    template_name = 'users/password_change_form.html'
+
+
+class ChangePasswordDone(PasswordChangeDoneView):
+    template_name = 'users/password_change_done.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        send_email_to_user.delay(self.request.user.email, 'Пароль изменен', 'Ваш пароль успешно изменен')
+        return super().dispatch(*args, **kwargs)
+
 
 
 
