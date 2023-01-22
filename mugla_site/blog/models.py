@@ -22,9 +22,7 @@ class Category(BaseModel, MPTTModel):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-        ordering = ['parent', 'title']
-
-
+        ordering = ['title']
 
 
 class Tags(BaseModel, models.Model):

@@ -9,9 +9,25 @@
                 {% endfor %}
             </ul>
         </li>
-        <li><a class="drop" href="{% url 'blog' %}">Новости</a>
+        <li><a class="drop" href="{% url 'category' 'novosti' %}">Новости</a>
             <ul>
-                {% recursetree categories %}
+                {% recursetree news %}
+                <li>
+                    {% if node.is_leaf_node %}
+                    <a href="{{node.get_absolute_url}}">{{node.title}}</a>
+                    {% elif not node.is_leaf_node %}
+                    <a class="drop" href="{{node.get_absolute_url}}">{{node.title}}</a>
+                        <ul class="children">
+                            {{ children }}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% endrecursetree %}
+            </ul>
+        </li>
+        <li><a class="drop" href="{% url 'category' 'stati' %}">Статьи</a>
+            <ul>
+                {% recursetree articles %}
                 <li>
                     {% if node.is_leaf_node %}
                     <a href="{{node.get_absolute_url}}">{{node.title}}</a>
@@ -39,7 +55,6 @@
                     {% endif %}
                 </li>
                 {% endrecursetree %}
-
             </ul>
         </li>
         <li><a href="#">Link Text</a></li>

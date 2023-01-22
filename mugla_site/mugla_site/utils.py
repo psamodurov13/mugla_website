@@ -90,4 +90,9 @@ def send(user_email, subject, text):
     send_mail(subject, text, 'psamodurov13@yandex.ru', [user_email], fail_silently=False)
 
 
+def get_subcategories(all_categories, head_category):
+    head_category_id = all_categories.get(title=head_category).id
+    subcategories_id = [i.id for i in all_categories.filter(parent=head_category_id)]
+    subcategories_id.append(head_category_id)
+    return all_categories.filter(parent__in=subcategories_id)
 
