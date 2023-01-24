@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "home.apps.HomeConfig",
     "companies.apps.CompaniesConfig",
+    "comments.apps.CommentsConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',

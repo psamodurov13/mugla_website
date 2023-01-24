@@ -48,6 +48,7 @@ class Post(BaseModel, models.Model):
     cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='post')
     is_published = models.BooleanField(default=False, verbose_name='Опубликован')
     cropping_thumb = ImageRatioField('photo', '444x250', size_warning=True, verbose_name='Обрезанное фото для каталога')
+    important = models.BooleanField(default=False, verbose_name='Важная статья')
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'slug': self.slug})

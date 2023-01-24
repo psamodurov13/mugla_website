@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cropping %}
+{% load tags_list_tag %}
+
+{% block title %}{{ city.title }} - {{ block.super }}{% endblock %}
+
+{% block h1 %}Галерея города {{ city }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <main class="row m-3">
+        {% for img in gallery %}
+            <div class="col-sm-12 col-md-3 p-3"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></div>
+        {% endfor %}
+    </main>
+    {% include 'inc/_pagination.html' %}
+</div>
+
+
+
+{% endblock %}

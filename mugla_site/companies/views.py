@@ -54,7 +54,7 @@ class CityCompanies(CompaniesList):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['instance'] = City.objects.get(slug=self.kwargs['slug'])
-        context['title'] = 'Новости ' + context['instance'].title
+        context['title'] = 'Организации в городе ' + context['instance'].title
         return context
 
     def get_queryset(self):
@@ -73,6 +73,7 @@ class CompanyPage(DetailView):
         self.object.refresh_from_db()
         context['gallery'] = CompanyGallery.objects.filter(company=self.object.id)
         return context
+
 
 
 

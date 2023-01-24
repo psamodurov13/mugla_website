@@ -27,7 +27,7 @@ class PostAdmin(ImageCroppingMixin, BaseAdmin):
     list_editable = ('is_published', 'category')
     list_filter = ('is_published', 'category', 'author', 'cities')
     fields = ('title', 'slug', 'category', 'content', 'description', 'photo', 'cropping', 'cropping_thumb',
-              'get_photo', 'is_published', 'tags', 'cities', 'views', 'created_at', 'author')
+              'get_photo', 'is_published', 'tags', 'cities', 'views', 'created_at', 'author', 'important')
     readonly_fields = ('get_photo', 'views', 'created_at')
 
 
