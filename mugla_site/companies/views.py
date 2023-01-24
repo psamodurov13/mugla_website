@@ -1,8 +1,13 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormMixin
 
 from cities.models import City
+from comments.forms import PostCommentForm, CompanyCommentForm
+from comments.models import CompanyComments
 from .models import Type, CompanyTags, Company, CompanyGallery
 from django.db.models import F, Q
 from image_cropping.utils import get_backend
@@ -61,10 +66,29 @@ class CityCompanies(CompaniesList):
         return Company.objects.filter(cities__slug=self.kwargs['slug']).prefetch_related('tags').select_related('author')
 
 
-class CompanyPage(DetailView):
+class CompanyPage(FormMixin, DetailView):
     model = Company
     context_object_name = 'company'
     allow_empty = False
+    form_class = CompanyCommentForm
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('company', kwargs={'slug': self.kwargs['slug']})
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.company = self.get_object()
+        self.object.author = self.request.user
+        self.object.save()
+        messages.success(self.request, f'Ваш комментарий отправлен, он будет опубликован после модерации')
+        return super().form_valid(form)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,6 +96,7 @@ class CompanyPage(DetailView):
         self.object.save()
         self.object.refresh_from_db()
         context['gallery'] = CompanyGallery.objects.filter(company=self.object.id)
+        context['comments'] = CompanyComments.objects.filter(Q(company__slug=self.kwargs['slug']) & Q(active=True))
         return context
 
 

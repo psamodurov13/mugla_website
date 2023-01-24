@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from easy_thumbnails.conf import Settings as thumbnail_settings
+from configs import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -105,9 +106,9 @@ WSGI_APPLICATION = "mugla_site.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mugla_db2',
-        'USER': 'psamodurov13',
-        'PASSWORD': 'VT19rw91!',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -240,17 +241,10 @@ IMAGE_CROPPING_SIZE_WARNING = True
 # MPTT tree settings
 MPTT_ADMIN_LEVEL_INDENT = 20
 
-# SMTP settings
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'psamodurov13@gmail.com'
-# EMAIL_HOST_PASSWORD = 'gihafuqnunvrnnye'
-# EMAIL_USE_TLS = True
-
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = '465'
-EMAIL_HOST_USER = 'psamodurov13@yandex.ru'
-EMAIL_HOST_PASSWORD = 'ezvisxekybxyanab'
+EMAIL_HOST_USER = EMAIL_USER
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -266,3 +260,9 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+RECAPTCHA_PUBLIC_KEY = RECAPTCHA_PUB_KEY
+RECAPTCHA_PRIVATE_KEY = RECAPTCHA_PR_KEY
+RECAPTCHA_DEFAULT_ACTION = 'generic'
+RECAPTCHA_SCORE_THRESHOLD = 0.5

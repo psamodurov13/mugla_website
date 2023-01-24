@@ -558,6 +558,7 @@ padding: 10px;
 .after-content .author-info img {
 width: 50px;
 border-radius: 100%;
+margin-right: 10px;
 }
 
 .after-content .info {
@@ -617,4 +618,27 @@ background: none;
 .sidebar .btn:hover {
 color: #fff;
 background: #FFA41F;
+}
+
+/* Comments styles */
+
+.comment {
+    background-color: #FBFBFB;
+    padding: 10px;
+    margin: 10px 0;
+}
+.author-info {
+    display: flex;
+    align-items: center;
+}
+.comment img {
+    width: 50px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+.comment .comment-info p {
+margin: 0;
+}
+.comment-content {
+padding: 10px;
 }

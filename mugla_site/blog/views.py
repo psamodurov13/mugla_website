@@ -110,7 +110,6 @@ class PostPage(FormMixin, DetailView):
         self.object.save()
         self.object.refresh_from_db()
         context['comments'] = PostComments.objects.filter(Q(post__slug=self.kwargs['slug']) & Q(active=True))
-        print(context)
         return context
 
 
