@@ -28,6 +28,14 @@ class BaseModel(CustomStr, models.Model):
         abstract = True
 
 
+class CustomGallery(models.Model):
+    image = models.ImageField(upload_to='company_gallery/%Y/%m/%d/', blank=True, verbose_name='Доп. фото')
+    cropping_gallery = ImageRatioField('image', '400x300', size_warning=True, verbose_name='Обрезанное доп фото')
+
+    class Meta:
+        abstract = True
+
+
 def dublicate_post(modeladmin, request, queryset):
     '''Function for copy items in admin'''
     for item in queryset:
@@ -95,4 +103,3 @@ def get_subcategories(all_categories, head_category):
     subcategories_id = [i.id for i in all_categories.filter(parent=head_category_id)]
     subcategories_id.append(head_category_id)
     return all_categories.filter(parent__in=subcategories_id)
-

@@ -7,7 +7,6 @@ from image_cropping import ImageCroppingMixin
 from .models import *
 from mugla_site.utils import BaseAdmin
 
-from blog.models import City
 from mugla_site.utils import CKEditorForm
 
 
@@ -19,12 +18,19 @@ class CityAdminForm(CKEditorForm, forms.ModelForm):
         fields = '__all__'
 
 
+class GalleryInline(ImageCroppingMixin, admin.TabularInline):
+    fk_name = 'city'
+    model = CityGallery
+
+
 class CityAdmin(ImageCroppingMixin, BaseAdmin):
     form = CityAdminForm
     list_display = ('id', 'title')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
-    fields = ('title', 'slug', 'content', 'description', 'photo', 'cropping', 'get_photo', 'telegram')
+    fields = ('title', 'slug', 'content', 'description', 'photo', 'cropping', 'get_photo', 'telegram', 'populate',
+              'distance_to_airport', 'content_photo', 'cropping_content_photo')
+    inlines = [GalleryInline, ]
 
 
 admin.site.register(City, CityAdmin)

@@ -5,7 +5,6 @@ from image_cropping import ImageRatioField
 from mptt.models import MPTTModel, TreeForeignKey
 
 from mugla_site.utils import BaseModel
-
 from cities.models import City
 
 

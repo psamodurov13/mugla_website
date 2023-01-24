@@ -22,50 +22,32 @@
 
 {% block content %}
 
-
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
 <div class="wrapper row3">
-  <main class="hoc container clear">
+  <main class="container">
     <!-- main body -->
-    <!-- ################################################################################################ -->
     <div class="sectiontitle">
-      <h6 class="heading">Donec tortor eget mauris sagittis</h6>
-      <p>Convallis morbi eget leo elit praesent at libero et arcu</p>
+      <h6 class="heading">Немного информации о городе</h6>
     </div>
-    <div class="group">
-      <div class="one_half first"><img class="inspace-15 borderedbox" src="images/demo/474x356.png" alt=""></div>
-      <div class="one_half">
-        <ul class="nospace group inspace-15">
-          <li class="one_half first btmspace-50">
+    <div class="row">
+      <div class="col-sm-12 col-md-4"><img class="inspace-15 borderedbox" src="{% cropped_thumbnail city 'cropping_content_photo' %}" alt=""></div>
+      <div class="col-sm-12 col-md-8">
+        <div class="row">
+          <div class="col-sm-12 col-md-6 text-center">
             <article>
-              <h6 class="heading"><a href="#">Pretium commodo</a></h6>
-              <p class="nospace">Nec ipsum integer in tincidunt ligula ut nec magna ac nisl facilisis ultricies nam sed aliquet nisl aliquam&hellip;</p>
+              <h6 class="heading"><a href="#">Население</a></h6>
+              <p class="nospace">{{ city.populate }} чел.</p>
             </article>
-          </li>
-          <li class="one_half btmspace-50">
+          </div>
+          <div class="col-sm-12 col-md-6 text-center">
             <article>
-              <h6 class="heading"><a href="#">Commodo rhoncus</a></h6>
-              <p class="nospace">Sapien vitae euismod urna condimentum eu sed sodales leo eget urna fermentum fermentum vivamus auctor&hellip;</p>
+              <h6 class="heading"><a href="#">До аэропорта</a></h6>
+              <p class="nospace">{{ city.distance_to_airport }} км</p>
             </article>
-          </li>
-          <li class="one_half first">
-            <article>
-              <h6 class="heading"><a href="#">Amet orci facilisis</a></h6>
-              <p class="nospace">Aliquet phasellus rhoncus imperdiet metus id malesuada curabitur pharetra eu turpis non bibendum suspendisse&hellip;</p>
-            </article>
-          </li>
-          <li class="one_half">
-            <article>
-              <h6 class="heading"><a href="#">Aliquam facilisis</a></h6>
-              <p class="nospace">Iaculis justo in dignissim suspendisse potenti integer eu enim sed felis faucibus ultricies vivamus tellus justo&hellip;</p>
-            </article>
-          </li>
-        </ul>
+          </div>
+        </div>
+        <p>{{ city.content|safe }}</p>
       </div>
     </div>
-    <!-- ################################################################################################ -->
     <!-- / main body -->
     <div class="clear"></div>
   </main>
@@ -128,45 +110,67 @@
     <!-- ################################################################################################ -->
   </section>
 </div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
+
+
+
 <div class="wrapper row3">
-  <figure class="hoc container clear">
+  <section class="container">
     <!-- ################################################################################################ -->
-    <figcaption class="sectiontitle">
-      <h6 class="heading">Purus vehicula pulvinar</h6>
-      <p>Imperdiet vel duis aliquet urna vel urna molestie sit amet</p>
-    </figcaption>
-    <ul class="nospace group overview">
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-      <li class="one_third"><a href="#"><img src="images/demo/320x240.png" alt=""></a></li>
-    </ul>
+    <div class="sectiontitle">
+      <h6 class="heading">Организации</h6>
+      <p>Образовательные и медицинские учреждения, развлекательные организации, кафе и рестораны, коммунальные услуги и многое другое.</p>
+    </div>
+
+    <div class="group latest">
+        {% for company in companies|slice:4 %}
+          <article class="one_half">
+            <a href="{{ company.get_absolute_url }}">
+              {% if post.photo %}
+                <img src="{% cropped_thumbnail company 'cropping_thumb' %}">
+              {% else %}
+                <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">
+              {% endif %}
+            </a>
+            <div class="excerpt">
+              <h6 class="heading">{{ company.title }}</h6>
+              <p>{{ company.description }}</p>
+              <div class="clear">
+                <footer class=" fl_right"><a href="{{ company.get_absolute_url }}">Читать далее</a></footer>
+                <div class="created">{{ company.created_at }}</div>
+                <ul class="nospace meta fl_left">
+                  <li><i class="fa fa-user"></i> <a href="#">{{ company.author.username }}</a></li>
+                  <li><i class="fa fa-tag"></i>
+                    {% show_post_tags company %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    <footer class="center"><a class="btn" href="{% url 'city_post' city.slug %}">Все организации города</a></footer>
+
+
     <!-- ################################################################################################ -->
-  </figure>
+  </section>
 </div>
+
+
+
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <div class="wrapper row2">
-  <section class="hoc container clear testimonials">
+  <section class="container">
     <!-- ################################################################################################ -->
     <div class="sectiontitle">
-      <h6 class="heading">Dapibus magna viverra</h6>
-      <p>Amet gravida sem sed sit amet risus nisl curabitur mattis</p>
+      <h6 class="heading">Галерея</h6>
     </div>
-    <article class="btmspace-80">
-      <blockquote>Id neque nec ornare donec varius turpis vel ante accumsan lacinia aenean aliquet orci lacinia lorem auctor faucibus vel vel ligula aliquam elit ligula rutrum vitae dui at ultricies facilisis ex</blockquote>
-      <figure class="clear"><img src="images/demo/60x60.png" alt="">
-        <figcaption>
-          <h6 class="heading">John Doe</h6>
-          <em>Chairman</em></figcaption>
-      </figure>
-    </article>
+    <div class="row m-3">
+      {% for img in gallery %}
+            <div class="col-sm-12 col-md-3 p-3"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></div>
+      {% endfor %}
+      </div>
     <footer class="center"><a class="btn" href="#">View More Testimonials &raquo;</a></footer>
     <!-- ################################################################################################ -->
   </section>
@@ -175,11 +179,10 @@
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <div class="wrapper row3">
-  <section class="hoc container clear">
+  <section class="container">
     <!-- ################################################################################################ -->
     <div class="sectiontitle">
       <h6 class="heading">Новости</h6>
-      <p>Et orci a nunc ullamcorper lobortis sit amet vel mi etiam</p>
     </div>
 
     <div class="group latest">
@@ -215,8 +218,5 @@
     <!-- ################################################################################################ -->
   </section>
 </div>
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
 
 {% endblock %}

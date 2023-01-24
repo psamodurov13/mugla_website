@@ -5,7 +5,7 @@ from image_cropping import ImageRatioField
 from phonenumber_field.modelfields import PhoneNumberField
 from mptt.models import MPTTModel, TreeForeignKey
 
-from mugla_site.utils import BaseModel
+from mugla_site.utils import BaseModel, CustomGallery
 from cities.models import City
 
 
@@ -66,10 +66,8 @@ class Company(BaseModel, models.Model):
         ordering = ['-created_at']
 
 
-class CompanyGallery(models.Model):
-    image = models.ImageField(upload_to='company_gallery/%Y/%m/%d/', blank=True, verbose_name='Доп. фото')
+class CompanyGallery(CustomGallery):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='images')
-    cropping_gallery = ImageRatioField('image', '400x300', size_warning=True, verbose_name='Обрезанное доп фото')
 
 
 def show_company_types():

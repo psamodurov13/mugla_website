@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.views.generic import DetailView
 from cities.models import City
 from blog.models import Post
+from companies.models import Company
+from .models import *
 
 
 def index(request):
@@ -17,4 +19,7 @@ class CityPage(DetailView):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         context['posts'] = Post.objects.filter(cities=self.object.pk).prefetch_related('tags').select_related('author')
+        context['companies'] = Company.objects.filter(cities=self.object.pk).prefetch_related('tags').select_related('author')
+        context['gallery'] = CityGallery.objects.filter(city=self.object.id)
         return self.render_to_response(context)
+
