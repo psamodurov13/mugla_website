@@ -31,6 +31,8 @@
     <div class="bgded overlay" style="background-image:url('{% cropped_thumbnail instance 'cropping' scale=0.5 %}');">
   {% elif post %}
     <div class="bgded overlay" style="background-image:url('{% cropped_thumbnail post 'cropping' scale=0.5 %}');">
+  {% elif company %}
+    <div class="bgded overlay" style="background-image:url('{% cropped_thumbnail company 'cropping' scale=0.5 %}');">
   {% else %}
     <div class="bgded overlay" style="background-image:url('{% static '/images/default-background.jpg' %}');">
   {% endif %}

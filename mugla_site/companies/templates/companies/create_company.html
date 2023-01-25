@@ -4,14 +4,14 @@
 {% load tags_list_tag %}
 {% load cropping %}
 
-{% block title %}{{ company.title }} {{ block.super }}{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
 
-{% block h1 %}{{ company.title }}{% endblock %}
+{% block h1 %}{{ title }}{% endblock %}
 
 {% block content %}
     <div class="content col-sm-12 col-md-9 p-3">
-        <div class="custom-form">
-            <form action="{% url 'create_company' %}" method="post">
+        <div id="custom-form">
+            <form action="{% url 'create_company' %}" enctype='multipart/form-data' method="post">
             {% csrf_token %}
             {{ form.non_field.errors }}
             <div class="mb-3">
@@ -95,23 +95,13 @@
                 {{ form.english_speak }}
                 {{ form.english_speak.errors}}
             </div>
+                <div class="mb-3">
+                <label for="{{ form.file_field.id_for_label }}" class="form-label">file_field</label>
+                {{ form.file_field }}
+                {{ form.file_field.errors}}
+                </div>
 
-            {% comment %}
-
-            {{ form.as_p }}
-
-
-            {% for field in form %}
-            <div class="form-group">
-            {{ field.label_tag }}
-            {{ field }}
-            <div class="invalid-feedback">
-            {{ field.errors}}
-            </div>
-            </div>
-            {% endfor %}
-            {% endcomment %}
-            <button type="submit" class="custom-btn">Добавить компанию</button>
+            <button type="submit" class="btn btn-outline-info">Добавить компанию</button>
             </form>
         </div>
     </div>

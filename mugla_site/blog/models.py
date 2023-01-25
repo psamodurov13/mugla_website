@@ -38,6 +38,7 @@ class Tags(BaseModel, models.Model):
 
 class Post(BaseModel, models.Model):
     title = models.CharField(max_length=255, verbose_name='Пост')
+    photo = models.ImageField(default='default_post.jpeg', upload_to='photo/%Y/%m/%d/', blank=True, verbose_name='Фото')
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='posts', verbose_name='Автор')
     content = models.TextField(verbose_name='Контент')
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')

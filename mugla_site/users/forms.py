@@ -44,7 +44,6 @@ class ProfileUpdateForm(ImageCroppingMixin, forms.ModelForm):
             'surname': forms.TextInput(),
             'image': ImageCropWidget,
             'birthday': forms.DateInput(attrs={'id': 'datepicker'}),
-            # 'cropping_avatar': ImageRatioField,
             'city': forms.Select(),
             'telegram': forms.TextInput(),
             'instagram': forms.TextInput(),

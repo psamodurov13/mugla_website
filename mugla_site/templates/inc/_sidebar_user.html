@@ -8,6 +8,8 @@
     {% if request.user.is_authenticated %}
     <a href="{% url 'edit_profile' %}" class="btn">Редактировать профиль</a>
     <a href="{% url 'password_change' %}" class="btn">Изменение пароля</a>
+    <a href="{% url 'create_company' %}" class="btn">Добавить компанию</a>
+    <a href="{% url 'create_post' %}" class="btn">Добавить пост</a>
     <a href="{% url 'logout' %}" class="btn">Выйти</a>
     {% else %}
     <a href="{% url 'register' %}" class="btn">Зарегистрироватья</a>

@@ -12,6 +12,7 @@ from comments.models import CompanyComments
 from .models import Type, CompanyTags, Company, CompanyGallery
 from django.db.models import F, Q
 from .forms import *
+from transliterate import slugify
 from image_cropping.utils import get_backend
 
 
@@ -40,8 +41,8 @@ class TypeCompany(CompaniesList):
 
     def get_queryset(self):
         companies = Company.objects.filter(
-            Q(type__slug=self.kwargs['slug']) |
-            Q(type__slug__in=[i.slug for i in Type.objects.filter(parent__slug=self.kwargs['slug'])])
+            Q(type__in=Type.objects.get(slug=self.kwargs['slug']).get_descendants(include_self=True)) &
+            Q(is_published=True)
         )
         return companies.prefetch_related('tags').select_related('author').order_by('pk')
 
@@ -53,7 +54,7 @@ class TagCompany(CompaniesList):
         return context
 
     def get_queryset(self):
-        return Company.objects.filter(tags__slug=self.kwargs['slug']).prefetch_related(
+        return Company.objects.filter(Q(tags__slug=self.kwargs['slug']) & Q(is_published=True)).prefetch_related(
             'tags').select_related('author').order_by('pk')
 
 
@@ -65,7 +66,7 @@ class CityCompanies(CompaniesList):
         return context
 
     def get_queryset(self):
-        return Company.objects.filter(cities__slug=self.kwargs['slug']).prefetch_related('tags').select_related('author')
+        return Company.objects.filter(Q(cities__slug=self.kwargs['slug']) & Q(is_published=True)).prefetch_related('tags').select_related('author')
 
 
 class CompanyPage(FormMixin, DetailView):
@@ -88,6 +89,7 @@ class CompanyPage(FormMixin, DetailView):
         self.object = form.save(commit=False)
         self.object.company = self.get_object()
         self.object.author = self.request.user
+
         self.object.save()
         messages.success(self.request, f'Ваш комментарий отправлен, он будет опубликован после модерации')
         return super().form_valid(form)
@@ -106,16 +108,27 @@ class CreateCompany(LoginRequiredMixin, CreateView):
     form_class = CreateCompanyForm
     template_name = 'companies/create_company.html'
     login_url = '/login/'
-    success_url = 'create_company'
+    success_url = reverse_lazy('create_company')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
+        last_id = Company.objects.order_by('id').last().id
+        slug = slugify(self.object.title, language_code='ru')
+        self.object.slug = f'{slug}-{str(last_id + 1)}'
         self.object.save()
-        print(self.object)
+        for i in form.files.getlist('file_field'):
+            item = CompanyGallery()
+            item.image = i
+            item.company = self.object
+            item.save()
+        messages.success(self.request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
         return super().form_valid(form)
 
-
+    def get_context_data(self, **kwargs):
+        context = super(CreateCompany, self).get_context_data(**kwargs)
+        context['title'] = 'Создание организации'
+        return context
 
 
 

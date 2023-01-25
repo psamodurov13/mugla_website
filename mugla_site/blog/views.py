@@ -1,15 +1,18 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, CreateView
 
 from cities.models import City
 from comments.forms import PostCommentForm
 from comments.models import PostComments
+from .forms import CreatePostForm
 from .models import Post, Category, Tags
 from django.db.models import F, Q
+from transliterate import slugify
 from image_cropping.utils import get_backend
 
 
@@ -53,9 +56,9 @@ class CategoryPost(Blog):
 
     def get_queryset(self):
         posts = Post.objects.filter(
-            Q(category__slug=self.kwargs['slug'])|
-            Q(category__slug__in=[i.slug for i in Category.objects.filter(parent__slug=self.kwargs['slug'])])
-        )
+            Q(category__in=Category.objects.get(slug=self.kwargs['slug']).get_descendants(include_self=True)) &
+            Q(is_published=True)
+        ).prefetch_related('tags').select_related('author')
         return posts.order_by('pk')
 
 
@@ -127,6 +130,29 @@ class Search(ListView):
         context['search'] = f'search={search}&'
         context['title'] = f'Поиск - {search}'
         return context
+
+
+class CreatePost(LoginRequiredMixin, CreateView):
+    form_class = CreatePostForm
+    template_name = 'blog/create_post.html'
+    login_url = '/login/'
+    success_url = reverse_lazy('create_post')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        last_id = Post.objects.order_by('id').last().id
+        slug = slugify(self.object.title, language_code='ru')
+        self.object.slug = f'{slug}-{str(last_id + 1)}'
+        self.object.save()
+        messages.success(self.request, 'Пост добавлен, он будет опубликован после модерации. Спасибо')
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreatePost, self).get_context_data(**kwargs)
+        context['title'] = 'Создание поста'
+        return context
+
 
 
 

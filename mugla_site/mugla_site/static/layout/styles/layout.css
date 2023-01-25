@@ -651,3 +651,6 @@ border: 1px solid #FFA41F;
 padding: 5px;
 margin: 10px 0;
 }
+#custom-form .form-check-input {
+width: auto;
+}
