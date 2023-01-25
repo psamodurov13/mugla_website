@@ -642,3 +642,12 @@ margin: 0;
 .comment-content {
 padding: 10px;
 }
+
+/* Create company styles */
+
+#preview_img {
+max-width: 200px;
+border: 1px solid #FFA41F;
+padding: 5px;
+margin: 10px 0;
+}

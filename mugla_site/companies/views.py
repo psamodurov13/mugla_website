@@ -1,15 +1,17 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, CreateView
 
 from cities.models import City
 from comments.forms import PostCommentForm, CompanyCommentForm
 from comments.models import CompanyComments
 from .models import Type, CompanyTags, Company, CompanyGallery
 from django.db.models import F, Q
+from .forms import *
 from image_cropping.utils import get_backend
 
 
@@ -98,6 +100,22 @@ class CompanyPage(FormMixin, DetailView):
         context['gallery'] = CompanyGallery.objects.filter(company=self.object.id)
         context['comments'] = CompanyComments.objects.filter(Q(company__slug=self.kwargs['slug']) & Q(active=True))
         return context
+
+
+class CreateCompany(LoginRequiredMixin, CreateView):
+    form_class = CreateCompanyForm
+    template_name = 'companies/create_company.html'
+    login_url = '/login/'
+    success_url = 'create_company'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        print(self.object)
+        return super().form_valid(form)
+
+
 
 
 

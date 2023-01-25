@@ -7,7 +7,7 @@ class PostCommentForm(forms.ModelForm):
 
     class Meta:
         model = PostComments
-        fields = ('content', 'captcha')
+        fields = ('content',)
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control'})
         }
@@ -17,7 +17,7 @@ class CompanyCommentForm(forms.ModelForm):
 
     class Meta:
         model = CompanyComments
-        fields = ('content', 'captcha')
+        fields = ('content',)
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control'})
         }
