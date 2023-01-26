@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'fancybox',
     'mptt',
+    'captcha'
 ]
 
 MIDDLEWARE = [
@@ -266,3 +267,6 @@ RECAPTCHA_PUBLIC_KEY = RECAPTCHA_PUB_KEY
 RECAPTCHA_PRIVATE_KEY = RECAPTCHA_PR_KEY
 RECAPTCHA_DEFAULT_ACTION = 'generic'
 RECAPTCHA_SCORE_THRESHOLD = 0.5
+
+# RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'

@@ -1,6 +1,8 @@
 from django import forms
 from image_cropping import ImageCropWidget, ImageCroppingMixin
 from phonenumber_field.formfields import PhoneNumberField
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 from .models import *
 
@@ -9,12 +11,13 @@ class CreateCompanyForm(ImageCroppingMixin, forms.ModelForm):
     phone = PhoneNumberField()
     whatsapp = PhoneNumberField()
     file_field = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     class Meta:
         model = Company
 
         fields = ['title', 'photo', 'content', 'description', 'type', 'tags', 'cities', 'site', 'phone', 'whatsapp', 'telegram',
-                  'note', 'russian_speak', 'english_speak', 'file_field']
+                  'note', 'russian_speak', 'english_speak', 'file_field', 'captcha']
         widgets = {
             'title': forms.TextInput(),
             'photo': forms.FileInput(),

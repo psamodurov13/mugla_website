@@ -1,12 +1,15 @@
 from django import forms
 from .models import *
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
 
 
 class CreatePostForm(forms.ModelForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     class Meta:
         model = Post
-        fields = ['title', 'photo', 'content', 'description', 'category', 'tags', 'cities']
+        fields = ['title', 'photo', 'content', 'description', 'category', 'tags', 'cities', 'captcha']
         widgets = {
             'title': forms.TextInput(),
             'photo': forms.FileInput(),
