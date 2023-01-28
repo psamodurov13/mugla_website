@@ -5,7 +5,7 @@ from .models import *
 
 
 class PostCommentForm(forms.ModelForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     class Meta:
         model = PostComments
@@ -16,7 +16,7 @@ class PostCommentForm(forms.ModelForm):
 
 
 class CompanyCommentForm(forms.ModelForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     class Meta:
         model = CompanyComments

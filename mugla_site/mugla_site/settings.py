@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'image_cropping',
     'fancybox',
     'mptt',
-    'captcha'
+    'captcha',
+    'crispy_forms',
+    'jsonview'
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
+
+                # 'companies.context_processors.create_company_form'
             ],
             'libraries': {
                 'menu_tag': 'templatetags.menu',

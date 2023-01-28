@@ -103,9 +103,11 @@
 <!-- Подключение jQuery плагина Masked Input -->
 <script src="{% static 'mask-input/jquery.maskedinput.min.js' %}"></script>
 
-
-
 {% include "fancybox/fancybox_js.html" %}
+
+{% block customjs %}
+{% endblock %}
+
 
 </body>
 </html>

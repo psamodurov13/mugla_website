@@ -5,7 +5,7 @@ from captcha.widgets import ReCaptchaV3
 
 
 class CreatePostForm(forms.ModelForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    captcha = ReCaptchaField(widget=ReCaptchaV3, label='')
 
     class Meta:
         model = Post
