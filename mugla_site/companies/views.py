@@ -131,28 +131,6 @@ class CreateCompany(LoginRequiredMixin, CreateView):
         messages.success(self.request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
         return super().form_valid(form)
 
-    # def form_invalid(self, form):
-    #     """If the form is invalid, render the invalid form."""
-    #     messages.error(self.request, 'В форме допущена ошибка. Исправьте, пожалуйста, поле с ошибкой')
-    #     ctx = {}
-    #     ctx.update(csrf(self.request))
-    #     form_html = render_crispy_form(form, context=ctx)
-    #     return {'success': False, 'form_html': form_html}
-
-        # return self.render_to_response(self.get_context_data(form=form))
-
-
-    # def form_invalid(self, form):
-    #     """If the form is invalid, render the invalid form."""
-    #     form = CreateCompanyForm(self.request.POST or None)
-    #     if form.is_valid():
-    #         form.save()
-    #         return {'success': True}
-    #
-    #     ctx = {}
-    #     ctx.update(csrf(self.request))
-    #     form_html = render_crispy_form(form, context=ctx)
-    #     return JsonResponse({'success': False, 'form_html': form_html})
 
     def get_context_data(self, **kwargs):
         context = super(CreateCompany, self).get_context_data(**kwargs)
@@ -162,46 +140,6 @@ class CreateCompany(LoginRequiredMixin, CreateView):
 
 @json_view
 def create_company_ajax(request):
-    # # print(request)
-    # form = CreateCompanyForm(request.POST or None)
-    # # gallery_form = GalleryForm(request.POST, request.FILES or None)
-    # if form.is_valid():
-    #     print(f'DATA no clean - {form} - {form.__dict__}')
-    #     # print(f'FILES - {form.fields["photo"]}')
-    #     # print(f'FILES - {form.data.photo}')
-    #     # print(f'GALLERY - {gallery_form.files}')
-    #
-    #     # print(f'FILES - {form.fields["gallery_images"]}')
-    #     form_data = form.cleaned_data
-    #     print(f'DATA - {form_data}')
-    #     tags_data = form_data['tags']
-    #     form_data.pop('tags')
-    #     form_data['author'] = request.user
-    #     # form_data['photo'] = form.fields["photo"]
-    #     cities_data = form_data['cities']
-    #     form_data.pop('cities')
-    #     form_data.pop('gallery_images')
-    #     form_data.pop('captcha')
-    #     author = request.user
-    #     print(f'AUTHOR - {author} - {request.user}')
-    #     last_id = Company.objects.order_by('id').last().id
-    #     slug = slugify(form_data['title'], language_code='ru') + str(last_id + 1)
-    #     form_data['slug'] = slug
-    #     new_company = Company.objects.create(**form_data)
-    #     print(f'NEW COMPANY - {new_company}\n{new_company.__dict__}')
-    #     new_company.tags.set(tags_data)
-    #     new_company.tags.set(cities_data)
-    #     print(f'DATA - {new_company}')
-    #     new_company.save()
-    #     messages.success(request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
-    #     return {'success': True}
-    #     # return redirect('home')
-    #
-    # ctx = {}
-    # ctx.update(csrf(request))
-    # form_html = render_crispy_form(form, context=ctx)
-    # messages.error(request, 'хз')
-    # return {'success': False, 'form_html': form_html}
 
     if request.method == 'POST':
         form = CreateCompanyForm(request.POST, request.FILES)

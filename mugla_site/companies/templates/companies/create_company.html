@@ -18,16 +18,10 @@
             <form id="create_company_ajax" enctype='multipart/form-data' novalidate method="post" >
                 {% csrf_token %}
 
-
             <div id="crispy_form">
                 {{ form|crispy }}
 
-
             </div>
-
-
-
-
 
             <input type="submit" class="btn btn-outline-info" value="Добавить компанию">
 
@@ -79,57 +73,4 @@
     });
     // end
    </script>
-
-
-
-
-{% comment %}
- <script>
-    id_photo.onchange = evt => {
-      const [file] = id_photo.files
-      if (file) {
-        preview_img.src = URL.createObjectURL(file)
-      }
-    }
-</script>
-
-<script type="text/javascript">
-    $(document).on('submit', "#create_company_ajax", function (event){
-      event.preventDefault();
-      var create_form_id = $("#create_company_ajax");
-      var photo_data = $('#id_photo').get(0).files
-      var images_data = $('#id_gallery_images').get(0).files
-
-
-      $.ajax({
-          url: '{% url "create_company_ajax" %}',
-          data: create_form_id.serialize(),
-          type: "POST",
-          enctype: "multipart/form-data",
-          dataType: "json",
-          header: {'X-CSRFToken': '{{ csrf_token }}'},
-          success: function (response) {
-              var success = response['success'];
-
-
-              if (success) {
-                  alert("Form valid")
-                  console.log(create_form_id)
-                  console.log(photo_data)
-                  console.log(images_data);
-              }
-              else {
-                    console.log(response)
-                  console.log("Response with error ", response['form_html']);
-                  $("#crispy_form").replaceWith(response['form_html']);
-              }
-          },
-          failure: function (error) {
-              console.log("Error django url ");
-              alert('Error django url')
-          }
-      });
-    });
-</script>
-{% endcomment %}
 {% endblock %}
