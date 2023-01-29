@@ -3,6 +3,8 @@
 {% load tags_list_tag %}
 {% load cropping %}
 {% load thumbnail %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 
 {% block title %}{{ block.super }}{% endblock %}
@@ -15,60 +17,24 @@
     <div class="content col-sm-12 col-md-9">
 
         <div id="custom-form">
-            <form action="{% url 'create_post' %}" enctype='multipart/form-data' method="post">
+            <form id="create_post_ajax" enctype='multipart/form-data' method="post">
             {% csrf_token %}
             {{ form.non_field.errors }}
-            <div class="mb-3">
-                <label for="{{ form.title.id_for_label }}" class="form-label">Название</label>
-                {{ form.title }}
-                {{ form.title.errors}}
-            </div>
-            <div class="mb-3">
-                <label for="{{ form.photo.id_for_label }}" class="form-label">Фото</label>
-                {{ form.photo }}
-                {{ form.photo.errors}}
+                <div id="crispy_form">
+
+                {{ form.title|as_crispy_field }}
+                {{ form.photo|as_crispy_field }}
                 <img id="preview_img" src="/media/default.jpg" alt="default image" />
-                <img id="display-img"/>
-                <script>
-                    id_photo.onchange = evt => {
-                      const [file] = id_photo.files
-                      if (file) {
-                        preview_img.src = URL.createObjectURL(file)
-                      }
-                    }
-                </script>
-            </div>
 
-            <div class="mb-3">
-                <label for="{{ form.content.id_for_label }}" class="form-label">Описание</label>
-                {{ form.content }}
-                {{ form.content.errors}}
-            </div>
-            <div class="mb-3">
-                <label for="{{ form.description.id_for_label }}" class="form-label">Краткое описание</label>
-                {{ form.description }}
-                {{ form.description.errors}}
-            </div>
-            <div class="mb-3">
-                <label for="{{ form.category.id_for_label }}" class="form-label">Категория</label>
-                {{ form.category }}
-                {{ form.category.errors}}
-            </div>
-            <div class="mb-3">
-                <label for="{{ form.tags.id_for_label }}" class="form-label">Теги</label>
-                {{ form.tags }}
-                {{ form.tags.errors}}
-            </div>
-            <div class="mb-3">
-                <label for="{{ form.cities.id_for_label }}" class="form-label">Город</label>
-                {{ form.cities }}
-                {{ form.cities.errors}}
-            </div>
-            {{ form.captcha }}
-            {{ form.captcha.errors}}
+                {{ form.content|as_crispy_field }}
+                {{ form.description|as_crispy_field }}
+                {{ form.category|as_crispy_field }}
+                {{ form.tags|as_crispy_field }}
+                {{ form.cities|as_crispy_field }}
+            {{ form.captcha|as_crispy_field }}
+                </div>
 
-
-            <button type="submit" class="btn btn-outline-info">Добавить пост</button>
+            <input type="submit" class="btn btn-outline-info" value="Добавить пост">
             </form>
         </div>
 
@@ -83,4 +49,47 @@
     {% endblock %}
 
 
+{% block customjs %}
+ <script>
+     id_photo.onchange = evt => {
+       const [file] = id_photo.files
+       if (file) {
+         preview_img.src = URL.createObjectURL(file)
+       }
+     }
+ </script>
 
+   <script type="text/javascript">
+    // form upload
+    $('#create_post_ajax').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            url: '{% url "create_post_ajax" %}',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    alert(response.message)
+                    grecaptcha.reset();
+                    $.each(response.errors, function(name, error){
+                        error = '<small class="text-muted error">' + error + '</small>'
+                        $form.find('[name=' + name + ']').after(error);
+                    })
+                }
+                else{
+                    alert(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
+{% endblock %}

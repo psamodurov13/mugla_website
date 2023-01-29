@@ -22,6 +22,7 @@
                     {{ company.site }}</a></p>
                 <p class="text-secondary"><span class="param-name">Город</span>:
                     <a href="{{ company.city.get_absolute_url }}">{{ company.city }}</a></p>
+                <p class="text-secondary"><span class="param-name">Phone</span>: <a target="_blank" href="tel:{{ company.phone|stringformat:'s'|slice:'1:'}}">{{ company.phone }}</a></p>
                 <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ company.whatsapp|stringformat:'s'|slice:'1:'}}">{{ company.whatsapp }}</a></p>
                 <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ company.telegram }}">{{ company.telegram }}</a></p>
             </div>

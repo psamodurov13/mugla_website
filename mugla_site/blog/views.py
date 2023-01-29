@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin, CreateView
@@ -13,6 +13,7 @@ from .forms import CreatePostForm
 from .models import Post, Category, Tags
 from django.db.models import F, Q
 from transliterate import slugify
+from jsonview.decorators import json_view
 from image_cropping.utils import get_backend
 
 
@@ -152,6 +153,42 @@ class CreatePost(LoginRequiredMixin, CreateView):
         context = super(CreatePost, self).get_context_data(**kwargs)
         context['title'] = 'Создание поста'
         return context
+
+
+
+@json_view
+def create_post_ajax(request):
+
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST, request.FILES)
+        if form.is_valid():
+            print(form.__dict__)
+            print(form.cleaned_data)
+            form_data = form.cleaned_data
+            tags_data = form_data['tags']
+            form_data.pop('tags')
+            form_data['author'] = request.user
+            cities_data = form_data['cities']
+            form_data.pop('cities')
+            form_data.pop('captcha')
+            last_id = Post.objects.order_by('id').last().id
+            slug = slugify(form_data['title'], language_code='ru') + str(last_id + 1)
+            form_data['slug'] = slug
+            new_post = Post.objects.create(**form_data)
+            print(f'NEW {new_post} - {new_post.__dict__}')
+            new_post.tags.set(tags_data)
+            new_post.cities.set(cities_data)
+            print(f'DATA - {new_post}')
+            new_post.save()
+            messages.success(request, 'Пост добавлен')
+            return JsonResponse({'error': False, 'message': 'Пост добавлен'})
+        else:
+            messages.error(request, 'Есть ошибки')
+            return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
+    else:
+        form = CreatePostForm()
+        return render(request, 'django_image_upload_ajax.html', {'form': form})
+
 
 
 
