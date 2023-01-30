@@ -93,10 +93,12 @@ class CompanyPage(FormMixin, DetailView):
         self.object = form.save(commit=False)
         self.object.company = self.get_object()
         self.object.author = self.request.user
-
         self.object.save()
         messages.success(self.request, f'Ваш комментарий отправлен, он будет опубликован после модерации')
-        return super().form_valid(form)
+        return JsonResponse({'error': False, 'message': 'Комментарий добавлен'})
+
+    def form_invalid(self, form):
+        return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,34 +110,34 @@ class CompanyPage(FormMixin, DetailView):
         return context
 
 
-class CreateCompany(LoginRequiredMixin, CreateView):
-    form_class = CreateCompanyForm
-    template_name = 'companies/create_company.html'
-    login_url = '/login/'
-    success_url = reverse_lazy('create_company')
-
-    def form_valid(self, form):
-        print(f'Form - {form}\n{form.__dict__}')
-        self.object = form.save(commit=False)
-        self.object.author = self.request.user
-        last_id = Company.objects.order_by('id').last().id
-        slug = slugify(self.object.title, language_code='ru')
-        self.object.slug = f'{slug}-{str(last_id + 1)}'
-        self.object.save()
-        for i in form.files.getlist('gallery_images'):
-            item = CompanyGallery()
-            item.image = i
-            item.company = self.object
-            item.save()
-        print(f'NEW COMPANY - {self.object}\n{self.object.__dict__}')
-        messages.success(self.request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
-        return super().form_valid(form)
-
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateCompany, self).get_context_data(**kwargs)
-        context['title'] = 'Создание организации'
-        return context
+# class CreateCompany(LoginRequiredMixin, CreateView):
+#     form_class = CreateCompanyForm
+#     template_name = 'companies/create_company.html'
+#     login_url = '/login/'
+#     success_url = reverse_lazy('create_company')
+#
+#     def form_valid(self, form):
+#         print(f'Form - {form}\n{form.__dict__}')
+#         self.object = form.save(commit=False)
+#         self.object.author = self.request.user
+#         last_id = Company.objects.order_by('id').last().id
+#         slug = slugify(self.object.title, language_code='ru')
+#         self.object.slug = f'{slug}-{str(last_id + 1)}'
+#         self.object.save()
+#         for i in form.files.getlist('gallery_images'):
+#             item = CompanyGallery()
+#             item.image = i
+#             item.company = self.object
+#             item.save()
+#         print(f'NEW COMPANY - {self.object}\n{self.object.__dict__}')
+#         messages.success(self.request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
+#         return super().form_valid(form)
+#
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CreateCompany, self).get_context_data(**kwargs)
+#         context['title'] = 'Создание организации'
+#         return context
 
 
 @json_view
@@ -174,11 +176,12 @@ def create_company_ajax(request):
             messages.success(request, 'Организация добавлена')
             return JsonResponse({'error': False, 'message': 'Компания добавлена'})
         else:
-            messages.error(request, 'Есть ошибки')
+            # messages.error(request, 'Есть ошибки')
             return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
     else:
         form = CreateCompanyForm()
-        return render(request, 'django_image_upload_ajax.html', {'form': form})
+        title = 'Добавить компанию'
+        return render(request, 'companies/create_company.html', {'form': form, 'title': title})
 
 
 

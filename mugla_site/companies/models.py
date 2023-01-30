@@ -38,7 +38,7 @@ class CompanyTags(BaseModel):
 
 
 class Company(BaseModel, models.Model):
-    title = models.CharField(max_length=255, verbose_name='Пост')
+    title = models.CharField(max_length=255, verbose_name='Компания')
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='companies', verbose_name='Автор')
     content = models.TextField(verbose_name='Контент')
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')

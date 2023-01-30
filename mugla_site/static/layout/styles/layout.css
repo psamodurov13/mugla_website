@@ -654,3 +654,75 @@ margin: 10px 0;
 #custom-form .form-check-input {
 width: auto;
 }
+#custom-form small.error {
+color: red!important;
+}
+
+/* Sidebar styles */
+
+.head-cat-wrap {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+.head-cat-wrap a {
+    width: 100%;
+    padding: 15px 0;
+}
+.head-cat-wrap button.accordion-button {
+    width: 55px;
+}
+.sidebar .accordion-collapse .btn {
+    color: #FFA41F;
+    background: none;
+    display: block;
+    border: none;
+    border-radius: 0;
+    text-align: left;
+}
+.accordion-button:not(.collapsed) {
+    color: #212529;
+    background-color: white;
+    box-shadow: none;
+}
+.sidebar .accordion-collapse .btn:hover {
+    color: #fff;
+    background: #FFA41F;
+}
+.accordion-button:focus {
+    border: none;
+    outline: 0;
+    box-shadow: none;
+}
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon);
+}
+.accordion-body {
+    padding: 5px 20px;
+}
+
+.accordion-item {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 1.4rem;
+    line-height: normal;
+    font-weight: normal;
+    text-transform: capitalize;
+}
+.accordion-item .accordion-item .head-cat-wrap {
+padding-left: 0px;
+}
+.accordion-item .accordion-item .head-cat-wrap a {
+    padding: 8px 15px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+.accordion-item .accordion-item .head-cat-wrap a:hover {
+    color: #fff;
+    background-color: #FFA41F;
+}
+.accordion-item .accordion-item {
+    border: none;
+}
+.accordion-collapse {
+padding: 5px 30px;
+}

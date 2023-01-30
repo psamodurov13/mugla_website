@@ -54,9 +54,11 @@
       <h6>Добавить комментарий</h6>
       {% if request.user.is_authenticated %}
       <div id="custom-form">
-      <form action="" method="post">
+      <form action="" id="add_comment_post" method="post">
         {% csrf_token %}
+        <div id="crispy_form">
         {{ form.as_p }}
+        </div>
         <button type="submit" class="custom-btn" name="send-comment-button">Отправить</button>
       </form>
       </div>
@@ -73,4 +75,41 @@
 
 {% block sidebar %}
 {% include 'inc/_sidebar_blog_post.html' %}
+{% endblock %}
+
+
+{% block customjs %}
+
+   <script type="text/javascript">
+    // form upload
+    $('#add_comment_post').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    alert(response.message)
+                    grecaptcha.reset();
+                    $.each(response.errors, function(name, error){
+                        error = '<small class="text-muted error">' + error + '</small>'
+                        $form.find('[name=' + name + ']').after(error);
+                    })
+                }
+                else{
+                    alert(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
 {% endblock %}

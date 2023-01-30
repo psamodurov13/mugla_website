@@ -1,6 +1,30 @@
 {% extends 'inc/_sidebar.html' %}
 {% load sidebar_tags %}
+{% load mptt_tags %}
 
 {% block sidebar_content %}
 {% show_tag_list %}
+
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    {% recursetree categories %}
+        <div class="accordion-item">
+            {% if node.is_leaf_node %}
+                      <div class="head-cat-wrap">
+                          <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>
+                      </div>
+            {% elif not node.is_leaf_node %}
+                      <div class="head-cat-wrap accordion-header" id="panelsStayOpen-heading{{ node.slug }}">
+                          <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ node.slug }}" aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ node.slug }}">
+                          </button>
+                      </div>
+                    <div id="panelsStayOpen-collapse{{ node.slug }}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading{{ node.slug }}">
+                          {{ children }}
+                    </div>
+            {% endif %}
+        </div>
+    {% endrecursetree %}
+</div>
+
 {% endblock %}

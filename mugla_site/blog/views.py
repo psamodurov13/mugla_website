@@ -9,8 +9,9 @@ from django.views.generic.edit import FormMixin, CreateView
 from cities.models import City
 from comments.forms import PostCommentForm
 from comments.models import PostComments
+from mugla_site.utils import get_subcategories
 from .forms import CreatePostForm
-from .models import Post, Category, Tags
+from .models import Post, Category, Tags, show_categories
 from django.db.models import F, Q
 from transliterate import slugify
 from jsonview.decorators import json_view
@@ -53,6 +54,10 @@ class CategoryPost(Blog):
         context = super().get_context_data(**kwargs)
         context['instance'] = Category.objects.get(slug=self.kwargs['slug'])
         context['title'] = context['instance'].title
+        all_categories = show_categories()
+        current = Category.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
+        print(current[0])
+        context['categories'] = get_subcategories(all_categories, current[0].title)
         return context
 
     def get_queryset(self):
@@ -106,7 +111,10 @@ class PostPage(FormMixin, DetailView):
         self.object.author = self.request.user
         self.object.save()
         messages.success(self.request, f'Ваш комментарий отправлен, он будет опубликован после модерации')
-        return super().form_valid(form)
+        return JsonResponse({'error': False, 'message': 'Комментарий добавлен'})
+
+    def form_invalid(self, form):
+        return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -133,26 +141,26 @@ class Search(ListView):
         return context
 
 
-class CreatePost(LoginRequiredMixin, CreateView):
-    form_class = CreatePostForm
-    template_name = 'blog/create_post.html'
-    login_url = '/login/'
-    success_url = reverse_lazy('create_post')
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.author = self.request.user
-        last_id = Post.objects.order_by('id').last().id
-        slug = slugify(self.object.title, language_code='ru')
-        self.object.slug = f'{slug}-{str(last_id + 1)}'
-        self.object.save()
-        messages.success(self.request, 'Пост добавлен, он будет опубликован после модерации. Спасибо')
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(CreatePost, self).get_context_data(**kwargs)
-        context['title'] = 'Создание поста'
-        return context
+# class CreatePost(LoginRequiredMixin, CreateView):
+#     form_class = CreatePostForm
+#     template_name = 'blog/create_post.html'
+#     login_url = '/login/'
+#     success_url = reverse_lazy('create_post')
+#
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.author = self.request.user
+#         last_id = Post.objects.order_by('id').last().id
+#         slug = slugify(self.object.title, language_code='ru')
+#         self.object.slug = f'{slug}-{str(last_id + 1)}'
+#         self.object.save()
+#         messages.success(self.request, 'Пост добавлен, он будет опубликован после модерации. Спасибо')
+#         return super().form_valid(form)
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CreatePost, self).get_context_data(**kwargs)
+#         context['title'] = 'Создание поста'
+#         return context
 
 
 
@@ -183,11 +191,12 @@ def create_post_ajax(request):
             messages.success(request, 'Пост добавлен')
             return JsonResponse({'error': False, 'message': 'Пост добавлен'})
         else:
-            messages.error(request, 'Есть ошибки')
+            # messages.error(request, 'Есть ошибки')
             return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
     else:
         form = CreatePostForm()
-        return render(request, 'django_image_upload_ajax.html', {'form': form})
+        title = 'Добавить пост'
+        return render(request, 'blog/create_post.html', {'form': form, 'title': title})
 
 
 
