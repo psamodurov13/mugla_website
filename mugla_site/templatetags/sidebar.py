@@ -14,3 +14,8 @@ def show_tag_list():
 def get_popular(cnt=3):
     posts = Post.objects.order_by('-views')[:cnt]
     return {'posts': posts}
+
+
+@register.inclusion_tag('sidebar_menu_tpl.html')
+def get_categories_menu(categories):
+    return {'categories': categories}

@@ -11,6 +11,7 @@ from django.views.generic.edit import FormMixin, CreateView
 from cities.models import City
 from comments.forms import PostCommentForm, CompanyCommentForm
 from comments.models import CompanyComments
+from mugla_site.utils import get_subcategories
 from .models import Type, CompanyTags, Company, CompanyGallery
 from django.db.models import F, Q
 from .forms import *
@@ -30,6 +31,7 @@ class CompaniesList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Компании'
+        context['categories'] = Type.objects.all()
         return context
 
     def get_queryset(self):
@@ -41,6 +43,10 @@ class TypeCompany(CompaniesList):
         context = super().get_context_data(**kwargs)
         context['instance'] = Type.objects.get(slug=self.kwargs['slug'])
         context['title'] = context['instance'].title
+        # all_categories = show_company_types()
+        # current = Type.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
+        # print(current)
+        context['categories'] = Type.objects.all()
         return context
 
     def get_queryset(self):
