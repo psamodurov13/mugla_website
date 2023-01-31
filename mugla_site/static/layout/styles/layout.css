@@ -366,16 +366,18 @@ input:focus, textarea:focus, *:required:focus{border-color:#FFA41F;}
 
 /* Tables + Comments */
 table, th, td, #comments .avatar, #comments input, #comments textarea, #custom-form input, #custom-form textarea,
-#custom-form button{border-color:#D7D7D7;}
+#custom-form button, .custom-form input, .custom-form textarea, .custom-form button{border-color:#D7D7D7;}
 #comments input:focus, #comments textarea:focus, #comments *:required:focus,
 #custom-form input:focus, #custom-form textarea:focus, #custom-form *:required:focus,
-#custom-form button:focus{border-color:#FFA41F;}
+#custom-form button:focus, .custom-form input:focus, .custom-form textarea:focus, .custom-form *:required:focus,
+.custom-form button:focus{border-color:#FFA41F;}
 th{color:#FFFFFF; background-color:#373737;}
 tr, #comments li, #comments input[type="submit"], #comments input[type="reset"],
 #custom-form li, #custom-form input[type="submit"], #custom-form input[type="reset"],
-#custom-form button{color:inherit; background-color:#FBFBFB;}
+#custom-form button, .custom-form li, .custom-form input[type="submit"], .custom-form input[type="reset"],
+.custom-form button {color:inherit; background-color:#FBFBFB;}
 tr:nth-child(even), #comments li:nth-child(even), #custom-form li:nth-child(even){color:inherit; background-color:#F7F7F7;}
-table a, #comments a, #custom-form a{background-color:inherit;}
+table a, #comments a, #custom-form a, .custom-form a {background-color:inherit;}
 
 
 /* ------------------------------------------------------------------------------------------------------------ */
@@ -497,14 +499,14 @@ background-color: #f8d7da;
 color: #b02a37;
 border: 1px solid #f1aeb5;
 }
-#custom-form .errorlist {
+#custom-form .errorlist, .custom-form .errorlist {
 margin-bottom: 10px;
 }
-#custom-form .errorlist li {
+#custom-form .errorlist li, .custom-form .errorlist li {
 background-color: #f8d7da;
 margin: 0;
 }
-#custom-form select {
+#custom-form select, .custom-form select {
 --bs-form-select-bg-img: url("/static/images/arrow-down.svg");
 display: block;
 width: 100%;
@@ -651,10 +653,10 @@ border: 1px solid #FFA41F;
 padding: 5px;
 margin: 10px 0;
 }
-#custom-form .form-check-input {
+#custom-form .form-check-input, .custom-form .form-check-input {
 width: auto;
 }
-#custom-form small.error {
+#custom-form small.error, .custom-form small.error {
 color: red!important;
 }
 

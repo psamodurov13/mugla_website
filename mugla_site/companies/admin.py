@@ -37,18 +37,19 @@ class CompanyAdmin(ImageCroppingMixin, BaseAdmin):
     inlines = [GalleryInline, ]
 
 
+class ChangeCompanyAdmin(admin.ModelAdmin):
+    readonly_fields = ('company', 'title', 'author', 'content', 'description', 'created_at', 'type', 'tags', 'cities',
+                       'site', 'phone', 'whatsapp', 'telegram', 'note', 'russian_speak', 'english_speak')
+    list_display = ('company', 'author', 'processed')
+
+
 class TypeAdmin(ImageCroppingMixin, BaseAdmin, DraggableMPTTAdmin):
     pass
-    # list_display = ('id', 'title', 'parent')
-    #
-    # def get_form(self, request, obj=None, **kwargs):
-    #     form = super(TypeAdmin, self).get_form(request, obj, **kwargs)
-    #     form.base_fields['parent'].queryset = Type.objects.exclude(title=obj)
-    #     return form
 
 
 admin.site.register(CompanyTags, BaseAdmin)
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(ChangeCompany, ChangeCompanyAdmin)
 admin.site.register(
     Type,
     TypeAdmin,

@@ -49,10 +49,10 @@ class CreateCompanyForm(ImageCroppingMixin, forms.ModelForm):
         self.fields['type'].empty_label = 'Выберите тип организации'
 
 
-class GalleryForm(forms.ModelForm):
-    gallery_images = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
-    photo = forms.ImageField(widget=forms.FileInput())
+class AddCompanyPhoto(forms.ModelForm):
+    gallery_images = forms.FileField(required=True, widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
     class Meta:
         model = CompanyGallery
         fields = ['gallery_images']
+

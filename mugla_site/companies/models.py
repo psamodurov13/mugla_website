@@ -68,6 +68,27 @@ class Company(BaseModel, models.Model):
 
 class CompanyGallery(CustomGallery):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='images')
+    is_published = models.BooleanField(default=True, verbose_name='Опубликован')
+
+
+class ChangeCompany(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='changes', verbose_name='Компания')
+    title = models.CharField(max_length=255, verbose_name='Компания')
+    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='changes', verbose_name='Автор')
+    content = models.TextField(verbose_name='Контент')
+    description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
+    type = TreeForeignKey(Type, on_delete=models.PROTECT, related_name='changes', verbose_name='Тип организации')
+    tags = models.ManyToManyField(CompanyTags, verbose_name='Теги', blank=True, related_name='changes')
+    cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='changes')
+    site = models.URLField(blank=True, verbose_name='Сайт')
+    phone = PhoneNumberField(null=True, blank=True, verbose_name='Телефон')
+    whatsapp = PhoneNumberField(null=True, blank=True, verbose_name='WhatsApp')
+    telegram = models.CharField(max_length=255, blank=True, verbose_name='Telegram')
+    note = models.CharField(max_length=255, blank=True, verbose_name='Полезная заметка')
+    russian_speak = models.BooleanField(default=False, verbose_name='Есть русскоговорящий персонал')
+    english_speak = models.BooleanField(default=False, verbose_name='Есть англоговорящий персонал')
+    processed = models.BooleanField(default=False, verbose_name='Обработано')
 
 
 def show_company_types():

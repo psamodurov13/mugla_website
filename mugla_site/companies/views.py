@@ -111,44 +111,14 @@ class CompanyPage(FormMixin, DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
-        context['gallery'] = CompanyGallery.objects.filter(company=self.object.id)
+        context['gallery'] = CompanyGallery.objects.filter(Q(company=self.object.id) & Q(is_published=True))
         context['comments'] = CompanyComments.objects.filter(Q(company__slug=self.kwargs['slug']) & Q(active=True))
+        context['add_photo_form'] = AddCompanyPhoto()
         return context
-
-
-# class CreateCompany(LoginRequiredMixin, CreateView):
-#     form_class = CreateCompanyForm
-#     template_name = 'companies/create_company.html'
-#     login_url = '/login/'
-#     success_url = reverse_lazy('create_company')
-#
-#     def form_valid(self, form):
-#         print(f'Form - {form}\n{form.__dict__}')
-#         self.object = form.save(commit=False)
-#         self.object.author = self.request.user
-#         last_id = Company.objects.order_by('id').last().id
-#         slug = slugify(self.object.title, language_code='ru')
-#         self.object.slug = f'{slug}-{str(last_id + 1)}'
-#         self.object.save()
-#         for i in form.files.getlist('gallery_images'):
-#             item = CompanyGallery()
-#             item.image = i
-#             item.company = self.object
-#             item.save()
-#         print(f'NEW COMPANY - {self.object}\n{self.object.__dict__}')
-#         messages.success(self.request, 'Организация добавлена, она будет опубликована после модерации. Спасибо')
-#         return super().form_valid(form)
-#
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(CreateCompany, self).get_context_data(**kwargs)
-#         context['title'] = 'Создание организации'
-#         return context
 
 
 @json_view
 def create_company_ajax(request):
-
     if request.method == 'POST':
         form = CreateCompanyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -188,6 +158,35 @@ def create_company_ajax(request):
         form = CreateCompanyForm()
         title = 'Добавить компанию'
         return render(request, 'companies/create_company.html', {'form': form, 'title': title})
+
+
+@json_view
+def add_photo_ajax(request):
+    if request.method == 'POST':
+        form = AddCompanyPhoto(request.POST, request.FILES)
+        if form.is_valid():
+            print('FORM', form.__dict__)
+            print('FORM CLEAN', form.cleaned_data)
+            print('REQUEST', dir(request))
+            print('REQUEST', request.META['HTTP_REFERER'])
+            print('INSTANCE', form.instance.__dict__)
+            form_data = form.cleaned_data
+
+            gallery = form.files.getlist('gallery_images')
+            form_data.pop('gallery_images')
+            for image in gallery:
+                print(image)
+                item = CompanyGallery()
+                item.image = image
+                item.company = Company.objects.get(slug=request.META['HTTP_REFERER'].split('/')[-1])
+                item.is_published = False
+                item.save()
+
+            messages.success(request, 'Фото добавлены')
+            return JsonResponse({'error': False, 'message': 'Фото добавлены'})
+        else:
+            # messages.error(request, 'Есть ошибки')
+            return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
 
 
 

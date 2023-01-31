@@ -3,6 +3,8 @@
 {% load static %}
 {% load tags_list_tag %}
 {% load cropping %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block title %}{{ company.title }} {{ block.super }}{% endblock %}
 
@@ -37,6 +39,11 @@
             <li class="one_third"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></li>
             {% endfor %}
         </ul>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhotos">
+          Добавить фото
+        </button>
+
       <div class="after-content">
         <div class="author-info">
           <img src="{{ company.author.profile.image.url }}">
@@ -105,6 +112,39 @@
 
 {% block customjs %}
 
+<!-- Modal -->
+<div class="modal fade" id="addPhotos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body">
+
+          <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Загрузить фото</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="custom-form">
+            <form id="add_photo_ajax" enctype='multipart/form-data' novalidate method="post" >
+                {% csrf_token %}
+
+            <div id="add_photo_form" class="p-3">
+                {{ add_photo_form|crispy }}
+            </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-outline-info" value="Добавить фото">
+                </div>
+            </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
    <script type="text/javascript">
     // form upload
     $('#add_comment_company').submit(function(e){
@@ -112,6 +152,43 @@
         $form = $(this)
         var formData = new FormData(this);
         $.ajax({
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    alert(response.message)
+                    grecaptcha.reset();
+                    $.each(response.errors, function(name, error){
+                        error = '<small class="text-muted error">' + error + '</small>'
+                        $form.find('[name=' + name + ']').after(error);
+                    })
+                }
+                else{
+                    alert(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
+
+
+
+
+<script type="text/javascript">
+    // form upload
+    $('#add_photo_ajax').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            url: '{% url "add_photo_ajax" %}',
             type: 'POST',
             data: formData,
             success: function (response) {

@@ -21,7 +21,7 @@ class CustomStr():
 
 class BaseModel(CustomStr, models.Model):
     slug = models.SlugField(max_length=255, verbose_name='URL', unique=True)
-    photo = models.ImageField(upload_to='photo/%Y/%m/%d/', blank=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to='photo/%Y/%m/%d/', default='default_post.jpeg', blank=True, verbose_name='Фото')
     cropping = ImageRatioField('photo', '1950x687', size_warning=True, verbose_name='Обрезанное фото для фона')
 
     class Meta:
