@@ -56,3 +56,24 @@ class AddCompanyPhoto(forms.ModelForm):
         model = CompanyGallery
         fields = ['gallery_images']
 
+
+class ChangeCompanyForm(forms.ModelForm):
+
+    class Meta:
+        model = ChangeCompany
+        fields = ['title', 'content', 'description', 'type', 'tags', 'cities', 'site', 'phone', 'whatsapp',
+                  'telegram', 'note', 'russian_speak', 'english_speak']
+
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 5}),
+            'description': forms.Textarea(attrs={'rows': 5}),
+            'tags': forms.SelectMultiple(),
+            'cities': forms.SelectMultiple(),
+            'russian_speak': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'english_speak': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+# company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='changes', verbose_name='Компания')
+#     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='changes', verbose_name='Автор')
+#     processed
+

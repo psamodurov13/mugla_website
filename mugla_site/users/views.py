@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView
 
+from blog.models import Post
 from mugla_site.utils import send
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
@@ -21,6 +23,13 @@ class ProfileView(DetailView):
     model = Profile
     template_name = 'users/profile.html'
     context_object_name = 'profile'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        print(self.kwargs)
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(Q(author=User.objects.get(username=self.kwargs['slug']).id) &
+                                               Q(is_published=True))
+        return context
 
 
 def register(request):

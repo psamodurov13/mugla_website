@@ -4,7 +4,20 @@
 
 {% block title %}{{ post.title }} {{ block.super }}{% endblock %}
 
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% for item in breadcrumbs|slice:":-1" %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>{{ post.title }}</li>
+
+  </ul>
+{% endblock %}
+
 {% block h1 %}{{ post.title }}{% endblock %}
+
+
 
 {% block content %}
 

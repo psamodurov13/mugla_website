@@ -102,21 +102,23 @@ File: Layout CSS
 .latest article .excerpt .meta li:last-child::after{margin:0; content:"";}
 
 /* Comments */
-#comments ul, #custom-form ul{margin:0 0 40px 0; padding:0; list-style:none;}
-#comments li, #custom-form li{margin:0 0 10px 0; padding:15px;}
-#comments .avatar, #custom-form .avatar{float:right; margin:0 0 10px 10px; padding:3px; border:1px solid;}
-#comments address, #custom-form address{font-weight:bold;}
-#comments time, #custom-form time {font-size:smaller;}
-#comments .comcont, #custom-form .comcont {display:block; margin:0; padding:0;}
-#comments .comcont p, #custom-form .comcont p{margin:10px 5px 10px 0; padding:0;}
+#comments ul, #custom-form ul, .custom-form ul{margin:0 0 40px 0; padding:0; list-style:none;}
+#comments li, #custom-form li, .custom-form li{margin:0 0 10px 0; padding:15px;}
+#comments .avatar, #custom-form .avatar, .custom-form .avatar{float:right; margin:0 0 10px 10px; padding:3px; border:1px solid;}
+#comments address, #custom-form address, .custom-form address{font-weight:bold;}
+#comments time, #custom-form time, .custom-form time {font-size:smaller;}
+#comments .comcont, #custom-form .comcont, .custom-form .comcont {display:block; margin:0; padding:0;}
+#comments .comcont p, #custom-form .comcont p, .custom-form .comcont p{margin:10px 5px 10px 0; padding:0;}
 
-#comments form, #custom-form form{display:block; width:100%;}
-#comments input, #comments textarea, #custom-form input, #custom-form textarea, #custom-form button{width:100%; padding:10px; border:1px solid;}
-#comments textarea, #custom-form textarea{overflow:auto;}
-#comments div, #custom-form div{margin-bottom:15px;}
+#comments form, #custom-form form, .custom-form form{display:block; width:100%;}
+#comments input, #comments textarea, #custom-form input, #custom-form textarea, #custom-form button,
+.custom-form input, .custom-form textarea, .custom-form button{width:100%; padding:10px; border:1px solid;}
+#comments textarea, #custom-form textarea, .custom-form textarea{overflow:auto;}
+#comments div, #custom-form div, .custom-form div{margin-bottom:15px;}
 #comments input[type="submit"], #comments input[type="reset"],
 #custom-form input[type="submit"], #custom-form input[type="reset"],
-#custom-form button {display:inline-block; width:auto; min-width:150px; margin:0; padding:8px 5px; cursor:pointer;}
+#custom-form button, .custom-form input[type="submit"], .custom-form input[type="reset"],
+.custom-form button {display:inline-block; width:auto; min-width:150px; margin:0; padding:8px 5px; cursor:pointer;}
 
 /* Sidebar */
 .container .sidebar{}
@@ -353,7 +355,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#FFA41F;}
 
 #breadcrumb ul{border-color:rgba(255,255,255,.1);}
 #breadcrumb a{color:inherit; background-color:inherit;}
-#breadcrumb li:last-child a{color:#FFA41F;}
+#breadcrumb li:last-child{color:#FFA41F; font-weight: bold;}
 
 .container .sidebar nav a{color:inherit; border-color:#D7D7D7;}
 .container .sidebar nav a:hover{color:#FFA41F;}
@@ -527,6 +529,9 @@ white-space: pre;
 -webkit-rtl-ordering: logical;
 cursor: default;
 }
+#custom-form select.selectmultiple, .custom-form select.selectmultiple {
+--bs-form-select-bg-img: none;
+}
 
 label[for='id_hidden'] {
 width: auto;
@@ -659,6 +664,12 @@ width: auto;
 #custom-form small.error, .custom-form small.error {
 color: red!important;
 }
+#custom-form .controls label.checkbox, .custom-form .controls label.checkbox {
+display: flex;
+}
+#custom-form .controls label.checkbox input, .custom-form .controls label.checkbox input {
+margin: 0 10px 0 0;
+}
 
 /* Sidebar styles */
 
@@ -666,6 +677,7 @@ color: red!important;
     display: flex;
     align-items: center;
     padding-left: 15px;
+    border-bottom: 1px solid #dee2e6;
 }
 .head-cat-wrap a {
     width: 100%;

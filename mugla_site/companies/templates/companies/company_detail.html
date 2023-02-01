@@ -8,6 +8,17 @@
 
 {% block title %}{{ company.title }} {{ block.super }}{% endblock %}
 
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="{% url 'companies' %}">Компании</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>{{ company.title }}</li>
+  </ul>
+{% endblock %}
+
 {% block h1 %}{{ company.title }}{% endblock %}
 
 {% block content %}
@@ -40,9 +51,26 @@
             {% endfor %}
         </ul>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhotos">
-          Добавить фото
-        </button>
+
+        <div class="edit-btn p-3">
+            {% if request.user.is_authenticated %}
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhotos">
+              Добавить фото
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeCompany">
+              Предложить изменение
+            </button>
+            {% else %}
+            <button type="button" class="btn disabled">
+              Добавить фото
+            </button>
+            <button type="button" class="btn disabled">
+              Предложить изменение
+            </button>
+            <p>Для внесения изменений <a href="{% url 'login' %}">авторизуйтесь</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a></p>
+            {% endif %}
+        </div>
+
 
       <div class="after-content">
         <div class="author-info">
@@ -132,8 +160,66 @@
             </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
                     <input type="submit" class="btn btn-outline-info" value="Добавить фото">
+                </div>
+            </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="changeCompany" tabindex="-1" aria-labelledby="changeCompanyLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-body">
+
+          <div class="modal-header">
+        <h1 class="modal-title fs-5" id="changeCompanyLabel">Предложить изменение</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="custom-form">
+            <form id="change_company_ajax" enctype='multipart/form-data' novalidate method="post" >
+                {% csrf_token %}
+
+            <div id="change_company_form" class="p-3">
+                {{ change_company_form.title|as_crispy_field }}
+                {{ change_company_form.content|as_crispy_field }}
+                {{ change_company_form.description|as_crispy_field }}
+                {{ change_company_form.type|as_crispy_field }}
+                {{ change_company_form.tags|as_crispy_field }}
+                {{ change_company_form.cities|as_crispy_field }}
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                {{ change_company_form.site|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                {{ change_company_form.phone|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6 mb-0">
+                {{ change_company_form.whatsapp|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                {{ change_company_form.telegram|as_crispy_field }}
+                    </div>
+                </div>
+                {{ change_company_form.note|as_crispy_field }}
+                {{ change_company_form.russian_speak|as_crispy_field }}
+                {{ change_company_form.english_speak|as_crispy_field }}
+
+            </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Закрыть</button>
+                    <input type="submit" class="btn btn-outline-info" value="Отправить">
                 </div>
             </form>
 
@@ -189,6 +275,40 @@
         var formData = new FormData(this);
         $.ajax({
             url: '{% url "add_photo_ajax" %}',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    alert(response.message)
+                    grecaptcha.reset();
+                    $.each(response.errors, function(name, error){
+                        error = '<small class="text-muted error">' + error + '</small>'
+                        $form.find('[name=' + name + ']').after(error);
+                    })
+                }
+                else{
+                    alert(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
+
+<script type="text/javascript">
+    // form upload
+    $('#change_company_ajax').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+        $.ajax({
+            url: '{% url "change_company_ajax" %}',
             type: 'POST',
             data: formData,
             success: function (response) {

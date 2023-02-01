@@ -8,6 +8,15 @@
 {% block title %}{{ title }} - {{ block.super }}{% endblock %}
 
 
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>{{ title }}</li>
+  </ul>
+{% endblock %}
 
     {% block content %}
     <div class="content col-sm-12 col-md-9">
@@ -28,7 +37,7 @@
                 <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
                 <div class="created">{{ post.created_at }}</div>
                 <ul class="nospace meta fl_left">
-                  <li><i class="fa fa-user"></i> <a href="#">{{ post.author.username }}</a></li>
+                  <li><i class="fa fa-user"></i> <a href="{% url 'profile' post.author.username %}">{{ post.author.username }}</a></li>
                   {% if post.tags.exists %}
                   <li><i class="fa fa-tag"></i>
                     {% show_post_tags post %}

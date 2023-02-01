@@ -55,9 +55,10 @@ class CategoryPost(Blog):
         context['instance'] = Category.objects.get(slug=self.kwargs['slug'])
         context['title'] = context['instance'].title
         all_categories = show_categories()
-        current = Category.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
-        print(current[0])
-        context['categories'] = get_subcategories(all_categories, current[0].title)
+        breadcrumbs = Category.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
+        context['categories'] = get_subcategories(all_categories, breadcrumbs[0].title)
+        breadcrumbs = breadcrumbs[:len(breadcrumbs) - 1]
+        context['breadcrumbs'] = breadcrumbs
         return context
 
     def get_queryset(self):
@@ -122,6 +123,8 @@ class PostPage(FormMixin, DetailView):
         self.object.save()
         self.object.refresh_from_db()
         context['comments'] = PostComments.objects.filter(Q(post__slug=self.kwargs['slug']) & Q(active=True))
+        breadcrumbs = self.object.category.get_ancestors(ascending=False, include_self=True)
+        context['breadcrumbs'] = breadcrumbs
         return context
 
 

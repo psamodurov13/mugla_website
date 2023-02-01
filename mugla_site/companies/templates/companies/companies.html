@@ -7,7 +7,18 @@
 
 {% block title %}{{ title }} - {{ block.super }}{% endblock %}
 
-
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% if check %}
+    <li><a href="{% url 'companies' %}">Компании</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    {% endif %}
+    <li>{{ title }}</li>
+  </ul>
+{% endblock %}
 
     {% block content %}
     <div class="content col-sm-12 col-md-9">

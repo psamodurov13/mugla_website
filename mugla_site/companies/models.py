@@ -73,12 +73,12 @@ class CompanyGallery(CustomGallery):
 
 class ChangeCompany(models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='changes', verbose_name='Компания')
-    title = models.CharField(max_length=255, verbose_name='Компания')
+    title = models.CharField(max_length=255, blank=True, verbose_name='Название компании')
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='changes', verbose_name='Автор')
-    content = models.TextField(verbose_name='Контент')
+    content = models.TextField(verbose_name='Контент', blank=True)
     description = models.TextField(max_length=255, blank=True, verbose_name='Краткое описание')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
-    type = TreeForeignKey(Type, on_delete=models.PROTECT, related_name='changes', verbose_name='Тип организации')
+    type = TreeForeignKey(Type, on_delete=models.PROTECT, blank=True, related_name='changes', verbose_name='Тип организации')
     tags = models.ManyToManyField(CompanyTags, verbose_name='Теги', blank=True, related_name='changes')
     cities = models.ManyToManyField(City, verbose_name='Города', blank=True, related_name='changes')
     site = models.URLField(blank=True, verbose_name='Сайт')

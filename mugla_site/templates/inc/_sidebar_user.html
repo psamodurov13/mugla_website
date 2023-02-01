@@ -3,19 +3,34 @@
 
 
 {% block sidebar_content %}
-<h6>Меню профиля</h6>
-<div class="btn-group-vertical pb-4 col-12" role="group" aria-label="Vertical button group">
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'edit_profile' %}" class="btn">Редактировать профиль</a>
-    <a href="{% url 'password_change' %}" class="btn">Изменение пароля</a>
-    <a href="{% url 'create_company_ajax' %}" class="btn">Добавить компанию</a>
-    <a href="{% url 'create_post_ajax' %}" class="btn">Добавить пост</a>
-    <a href="{% url 'logout' %}" class="btn">Выйти</a>
-    {% else %}
-    <a href="{% url 'register' %}" class="btn">Зарегистрироватья</a>
-    <a href="{% url 'login' %}" class="btn">Войти</a>
-    {% endif %}
+<h2>Категории</h2>
+<div class="accordion mb-5" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            {% if request.user.is_authenticated %}
+            <div class="head-cat-wrap">
+                <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
+            </div>
+            <div class="head-cat-wrap">
+                <a href="{% url 'password_change' %}">Изменение пароля</a>
+            </div>
+            <div class="head-cat-wrap">
+                <a href="{% url 'create_company_ajax' %}">Добавить компанию</a>
+            </div>
+            <div class="head-cat-wrap">
+                <a href="{% url 'create_post_ajax' %}">Добавить пост</a>
+            </div>
+            <div class="head-cat-wrap">
+                <a href="{% url 'logout' %}">Выйти</a>
+            </div>
+            {% else %}
+            <div class="head-cat-wrap">
+                <a href="{% url 'register' %}">Зарегистрироваться</a>
+            </div>
+            <div class="head-cat-wrap">
+                <a href="{% url 'login' %}">Войти</a>
+            </div>
+            {% endif %}
+        </div>
 </div>
-{% show_tag_list %}
-<p>Какой-то текст users</p>
+
 {% endblock %}

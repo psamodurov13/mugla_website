@@ -43,10 +43,12 @@ class TypeCompany(CompaniesList):
         context = super().get_context_data(**kwargs)
         context['instance'] = Type.objects.get(slug=self.kwargs['slug'])
         context['title'] = context['instance'].title
-        # all_categories = show_company_types()
-        # current = Type.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
-        # print(current)
         context['categories'] = Type.objects.all()
+        breadcrumbs = Type.objects.get(slug=self.kwargs["slug"]).get_ancestors(ascending=False, include_self=True)
+        print('bread', breadcrumbs)
+        breadcrumbs = breadcrumbs[:len(breadcrumbs) - 1]
+        context['breadcrumbs'] = breadcrumbs
+        context['check'] = True
         return context
 
     def get_queryset(self):
@@ -114,6 +116,9 @@ class CompanyPage(FormMixin, DetailView):
         context['gallery'] = CompanyGallery.objects.filter(Q(company=self.object.id) & Q(is_published=True))
         context['comments'] = CompanyComments.objects.filter(Q(company__slug=self.kwargs['slug']) & Q(active=True))
         context['add_photo_form'] = AddCompanyPhoto()
+        context['change_company_form'] = ChangeCompanyForm()
+        breadcrumbs = self.object.type.get_ancestors(ascending=False, include_self=True)
+        context['breadcrumbs'] = breadcrumbs
         return context
 
 
@@ -185,8 +190,41 @@ def add_photo_ajax(request):
             messages.success(request, 'Фото добавлены')
             return JsonResponse({'error': False, 'message': 'Фото добавлены'})
         else:
-            # messages.error(request, 'Есть ошибки')
             return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
+
+
+@json_view
+def change_company_ajax(request):
+    if request.method == 'POST':
+        form = ChangeCompanyForm(request.POST)
+        if form.is_valid():
+            print('FORM', form.__dict__)
+            print('FORM CLEAN', form.cleaned_data)
+            print('REQUEST', dir(request))
+            print('REQUEST', request.META['HTTP_REFERER'])
+            print('INSTANCE', form.instance.__dict__)
+            form_data = form.cleaned_data
+            tags_data = form_data['tags']
+            form_data.pop('tags')
+            form_data['author'] = request.user
+            cities_data = form_data['cities']
+            form_data.pop('cities')
+            slug = request.META['HTTP_REFERER'].split('/')[-1]
+            company = Company.objects.get(slug=slug)
+            form_data['company'] = company
+            form_data['processed'] = False
+            new_edition = ChangeCompany.objects.create(**form_data)
+            print(f'NEW {new_edition} - {new_edition.__dict__}')
+            new_edition.tags.set(tags_data)
+            new_edition.cities.set(cities_data)
+            print(f'DATA - {new_edition}')
+            new_edition.save()
+
+            messages.success(request, 'Изменения добавлены')
+            return JsonResponse({'error': False, 'message': 'Изменения добавлены'})
+        else:
+            return JsonResponse({'error': True, 'errors': form.errors, 'message': 'Проверьте форму'})
+
 
 
 

@@ -2,6 +2,7 @@
 {% load static %}
 {% load sidebar_tags %}
 {% load cropping %}
+{% load tags_list_tag %}
 
 {% block title %}{{ profile.user }} - {{ block.super }}{% endblock %}
 
@@ -31,9 +32,37 @@
             </div>
 
         </div>
+        <div class="user-posts">
+            <h2>Посты пользователя {{ profile.user }}</h2>
+            <div class="latest row row-cols-1 row-cols-md-2">
+                {% for post in posts|slice:6 %}
+                  <article class="col p-3">
+                    <a href="{{ post.get_absolute_url }}">
+                        <img src="{% cropped_thumbnail post 'cropping_thumb' %}">
+                    </a>
+                    <div class="excerpt">
+                      <h6 class="heading">{{ post.title }}</h6>
+                      <p>{{ post.description }}</p>
+                      <div class="clear">
+                        <footer class=" fl_right"><a href="{{ post.get_absolute_url }}">Читать далее</a></footer>
+                        <div class="created">{{ post.created_at }}</div>
+                        <ul class="nospace meta fl_left">
+                          <li><i class="fa fa-user"></i> <a href="#">{{ post.author.username }}</a></li>
+                          {% if post.tags.exists %}
+                          <li><i class="fa fa-tag"></i>
+                            {% show_post_tags post %}
+                          </li>
+                          {% endif %}
+                        </ul>
+                      </div>
+                    </div>
+                  </article>
+                {% endfor %}
+              </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'inc/_sidebar_user.html' %}
-    {% endblock %}
+{% include 'inc/_sidebar_user.html' %}
+{% endblock %}
