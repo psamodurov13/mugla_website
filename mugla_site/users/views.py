@@ -29,6 +29,8 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.filter(Q(author=User.objects.get(username=self.kwargs['slug']).id) &
                                                Q(is_published=True))
+        context['title'] = context['profile'].user
+        print(context)
         return context
 
 

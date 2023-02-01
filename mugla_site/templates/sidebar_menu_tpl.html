@@ -1,4 +1,5 @@
 {% load mptt_tags %}
+{% if categories %}
 <h2>Категории</h2>
 <div class="accordion mb-5" id="accordionPanelsStayOpenExample">
     {% recursetree categories %}
@@ -20,3 +21,4 @@
         </div>
     {% endrecursetree %}
 </div>
+{% endif %}

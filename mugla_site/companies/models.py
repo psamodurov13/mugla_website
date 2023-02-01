@@ -4,6 +4,9 @@ from django.urls import reverse
 from image_cropping import ImageRatioField
 from phonenumber_field.modelfields import PhoneNumberField
 from mptt.models import MPTTModel, TreeForeignKey
+from django_google_maps import fields as map_fields
+from django.contrib.gis.db import models as models_loc
+from django.contrib.gis.geos import Point
 
 from mugla_site.utils import BaseModel, CustomGallery
 from cities.models import City
@@ -56,6 +59,9 @@ class Company(BaseModel, models.Model):
     cropping_thumb = ImageRatioField('photo', '400x300', size_warning=True, verbose_name='Обрезанное фото для каталога')
     russian_speak = models.BooleanField(default=False, verbose_name='Есть русскоговорящий персонал')
     english_speak = models.BooleanField(default=False, verbose_name='Есть англоговорящий персонал')
+    # address = map_fields.AddressField(max_length=200)
+    # geolocation = map_fields.GeoLocationField(max_length=100)
+    location = models_loc.PointField(help_text="Use map widget for point the house location", blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('company', kwargs={'slug': self.slug})
@@ -89,6 +95,7 @@ class ChangeCompany(models.Model):
     russian_speak = models.BooleanField(default=False, verbose_name='Есть русскоговорящий персонал')
     english_speak = models.BooleanField(default=False, verbose_name='Есть англоговорящий персонал')
     processed = models.BooleanField(default=False, verbose_name='Обработано')
+
 
 
 def show_company_types():

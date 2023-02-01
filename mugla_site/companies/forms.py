@@ -5,6 +5,9 @@ from phonenumber_field.formfields import PhoneNumberField
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3, ReCaptchaV2Checkbox
 from crispy_forms.helper import FormHelper
+from django_google_maps import widgets as map_widgets
+from django_google_maps import fields as map_fields
+from mapwidgets.widgets import GooglePointFieldWidget, GoogleStaticOverlayMapWidget
 
 from .models import *
 
@@ -13,6 +16,13 @@ class CreateCompanyForm(ImageCroppingMixin, forms.ModelForm):
     phone = PhoneNumberField()
     whatsapp = PhoneNumberField(help_text='Номер телефона в формате +79001234567 или +905001234567')
     gallery_images = forms.FileField(required=False, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+    # formfield_overrides = {
+    #     map_fields.AddressField: {'widget': map_widgets.GoogleMapsAddressWidget},
+    # }
+    # widgets = {
+    #     'location': GooglePointFieldWidget,
+    # }
+
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox, label='')
 
     @property
@@ -24,14 +34,17 @@ class CreateCompanyForm(ImageCroppingMixin, forms.ModelForm):
 
     class Meta:
         model = Company
-
-        fields = ['title', 'content', 'description', 'type', 'tags', 'cities', 'site', 'phone', 'whatsapp',
+        fields = ['title', 'content', 'description',
+                  'location',
+                  'type', 'tags', 'cities', 'site', 'phone', 'whatsapp',
                   'telegram', 'note', 'russian_speak', 'english_speak', 'photo', 'gallery_images',
                   'captcha'
                   ]
         widgets = {
+            # 'location': GoogleStaticOverlayMapWidget(zoom=12, thumbnail_size='50x50', size='640x640'),
             'title': forms.TextInput(),
             'photo': forms.FileInput(),
+            'location': GooglePointFieldWidget(attrs={'class': 'map-widget'}),
             'content': forms.Textarea(attrs={'rows': 5}),
             'description': forms.Textarea(attrs={'rows': 5}),
             'type': forms.Select(),

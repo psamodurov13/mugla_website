@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "companies.apps.CompaniesConfig",
     "comments.apps.CommentsConfig",
+    "maps.apps.MapsConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',
@@ -53,7 +54,10 @@ INSTALLED_APPS = [
     'mptt',
     'captcha',
     'crispy_forms',
-    'jsonview'
+    'jsonview',
+    'django_google_maps',
+    'mapwidgets',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -108,9 +112,12 @@ WSGI_APPLICATION = "mugla_site.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        # 'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
@@ -118,6 +125,10 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config()
+# DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -274,3 +285,23 @@ RECAPTCHA_SCORE_THRESHOLD = 0.5
 
 # RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
+
+# GOOGLE_MAPS_API_KEY = GOOGLE_MAPS_API_KEY
+GOOGLE_MAP_API_KEY = GOOGLE_MAPS_API_KEY
+
+    # 'AIzaSyDcnYuGzqXXk82a784Ec0V2CZidtJxA6jo'
+    # GOOGLE_MAPS_API_KEY
+
+
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15),
+        ("mapCenterLocationName", "koycegiz"),
+        ("GooglePlaceAutocompleteOptions", {'componentRestrictions': {'country': 'tr'}}),
+        ("markerFitZoom", 12),
+        ("scrollWheel", False),
+        ("streetViewControl", True),
+    ),
+    "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY
+}
+

@@ -63,6 +63,8 @@ class TagCompany(CompaniesList):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['instance'] = CompanyTags.objects.get(slug=self.kwargs['slug'])
+        context['title'] = context['instance'].title
+        context['check'] = True
         return context
 
     def get_queryset(self):
@@ -119,6 +121,7 @@ class CompanyPage(FormMixin, DetailView):
         context['change_company_form'] = ChangeCompanyForm()
         breadcrumbs = self.object.type.get_ancestors(ascending=False, include_self=True)
         context['breadcrumbs'] = breadcrumbs
+        print(f'Location - {self.object.location}\n{"-"*40}\n{dir(self.object.location)}\n{self.object.location.simple}')
         return context
 
 
@@ -162,7 +165,8 @@ def create_company_ajax(request):
     else:
         form = CreateCompanyForm()
         title = 'Добавить компанию'
-        return render(request, 'companies/create_company.html', {'form': form, 'title': title})
+        check = True
+        return render(request, 'companies/create_company.html', {'form': form, 'title': title, 'check': check})
 
 
 @json_view

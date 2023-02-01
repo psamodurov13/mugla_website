@@ -73,6 +73,7 @@ class TagPost(Blog):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['instance'] = Tags.objects.get(slug=self.kwargs['slug'])
+        context['title'] = context['instance'].title
         return context
 
     def get_queryset(self):
@@ -84,6 +85,11 @@ class CityPost(Blog):
         context = super().get_context_data(**kwargs)
         context['instance'] = City.objects.get(slug=self.kwargs['slug'])
         context['title'] = 'Новости ' + context['instance'].title
+        all_categories = show_categories()
+        breadcrumbs = Category.objects.get(title='Новости').get_ancestors(ascending=False, include_self=True)
+        context['categories'] = get_subcategories(all_categories, breadcrumbs[0].title)
+        breadcrumbs = breadcrumbs[:len(breadcrumbs) - 1]
+        context['breadcrumbs'] = breadcrumbs
         return context
 
     def get_queryset(self):

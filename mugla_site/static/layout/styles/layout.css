@@ -114,11 +114,11 @@ File: Layout CSS
 #comments input, #comments textarea, #custom-form input, #custom-form textarea, #custom-form button,
 .custom-form input, .custom-form textarea, .custom-form button{width:100%; padding:10px; border:1px solid;}
 #comments textarea, #custom-form textarea, .custom-form textarea{overflow:auto;}
-#comments div, #custom-form div, .custom-form div{margin-bottom:15px;}
+#comments div.control-group, #custom-form div.control-group, .custom-form div.control-group{margin-bottom:15px;}
 #comments input[type="submit"], #comments input[type="reset"],
 #custom-form input[type="submit"], #custom-form input[type="reset"],
 #custom-form button, .custom-form input[type="submit"], .custom-form input[type="reset"],
-.custom-form button {display:inline-block; width:auto; min-width:150px; margin:0; padding:8px 5px; cursor:pointer;}
+.custom-form button {display:inline-block; width:auto; margin:0; padding:8px 5px; cursor:pointer;}
 
 /* Sidebar */
 .container .sidebar{}
@@ -379,7 +379,7 @@ tr, #comments li, #comments input[type="submit"], #comments input[type="reset"],
 #custom-form button, .custom-form li, .custom-form input[type="submit"], .custom-form input[type="reset"],
 .custom-form button {color:inherit; background-color:#FBFBFB;}
 tr:nth-child(even), #comments li:nth-child(even), #custom-form li:nth-child(even){color:inherit; background-color:#F7F7F7;}
-table a, #comments a, #custom-form a, .custom-form a {background-color:inherit;}
+/* table a, #comments a, #custom-form a, .custom-form a {background-color:inherit;} */
 
 
 /* ------------------------------------------------------------------------------------------------------------ */
@@ -740,3 +740,13 @@ padding-left: 0px;
 .accordion-collapse {
 padding: 5px 30px;
 }
+
+#location-mw-wrap {
+width: 100%;
+}
+.mw-header .mw-adress-input-wrap {
+    width: auto;
+}
+.mw-wrap .form-control, .mw-wrap .mapboxgl-ctrl-geocoder--input {
+    padding: 6px 12px !important;
+    }

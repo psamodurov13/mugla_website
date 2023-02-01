@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ title }} - {{ block.super }}{% endblock %}
+{% block title %}{{ block.super }}{% endblock %}
 
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>{{ title }}</li>
+  </ul>
+{% endblock %}
 
 {% block content %}
 {% endblock %}
