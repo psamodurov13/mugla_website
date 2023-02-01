@@ -121,7 +121,7 @@ class CompanyPage(FormMixin, DetailView):
         context['change_company_form'] = ChangeCompanyForm()
         breadcrumbs = self.object.type.get_ancestors(ascending=False, include_self=True)
         context['breadcrumbs'] = breadcrumbs
-        print(f'Location - {self.object.location}\n{"-"*40}\n{dir(self.object.location)}\n{self.object.location.simple}')
+        print(f'Location - {self.object.location}\n{"-"*40}\n{dir(self.object.location)}\n{self.object.location.index}')
         return context
 
 

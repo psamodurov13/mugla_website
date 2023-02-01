@@ -286,12 +286,7 @@ RECAPTCHA_SCORE_THRESHOLD = 0.5
 # RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 
-# GOOGLE_MAPS_API_KEY = GOOGLE_MAPS_API_KEY
 GOOGLE_MAP_API_KEY = GOOGLE_MAPS_API_KEY
-
-    # 'AIzaSyDcnYuGzqXXk82a784Ec0V2CZidtJxA6jo'
-    # GOOGLE_MAPS_API_KEY
-
 
 MAP_WIDGETS = {
     "GooglePointFieldWidget": (
