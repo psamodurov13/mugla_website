@@ -38,6 +38,7 @@ CUSTOM_MAP_SETTINGS = {
     ),
 }
 
+
 class CompanyAdmin(ImageCroppingMixin, BaseAdmin):
     form = CompanyAdminForm
     # formfield_overrides = {

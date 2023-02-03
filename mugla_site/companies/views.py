@@ -11,6 +11,7 @@ from django.views.generic.edit import FormMixin, CreateView
 from cities.models import City
 from comments.forms import PostCommentForm, CompanyCommentForm
 from comments.models import CompanyComments
+from mugla_site import settings
 from mugla_site.utils import get_subcategories
 from .models import Type, CompanyTags, Company, CompanyGallery
 from django.db.models import F, Q
@@ -121,7 +122,11 @@ class CompanyPage(FormMixin, DetailView):
         context['change_company_form'] = ChangeCompanyForm()
         breadcrumbs = self.object.type.get_ancestors(ascending=False, include_self=True)
         context['breadcrumbs'] = breadcrumbs
-        print(f'Location - {self.object.location}\n{"-"*40}\n{dir(self.object.location)}\n{self.object.location.index}')
+        context['GOOGLE_MAP_API_KEY'] = settings.GOOGLE_MAP_API_KEY
+        if context['company'].location:
+            context['company'].longitude = str(context['company'].location.coords[0])
+            context['company'].latitude = str(context['company'].location.coords[1])
+        # print(f'Location - {self.object.location}\n{"-"*40}\n{dir(self.object.location)}\n{self.object.location[0]}')
         return context
 
 

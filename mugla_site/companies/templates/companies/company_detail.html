@@ -40,6 +40,42 @@
                 <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ company.telegram }}">{{ company.telegram }}</a></p>
             </div>
         </div>
+
+        {% if company.location %}
+        <div id="map"></div>
+        <script>
+
+          function initMap() {
+              // The location of Uluru
+              const uluru = { lat: {{ company.latitude }}, lng: {{ company.longitude }} };
+              // The map, centered at Uluru
+              const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center: uluru,
+              });
+              // The marker, positioned at Uluru
+              const marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+              });
+              infowindow = new google.maps.InfoWindow({
+                content: "<strong><a href=\"\">{{ company.title }}</a></strong><p>{{ company.description }}</p>"
+              });
+              marker.addListener('click', function() {
+                  infowindow.open(map, marker);
+                });
+              google.maps.event.addListener(map, "click", function(event) {
+                infowindow.close();
+            });
+            }
+            window.initMap = initMap;
+
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
+        </script>
+        {% endif %}
+
+
         {{ company.content|safe }}
         <figcaption class="sectiontitle">
             <h6 class="heading">Purus vehicula pulvinar</h6>

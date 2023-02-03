@@ -1,87 +1,55 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load tags_list_tag %}
-{% load cropping %}
-{% load thumbnail %}
-{% load easy_maps_tags %}
-
-
-{% block title %}{{ title }} - {{ block.super }}{% endblock %}
-
-{% block breadcrumbs %}
-<!--  <ul>-->
-<!--    <li><a href="/">Главная</a></li>-->
-<!--    {% if check %}-->
-<!--    <li><a href="{% url 'companies' %}">Компании</a></li>-->
-<!--    {% for item in breadcrumbs %}-->
-<!--    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>-->
-<!--    {% endfor %}-->
-<!--    {% endif %}-->
-<!--    <li>{{ title }}</li>-->
-<!--  </ul>-->
-{% endblock %}
-
-    {% block content %}
-    <div class="content col-sm-12 col-md-9">
-
-        {% easy_map "Russia, Ekaterinburg, Mira 32" 300 400 %}
-{% comment %}
-<script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-
-<div id='map' style='width: 400px; height: 300px;'></div>
-<script>
-  mapboxgl.accessToken = '{{ YOUR_MAPBOX_ACCESS_TOKEN }}';
-  var map = new mapboxgl.Map({
-    container: 'map',
-    center: [-77.03, 38.91],
-    style: 'mapbox://styles/mapbox/streets-v11'
-  });
-</script>
-
-        {% endcomment %}
-
-
-<!--      <div class="latest row row-cols-1 row-cols-md-2">-->
-<!--        {% for company in companies %}-->
-<!--          <article class="col p-3">-->
-<!--            <a href="{{ company.get_absolute_url }}">-->
-<!--              {% if company.photo %}-->
-<!--                <img src="{% cropped_thumbnail company 'cropping_thumb' %}">-->
-<!--              {% else %}-->
-<!--                <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">-->
-<!--              {% endif %}-->
-<!--            </a>-->
-<!--            <div class="excerpt">-->
-<!--              <h6 class="heading">{{ company.title }}</h6>-->
-<!--              <p>{{ company.description }}</p>-->
-<!--              <div class="clear">-->
-<!--                <footer class=" fl_right"><a href="{{ company.get_absolute_url }}">Читать далее</a></footer>-->
-<!--                <div class="created">{{ company.created_at }}</div>-->
-<!--                <ul class="nospace meta fl_left">-->
-<!--                  <li><i class="fa fa-user"></i> <a href="#">{{ company.author.username }}</a></li>-->
-<!--                  {% if company.tags.exists %}-->
-<!--                  <li><i class="fa fa-tag"></i>-->
-<!--                    {% show_post_tags company %}-->
-<!--                  </li>-->
-<!--                  {% endif %}-->
-<!--                </ul>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </article>-->
-<!--        {% endfor %}-->
-<!--      </div>-->
-      {% include 'inc/_pagination.html' %}
-    </div>
+<style>
+          #map {
+            width: 100%;
+            height: 400px;
+            background-color: grey;
+          }
+          @charset "utf-8";
 
 
 
-    {% endblock %}
+
+/* Transition Fade
+This gives a smooth transition to "ALL" elements used in the layout - other than the navigation form used in mobile devices
+If you don't want it to fade all elements, you have to list the ones you want to be faded individually
+Delete it completely to stop fading
+--------------------------------------------------------------------------------------------------------------- */
+*, *::before, *::after{transition:all .3s ease-in-out;}
+#mainav form *{transition:none !important;}
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------ */
 
 
 
 
 
-    {% block sidebar %}
-    {% include 'inc/_sidebar_companies.html' %}
-    {% endblock %}
+
+
+        </style>
+        <div id="map"></div>
+        <script>
+
+          function initMap() {
+              // The location of Uluru
+              const uluru = { lat: -25.344, lng: 131.031 };
+              // The map, centered at Uluru
+              const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,
+                center: uluru,
+              });
+              // The marker, positioned at Uluru
+              const marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+              });
+            }
+            window.initMap = initMap;
+
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
+        </script>

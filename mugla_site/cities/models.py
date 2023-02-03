@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from image_cropping import ImageRatioField
+from django.contrib.gis.db import models as models_loc
 
 from mugla_site.utils import BaseModel, CustomGallery
 
@@ -15,6 +16,8 @@ class City(BaseModel, models.Model):
     content_photo = models.ImageField(upload_to='photo/%Y/%m/%d/', blank=True, verbose_name='Фото в контенте')
     cropping_content_photo = ImageRatioField('content_photo', '400x300', size_warning=True,
                                              verbose_name='Обрезанное фото в контенте')
+    location = models_loc.PointField(help_text="Use map widget for point the house location", blank=True, null=True)
+
 
     def get_absolute_url(self):
         return reverse('city', kwargs={'slug': self.slug})

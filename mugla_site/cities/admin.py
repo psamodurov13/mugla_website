@@ -3,6 +3,8 @@ from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
 from django.utils.safestring import mark_safe
 from image_cropping import ImageCroppingMixin
+from mapwidgets import GooglePointFieldWidget
+
 
 from .models import *
 from mugla_site.utils import BaseAdmin
@@ -25,10 +27,14 @@ class GalleryInline(ImageCroppingMixin, admin.TabularInline):
 
 class CityAdmin(ImageCroppingMixin, BaseAdmin):
     form = CityAdminForm
+    formfield_overrides = {
+        models_loc.PointField: {"widget": GooglePointFieldWidget}
+    }
     list_display = ('id', 'title')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
-    fields = ('title', 'slug', 'content', 'description', 'photo', 'cropping', 'get_photo', 'telegram', 'populate',
+    fields = ('title', 'slug', 'content', 'description', 'location', 'photo', 'cropping', 'get_photo', 'telegram',
+              'populate',
               'distance_to_airport', 'content_photo', 'cropping_content_photo')
     inlines = [GalleryInline, ]
 
