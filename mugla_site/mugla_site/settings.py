@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "companies.apps.CompaniesConfig",
     "comments.apps.CommentsConfig",
     "maps.apps.MapsConfig",
+    "feedback.apps.FeedbackConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',

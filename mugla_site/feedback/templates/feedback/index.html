@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Обратная связь - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>Обратная связь</li>
+  </ul>
+{% endblock %}
+
+{% block h1 %}Обратная связь{% endblock %}
+
+{% block content %}
+    <div class="content col-sm-12 col-md-9 p-3">
+        <div id="custom-form">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field.errors }}
+            {{ form.as_p }}
+            <button type="submit" class="custom-btn" name="login-button">Отправить</button>
+        </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar_user.html' %}
+{% endblock %}
