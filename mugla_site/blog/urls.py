@@ -10,5 +10,7 @@ urlpatterns = [
     path('tag/<str:slug>/', TagPost.as_view(), name='tag'),
     path('posts/<str:slug>/', PostPage.as_view(), name='post'),
     path('<str:slug>/', CityPost.as_view(), name='city_post'),
+    path('news/user/<str:slug>/', UserNews.as_view(), name='user_news'),
+    path('articles/user/<str:slug>/', UserArticles.as_view(), name='user_articles'),
     path('search/', Search.as_view(), name='search'),
 ]

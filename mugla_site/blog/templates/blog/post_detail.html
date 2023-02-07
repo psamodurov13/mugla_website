@@ -1,6 +1,7 @@
 {% extends 'blog/blog.html' %}
 {% load static %}
 {% load tags_list_tag %}
+{% load cropping %}
 
 {% block title %}{{ post.title }} {{ block.super }}{% endblock %}
 
@@ -25,8 +26,8 @@
       {{ post.content|safe }}
       <div class="after-content">
         <div class="author-info">
-          <img src="{{ post.author.profile.image.url }}">
-          <a href="#">{{ post.author }}</a>
+          <img src="{% cropped_thumbnail post.author.profile 'cropping_avatar' %}">
+          <a href="{{ post.author.profile.get_absolute_url }}">{{ post.author }}</a>
         </div>
         <div class="info">
           {% if post.tags.exists %}

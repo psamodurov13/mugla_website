@@ -7,7 +7,7 @@ from django.views.generic import CreateView, DetailView
 
 from blog.models import Post
 from mugla_site.utils import send
-from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm, CropAvatarForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -90,11 +90,14 @@ def edit_profile(request):
                                    request.FILES,
                                    instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
+            print('FORM P', p_form)
             u_form.save()
             p_form.save()
-            messages.success(request, f'Ваш профиль успешно обновлен.')
-            return redirect('profile', request.user.username)
+
+            messages.success(request, f'Ваш профиль успешно обновлен. Ниже вы можете отредактировать аватар')
+            return redirect('profile_crop_avatar')
         else:
+            print('FORM P', p_form)
             messages.error(request, f'Ваш профиль не обновлен. Проверьте форму')
     else:
         u_form = UserUpdateForm(instance=request.user)
@@ -105,6 +108,25 @@ def edit_profile(request):
         'title': 'Редактирование профиля'
     }
     return render(request, 'users/edit_profile.html', context)
+
+
+@login_required
+def profile_crop_avatar(request):
+    if request.method == 'POST':
+        form = CropAvatarForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            print('CROP Form', form.cleaned_data)
+            updated_profile = Profile.objects.get(user=request.user.pk)
+            updated_profile.cropping_avatar = form.cleaned_data['cropping_avatar']
+            updated_profile.save()
+            messages.success(request, 'Аватар отредактирован')
+            return redirect('profile', request.user.username)
+        else:
+            messages.error(request, f'Ваш профиль не обновлен. Проверьте форму')
+    else:
+        form = CropAvatarForm(instance=request.user.profile)
+    context = {'form': form, 'title': 'Редактирование аватара'}
+    return render(request, 'users/crop_avatar.html', context)
 
 
 class ResetPassword(PasswordResetView):

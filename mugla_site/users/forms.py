@@ -31,13 +31,13 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['email']
 
 
-class ProfileUpdateForm(ImageCroppingMixin, forms.ModelForm):
+class ProfileUpdateForm(forms.ModelForm):
     whatsapp = PhoneNumberField()
     hidden = forms.RadioSelect()
 
     class Meta:
         model = Profile
-        fields = ['image', 'cropping_avatar', 'name', 'surname', 'birthday', 'city', 'whatsapp', 'telegram',
+        fields = ['image', 'name', 'surname', 'birthday', 'city', 'whatsapp', 'telegram',
                   'instagram', 'hidden']
         widgets = {
             'name': forms.TextInput(),
@@ -52,5 +52,15 @@ class ProfileUpdateForm(ImageCroppingMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileUpdateForm, self).__init__(*args, **kwargs)
         self.fields['city'].empty_label = 'Выберите город'
+
+
+class CropAvatarForm(ImageCroppingMixin, forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['image', 'cropping_avatar']
+        widgets = {
+            'image': ImageCropWidget(attrs={'class': 'bla'}),
+        }
 
 

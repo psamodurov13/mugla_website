@@ -12,4 +12,5 @@ urlpatterns = [
     path('company/<str:slug>', CompanyPage.as_view(), name='company'),
     path('company-tags/<str:slug>', TagCompany.as_view(), name='company-tags'),
     path('<str:slug>/', CityCompanies.as_view(), name='city_companies'),
+    path('user/<str:slug>/', UserCompanies.as_view(), name='user_companies'),
 ]

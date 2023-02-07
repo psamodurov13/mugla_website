@@ -110,8 +110,8 @@
 
       <div class="after-content">
         <div class="author-info">
-          <img src="{{ company.author.profile.image.url }}">
-          <a href="#">{{ company.author }}</a>
+          <img src="{% cropped_thumbnail company.author.profile 'cropping_avatar' %}">
+          <a href="{{ company.author.profile.get_absolute_url }}">{{ company.author }}</a>
         </div>
         <div class="info">
           {% if company.tags.exists %}

@@ -17,18 +17,27 @@
             </div>
             <div class="media-body px-3">
                 <p class="text-secondary"><span class="param-name">Имя пользователя</span>: {{ profile.user }}</p>
-                <p class="text-secondary"><span class="param-name">e-mail</span>: <a href="mailto:{{ profile.user.email }}">
-                    {{ profile.user.email }}</a></p>
-                <p class="text-secondary"><span class="param-name">Имя</span>: {{ profile.name }}</p>
-                <p class="text-secondary"><span class="param-name">Фамилия</span>: {{ profile.surname }}</p>
-                <p class="text-secondary"><span class="param-name">Дата рождения</span>: {{ profile.birthday }}</p>
-                <p class="text-secondary"><span class="param-name">Город</span>:
-                    <a href="{{ profile.city.get_absolute_url }}">{{ profile.city }}</a></p>
-                <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ profile.whatsapp|stringformat:'s'|slice:'1:'}}">{{ profile.whatsapp }}</a></p>
-                <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ profile.telegram }}">{{ profile.telegram }}</a></p>
-                <p class="text-secondary"><span class="param-name">Instagram</span>: <a target="_blank" href="https://instagram.com/{{ user.profile.instagram }}">{{ profile.instagram }}</a></p>
-                <p class="text-secondary"><span class="param-name">Контакты скрыты</span>: {{ profile.hidden }}</p>
+                {% if profile.hidden == False or profile.user == request.user %}
+                    <p class="text-secondary"><span class="param-name">e-mail</span>: <a href="mailto:{{ profile.user.email }}">
+                        {{ profile.user.email }}</a></p>
+                    <p class="text-secondary"><span class="param-name">Имя</span>: {{ profile.name }}</p>
+                    <p class="text-secondary"><span class="param-name">Фамилия</span>: {{ profile.surname }}</p>
+                    <p class="text-secondary"><span class="param-name">Дата рождения</span>: {{ profile.birthday }}</p>
+                    <p class="text-secondary"><span class="param-name">Город</span>:
+                        <a href="{{ profile.city.get_absolute_url }}">{{ profile.city }}</a></p>
+                    <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ profile.whatsapp|stringformat:'s'|slice:'1:'}}">{{ profile.whatsapp }}</a></p>
+                    <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ profile.telegram }}">{{ profile.telegram }}</a></p>
+                    <p class="text-secondary"><span class="param-name">Instagram</span>: <a target="_blank" href="https://instagram.com/{{ user.profile.instagram }}">{{ profile.instagram }}</a></p>
+                    <p class="text-secondary"><span class="param-name">Контакты скрыты</span>: {{ profile.hidden }}</p>
+                {% else %}
+                <p>Пользователь предпочел скрыть свои данные</p>
+                {% endif %}
             </div>
+            </div>
+            <div class="profile-links py-3">
+                <a href="{% url 'user_news' profile.user %}">Новости пользователя {{ profile.user }}</a>
+                <a href="{% url 'user_articles' profile.user %}">Статьи пользователя {{ profile.user }}</a>
+                <a href="{% url 'user_companies' profile.user %}">Компании добавленные пользователем {{ profile.user }}</a>
             </div>
 
         </div>

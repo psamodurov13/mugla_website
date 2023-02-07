@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin, CreateView
 
 from cities.models import City
+from users.models import User
 from comments.forms import PostCommentForm
 from comments.models import PostComments
 from mugla_site.utils import get_subcategories
@@ -77,7 +78,7 @@ class TagPost(Blog):
         return context
 
     def get_queryset(self):
-        return Post.objects.filter(tags__slug=self.kwargs['slug']).order_by('pk')
+        return Post.objects.filter(tags__slug=self.kwargs['slug'] & Q(is_published=True)).order_by('pk')
 
 
 class CityPost(Blog):
@@ -93,7 +94,39 @@ class CityPost(Blog):
         return context
 
     def get_queryset(self):
-        return Post.objects.filter(cities__slug=self.kwargs['slug'])
+        return Post.objects.filter(cities__slug=self.kwargs['slug'] & Q(is_published=True))
+
+
+class UserNews(Blog):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['instance'] = User.objects.get(username=self.kwargs['slug'])
+        context['title'] = 'Новости пользователя ' + context['instance'].username
+        all_categories = show_categories()
+        context['categories'] = get_subcategories(all_categories, 'Новости')
+        context['breadcrumbs'] = []
+        return context
+
+    def get_queryset(self):
+        return Post.objects.filter(Q(author__username=self.kwargs['slug']) &
+                                   Q(category__in=Category.objects.get(title='Новости')
+                                     .get_descendants(include_self=True)) & Q(is_published=True))
+
+
+class UserArticles(Blog):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['instance'] = User.objects.get(username=self.kwargs['slug'])
+        context['title'] = 'Статьи пользователя ' + context['instance'].username
+        all_categories = show_categories()
+        context['categories'] = get_subcategories(all_categories, 'Статьи')
+        context['breadcrumbs'] = []
+        return context
+
+    def get_queryset(self):
+        return Post.objects.filter(Q(author__username=self.kwargs['slug']) &
+                                   Q(category__in=Category.objects.get(title='Статьи')
+                                     .get_descendants(include_self=True)) & Q(is_published=True))
 
 
 class PostPage(FormMixin, DetailView):

@@ -9,6 +9,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin, CreateView
 
 from cities.models import City
+from users.models import User
 from comments.forms import PostCommentForm, CompanyCommentForm
 from comments.models import CompanyComments
 from mugla_site import settings
@@ -82,6 +83,18 @@ class CityCompanies(CompaniesList):
 
     def get_queryset(self):
         return Company.objects.filter(Q(cities__slug=self.kwargs['slug']) & Q(is_published=True)).prefetch_related('tags').select_related('author')
+
+
+class UserCompanies(CompaniesList):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['instance'] = User.objects.get(username=self.kwargs['slug'])
+        context['title'] = 'Организации добавленные пользователем ' + context['instance'].username
+        return context
+
+    def get_queryset(self):
+        return Company.objects.filter(Q(author__username=self.kwargs['slug']) &
+                                      Q(is_published=True)).prefetch_related('tags').select_related('author')
 
 
 class CompanyPage(FormMixin, DetailView):
