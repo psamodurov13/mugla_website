@@ -96,6 +96,7 @@ TEMPLATES = [
                 'menu_tag': 'templatetags.menu',
                 'sidebar_tags': 'templatetags.sidebar',
                 'tags_list_tag': 'templatetags.tags_list',
+                'footer_tags': 'templatetags.footer'
             },
         },
     },

@@ -65,15 +65,15 @@
                     zoom: 12
                 });
 
+                infoWindow = new google.maps.InfoWindow; //static infoWindow for all your markers
+                google.maps.event.addDomListener(window, 'load', function() {
                 // The marker, positioned at City
                 const marker_city = new google.maps.Marker({
                     position: { lat: {{ city.latitude }}, lng: {{ city.longitude }} },
                     map: map,
                 });
                 marker_city.addListener('click', function() {
-                    infoWindow = new google.maps.InfoWindow({
-                        content: "<strong><a href=\"\">{{ city.title }}</a></strong><p></p>"
-                    });
+                    infoWindow.setContent("<strong><a href=\"\">{{ city.title }}</a></strong><p></p>");
                     infoWindow.open(map, marker_city);
                 });
 
@@ -101,9 +101,7 @@
                         var item = data[marker.id];
                         var contentString = '<div class="map__window" style="color: #000"><div class="map__window-title"><a href="' + item.url + '">' + item.name + '</a></div><p class="map__window-description">' + item.description + '</p></div>';
 
-                        infoWindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
+                        infoWindow.setContent(contentString);
                         infoWindow.open(map, marker);
                     });
 
@@ -112,20 +110,24 @@
                     infoWindow.close();
                 });
 
-
+            });
 
             });
         }
+
         window.initMap = initMap;
+
         </script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
+    </script>
 
 
 
 
 
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
-        </script>
+
+
 
     {% endif %}
     <!-- / main body -->
@@ -267,3 +269,4 @@
 </div>
 
 {% endblock %}
+

@@ -267,11 +267,11 @@ td{border-width:0 1px;}
 .faico a{color:#474747; background-color:#F7F7F7;}
 .faico a:hover{color:#FFFFFF;}
 
-.faicon-dribble:hover{background-color:#EA4C89;}
+.faicon-instagram:hover{background-color:#EA4C89;}
 .faicon-facebook:hover{background-color:#3B5998;}
 .faicon-google-plus:hover{background-color:#DB4A39;}
-.faicon-linkedin:hover{background-color:#0E76A8;}
-.faicon-twitter:hover{background-color:#00ACEE;}
+.faicon-whatsapp:hover{background-color:#1aaf00;}
+.faicon-telegram:hover{background-color:#00ACEE;}
 .faicon-vk:hover{background-color:#4E658E;}
 
 
@@ -763,4 +763,10 @@ width: 100%;
 width: 100%;
 height: 400px;
 background-color: grey;
+}
+
+.mw-header .mw-adress-input-wrap {
+    min-height: 36px;
+    margin: 5px 0;
+    float: none;
 }

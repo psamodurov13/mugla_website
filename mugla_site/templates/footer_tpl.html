@@ -1,0 +1,8 @@
+{% for post in last_posts %}
+<article class="btmspace-30">
+  <h6 class="nospace font-x1"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h6>
+  <time class="created">{{ post.created_at }}</time>
+  <hr>
+  <p class="created">{{ post.description|truncatewords:10 }}</p>
+</article>
+{% endfor %}

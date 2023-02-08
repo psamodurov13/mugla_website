@@ -77,6 +77,8 @@
                         zoom: 7
                     });
 
+            infoWindow = new google.maps.InfoWindow; //static infoWindow for all your markers
+            google.maps.event.addDomListener(window, 'load', function() {
                 for(var i = 0; i < data.length; i++) {
                     var item = data[i];
                     var base_url = "http://maps.google.com/mapfiles/ms/icons/";
@@ -84,7 +86,6 @@
                         position: {lat: item.lat, lng: item.lon},
                         map: map,
                         id: i,
-                        icon: base_url + "green-dot.png"
                     });
                     marker.addListener('click', function() {
                         var marker = this;
@@ -93,13 +94,11 @@
                             marker.position.lat(),
                             marker.position.lng()
                         );
-                        map.setZoom(15);
+                        map.setZoom(10);
                         var item = data[marker.id];
                         var contentString = '<div class="map__window" style="color: #000"><div class="map__window-title"><a href="' + item.url + '">' + item.name + '</a></div><p class="map__window-description">' + item.description + '</p></div>';
 
-                        infoWindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
+                        infoWindow.setContent(contentString);
                         infoWindow.open(map, marker);
                     });
 
@@ -108,11 +107,14 @@
                     infoWindow.close();
                 });
 
-
+            });
 
             });
         }
+
+
         window.initMap = initMap;
+
         </script>
 
 
@@ -120,7 +122,7 @@
 
 
 
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
         </script>
 
     <!-- / main body -->
