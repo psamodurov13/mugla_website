@@ -27,6 +27,7 @@ urlpatterns = [
     path('companies/', include('companies.urls')),
     path('maps/', include('maps.urls')),
     path('feedback/', include('feedback.urls')),
+    path('subscription/', include('subscription.urls')),
     path('', include('home.urls')),
 ]
 

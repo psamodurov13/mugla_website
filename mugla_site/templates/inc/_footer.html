@@ -1,4 +1,5 @@
 {% load footer_tags %}
+{% load subscription_tags %}
 
 <div class="wrapper coloured">
   <article class="hoc cta container">
@@ -62,16 +63,9 @@
       {% get_last_posts %}
     </div>
     <div class="one_quarter">
-      <h6 class="heading">Consectetur orci cras</h6>
-      <p class="nospace btmspace-15">Congue eget dolor ac tristique non sapien vulputate ornare enim eu egestas ipsum.</p>
-      <form method="post" action="#">
-        <fieldset>
-          <legend>Newsletter:</legend>
-          <input class="btmspace-15" type="text" value="" placeholder="Name">
-          <input class="btmspace-15" type="text" value="" placeholder="Email">
-          <button type="submit" value="submit">Submit</button>
-        </fieldset>
-      </form>
+      <h6 class="heading">Подписка на новости</h6>
+      <p class="nospace btmspace-15">Подпишись на важные уведомления и будь в курсе происходящего</p>
+      {% subscription_form %}
     </div>
   </footer>
 </div>
@@ -79,8 +73,7 @@
 
 <div class="wrapper row5">
   <div id="copyright" class="hoc clear">
-    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a target="_blank" href="https://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
+    <p class="fl_left">В Турции &copy; 2022 - сайта для русскоговорящих иммигрантов - <a href="#">Domain Name</a></p>
   </div>
 </div>
 

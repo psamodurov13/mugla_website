@@ -1,0 +1,8 @@
+<div class="custom_form">
+    <form action="{% url 'subscription' %}" method="post">
+        {% csrf_token %}
+        {{ subscription_form.non_field.errors }}
+        {{ subscription_form.as_p }}
+        <button type="submit" value="Отправить" name="subscription_button">Отправить</button>
+    </form>
+</div>
