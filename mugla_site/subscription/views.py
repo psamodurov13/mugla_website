@@ -1,10 +1,13 @@
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import CreateView
 # Create your views here.
+from mugla_site.tasks import send_email_to_user
 from subscription.forms import SubscriptionForm
 from subscription.models import Subscription
+from mugla_site.settings import FROM_EMAIL, ADMIN_EMAIL
 
 
 class SubscriptionView(CreateView):
@@ -17,7 +20,8 @@ class SubscriptionView(CreateView):
         data = form.data
         content = f'Вы успешно подписаны на новости'
         email = data['email']
-        # send_notification(content, email)
+        send_email_to_user.delay(email, 'Подписка на новости', content)
+        send_email_to_user.delay(ADMIN_EMAIL, 'Новый подписчик', f'Новый подписчик - {data["name"]}, {email}')
         print(self.request.__dict__['META']['HTTP_REFERER'])
         messages.success(self.request, 'Вы успешно подписались на новости')
         return super().form_valid(form)
@@ -34,7 +38,4 @@ class SubscriptionView(CreateView):
         return HttpResponseRedirect(self.request.__dict__['META']['HTTP_REFERER'].replace(
             self.request.__dict__['META']['HTTP_ORIGIN'], ''))
 
-# # Функция отправки сообщения
-# def send_notification(content, email):
-#     send_mail('Подписка на новости', content, 'psamodurov13@yandex.ru', [email])
 

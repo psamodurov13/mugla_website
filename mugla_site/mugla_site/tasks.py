@@ -1,13 +1,22 @@
 from celery import shared_task
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 from mugla_site.celery import app
 
-from mugla_site.utils import send
+from mugla_site.utils import send, send_html_email
+
 
 @app.task
 def send_email_to_user(user_email, subject, text):
     send(user_email, subject, text)
+
+
+@app.task
+def send_html_email_to_user(user_email, subject, html_message):
+    send_html_email(user_email, subject, html_message)
+
+
 
 
 @app.task

@@ -21,6 +21,7 @@ from transliterate import slugify
 from jsonview.decorators import json_view
 from django.template.context_processors import csrf
 from image_cropping.utils import get_backend
+from mugla_site.tasks import send_html_email_to_user
 
 
 class CompaniesList(ListView):
@@ -174,7 +175,13 @@ def create_company_ajax(request):
                 item.image = image
                 item.company = new_company
                 item.save()
-
+            url = f'http://{request.META["HTTP_HOST"]}/companies/company/{new_company.slug}/'
+            send_html_email_to_user.delay(
+                request.user.email,
+                'Ваша компания отправлена на модерацию',
+                f'Благодарим Вас за добавление компании. Она будет доступна по адресу <a href="{url}">{url}</a> '
+                f'после прохождения модерации'
+            )
             messages.success(request, 'Организация добавлена')
             return JsonResponse({'error': False, 'message': 'Компания добавлена'})
         else:

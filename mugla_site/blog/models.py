@@ -6,6 +6,8 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 from mugla_site.utils import BaseModel
 from cities.models import City
+from mugla_site.tasks import send_html_email_to_user
+from mugla_site.settings import domain
 
 
 class Category(BaseModel, MPTTModel):
@@ -53,6 +55,18 @@ class Post(BaseModel, models.Model):
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'slug': self.slug})
+
+    # def save(self):
+    #     if self.id:
+    #         url = f'{domain}blog/posts/{self.slug}/'
+    #         old_foo = Post.objects.get(pk=self.id)
+    #         if old_foo.is_published == False and self.is_published == True:
+    #             send_html_email_to_user.delay(
+    #                 self.author.email,
+    #                 'Ваша публикация прошла модерацию',
+    #                 f'Публикация прошла модерацию и доступна по адресу <a href="{url}">{url}</a>'
+    #             )
+    #     super(Post, self).save()
 
     class Meta:
         verbose_name = 'Пост'

@@ -5,8 +5,11 @@ from django.core.mail import send_mail
 from django.db import models, IntegrityError
 from image_cropping import ImageRatioField
 import time
+from django.core.mail import EmailMultiAlternatives
 
 from django.utils.safestring import mark_safe
+
+from mugla_site.settings import FROM_EMAIL
 
 
 class CustomStr():
@@ -95,7 +98,13 @@ class BaseAdmin(PrePopulatedSlug, admin.ModelAdmin):
 
 
 def send(user_email, subject, text):
-    send_mail(subject, text, 'psamodurov13@yandex.ru', [user_email], fail_silently=False)
+    send_mail(subject, text, FROM_EMAIL, [user_email], fail_silently=False)
+
+
+def send_html_email(user_email, subject, text):
+    msg = EmailMultiAlternatives(subject=subject, from_email=FROM_EMAIL, to=[user_email])
+    msg.attach_alternative(text, "text/html")
+    msg.send()
 
 
 def get_subcategories(all_categories, head_category):

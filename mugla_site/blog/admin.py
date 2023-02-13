@@ -30,6 +30,16 @@ class PostAdmin(ImageCroppingMixin, BaseAdmin):
               'get_photo', 'is_published', 'tags', 'cities', 'views', 'created_at', 'author', 'important')
     readonly_fields = ('get_photo', 'views', 'created_at')
 
+    def save_model(self, request, obj, form, change):
+        if 'is_published' in form.changed_data and obj.is_published == True:
+            url = f'{domain}blog/posts/{obj.slug}/'
+            send_html_email_to_user.delay(
+                obj.author.email,
+                'Ваша публикация прошла модерацию',
+                f'Публикация прошла модерацию и доступна по адресу <a href="{url}">{url}</a>'
+            )
+        obj.save()
+
 
 class CategoryAdmin(ImageCroppingMixin, BaseAdmin, DraggableMPTTAdmin):
     list_display = ('id', 'title', 'get_photo')

@@ -14,6 +14,8 @@ from pathlib import Path
 from easy_thumbnails.conf import Settings as thumbnail_settings
 from .configs import *
 
+domain = f'http://127.0.0.1:8000/'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -266,6 +268,9 @@ EMAIL_HOST_USER = EMAIL_USER
 EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+FROM_EMAIL = 'psamodurov13@yandex.ru'
+ADMIN_EMAIL = 'psamodurov13@gmail.com'
 
 # REDIS settings
 REDIS_HOST = '0.0.0.0'

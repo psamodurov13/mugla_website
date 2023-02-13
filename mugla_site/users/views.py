@@ -1,12 +1,9 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404, reverse
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView
 
 from blog.models import Post
-from mugla_site.utils import send
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm, CropAvatarForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
@@ -16,7 +13,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
 from django.views.generic.detail import DetailView
 
 from .models import Profile
-from .tasks import send_email_to_user
+from mugla_site.tasks import send_email_to_user
 
 
 class ProfileView(DetailView):
@@ -138,7 +135,7 @@ class ConfirmResetPassword(PasswordResetConfirmView):
     template_name = 'users/password_reset_confirm.html'
 
 
-class DoneResetPasword(PasswordResetDoneView):
+class DoneResetPassword(PasswordResetDoneView):
     template_name = 'users/password_reset_done.html'
 
 

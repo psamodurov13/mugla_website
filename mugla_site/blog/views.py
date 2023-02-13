@@ -17,6 +17,7 @@ from django.db.models import F, Q
 from transliterate import slugify
 from jsonview.decorators import json_view
 from image_cropping.utils import get_backend
+from mugla_site.tasks import send_email_to_user, send_html_email_to_user
 
 
 class Home(ListView):
@@ -230,6 +231,13 @@ def create_post_ajax(request):
             new_post.cities.set(cities_data)
             print(f'DATA - {new_post}')
             new_post.save()
+            url = f'http://{request.META["HTTP_HOST"]}/blog/posts/{new_post.slug}/'
+            send_html_email_to_user.delay(
+                request.user.email,
+                'Ваша публикация отправлена на модерацию',
+                f'Благодарим Вас за публикацию. Она будет доступна по адресу <a href="{url}">{url}</a> '
+                f'после прохождения модерации'
+            )
             messages.success(request, 'Пост добавлен')
             return JsonResponse({'error': False, 'message': 'Пост добавлен'})
         else:
