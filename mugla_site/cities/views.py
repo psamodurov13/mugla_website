@@ -13,6 +13,21 @@ def index(request):
     return render(request, 'cities/index.html')
 
 
+class RegionListPage(ListView):
+    model = Region
+    template_name = 'cities/regions.html'
+    context_object_name = 'regions'
+    allow_empty = False
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регионы'
+        return context
+
+    def get_queryset(self):
+        return Region.objects.all().order_by('pk')
+
+
 class CityPage(DetailView):
     model = City
     context_object_name = 'city'

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags_list_tag %}
+{% load cropping %}
+{% load thumbnail %}
+
+
+{% block title %}{{ title }} - {{ block.super }}{% endblock %}
+
+
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    {% for item in breadcrumbs %}
+    <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+    {% endfor %}
+    <li>{{ title }}</li>
+  </ul>
+{% endblock %}
+
+    {% block content %}
+    <div class="content col-sm-12 col-md-9">
+      <div class="latest row row-cols-1 row-cols-md-2">
+        {% for region in regions %}
+          <a href="#">{{ region.title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+
+
+
+    {% block sidebar %}
+    {% include 'inc/_sidebar_blog.html' %}
+    {% endblock %}
+
+
+
