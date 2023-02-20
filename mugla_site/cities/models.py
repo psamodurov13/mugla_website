@@ -11,6 +11,9 @@ class Region(BaseModel):
     content = models.TextField(verbose_name='Описание')
     location = models_loc.PointField(help_text="Use map widget for point the house location", blank=True, null=True)
 
+    def get_absolute_url(self):
+        return reverse('region', kwargs={'slug': self.slug})
+
 
 class City(BaseModel, models.Model):
     title = models.CharField(max_length=50, verbose_name='Город')

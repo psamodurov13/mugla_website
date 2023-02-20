@@ -770,3 +770,24 @@ background-color: grey;
     margin: 5px 0;
     float: none;
 }
+
+.regions-cities {
+text-align: center;
+padding: 10px 40px;
+}
+
+.region-title {
+font-family: Georgia, "Times New Roman", Times, serif;
+font-size: 1.4rem;
+border-bottom: 1px solid gray;
+display: block;
+padding: 10px;
+}
+
+.regions-cities ul {
+list-style: none;
+padding: 20px;
+}
+
+
+

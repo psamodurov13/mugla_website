@@ -11,6 +11,7 @@
 {% block breadcrumbs %}
   <ul>
     <li><a href="/">Главная</a></li>
+    <li><a href="{% url 'regions' %}">Регионы</a></li>
     {% for item in breadcrumbs %}
     <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
     {% endfor %}
@@ -28,11 +29,11 @@
           <div id="map"></div>
 
 
-        {{ regions_coords|json_script:"regions-data"}}
+        {{ cities_coords|json_script:"cities-data"}}
 
         <script>
         function initMap() {
-            var data = JSON.parse(document.getElementById('regions-data').textContent);
+            var data = JSON.parse(document.getElementById('cities-data').textContent);
             console.log(data);
             document.addEventListener('DOMContentLoaded', function(){
                 var map = new google.maps.Map(document.getElementById("map"), {
@@ -90,16 +91,9 @@
 
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 p-5">
-        {% for region in regions %}
-            <div class="col regions-cities">
-          <a href="{{ region.get_absolute_url }}" class="region-title">{{ region.title }}</a>
-          <ul>
+        {% for city in cities %}
+            <a href="{{ city.get_absolute_url }}">{{ city.title }}</a>
 
-              {% for city in region.cities %}
-              <li><a href="{{ city.get_absolute_url }}">{{ city.title }}</a></li>
-              {% endfor %}
-          </ul>
-                </div>
         {% endfor %}
       </div>
     </div>
