@@ -28,7 +28,7 @@
     <div class="sectiontitle">
       <h6 class="heading">Немного информации о городе</h6>
     </div>
-    <div class="row">
+    <div class="row pb-5">
       <div class="col-sm-12 col-md-4"><img class="inspace-15 borderedbox" src="{% cropped_thumbnail city 'cropping_content_photo' %}" alt=""></div>
       <div class="col-sm-12 col-md-8">
         <div class="row">
@@ -170,9 +170,9 @@
       <p>Образовательные и медицинские учреждения, развлекательные организации, кафе и рестораны, коммунальные услуги и многое другое.</p>
     </div>
 
-    <div class="group latest">
+    <div class="latest row row-cols-1 row-cols-md-2">
         {% for company in companies|slice:4 %}
-          <article class="one_half">
+          <article class="col mb-5">
             <a href="{{ company.get_absolute_url }}">
               {% if post.photo %}
                 <img src="{% cropped_thumbnail company 'cropping_thumb' %}">
@@ -234,9 +234,9 @@
       <h6 class="heading">Новости</h6>
     </div>
 
-    <div class="group latest">
+    <div class="latest row row-cols-1 row-cols-md-2">
         {% for post in posts|slice:4 %}
-          <article class="one_half">
+          <article class="col mb-5">
             <a href="{{ post.get_absolute_url }}">
               {% if post.photo %}
                 <img src="{% cropped_thumbnail post 'cropping_thumb' %}">

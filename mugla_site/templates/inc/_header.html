@@ -29,10 +29,10 @@
   <header id="header" class="hoc clear">
       {% cache 20 header %}
     <section>
-      <div><i class="fa fa-phone"></i> +00 (123) 456 7890</div>
-      <div>
-        <h1 id="logo"><a href="{% url 'home' %}">Nalpure</a></h1>
-      </div>
+        <div>
+            <a href="{% url 'home' %}"><img src="/media/logos/turk-logo.png" class="logo"></a>
+        </div>
+
       <div>
         <form class="clear" method="get" action="{% url 'search' %}">
           <fieldset>

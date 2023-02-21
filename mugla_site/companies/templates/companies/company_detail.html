@@ -132,7 +132,7 @@
                 {% for comment in comments %}
                 <div class="comment">
                     <div class="author-info">
-                        <img src="{{ comment.author.profile.image.url }}" alt="">
+                        <img src="{% cropped_thumbnail comment.author.profile 'cropping_avatar' %}" alt="">
                         <div class="comment-info">
                             от <a href="{{ comment.author.profile.get_absolute_url }}">{{ comment.author }}</a>
                             <p>{{ comment.created_at }}</p>

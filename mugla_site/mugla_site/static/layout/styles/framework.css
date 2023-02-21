@@ -8,6 +8,17 @@ Licence URI: https://www.os-templates.com/template-terms
 File: Framework CSS
 */
 
+:root {
+    --primary-color: #7FC7FF;
+    --secondary-color: #7A7A7A;
+    --additional-color: white;
+    --dark-color: black;
+    --link-color: #7FC7FF;
+    --link-hover-color: #7FC7FF;
+    --primary-font: Verdana, Geneva, sans-serif;
+    --secondary-font: ProximaNova;
+}
+
 html{overflow-y:scroll; overflow-x:hidden;}
 html, body{margin:0; padding:0; font-size:14px; line-height:1.6em;}
 
@@ -53,8 +64,8 @@ img{width:auto; max-width:100%; height:auto; margin:0; padding:0; border:none; l
 
 /* Fonts
 --------------------------------------------------------------------------------------------------------------- */
-body, input, textarea, select{font-family:Verdana, Geneva, sans-serif;}
-h1, h2, h3, h4, h5, h6, .heading{font-family:Georgia, "Times New Roman", Times, serif;}
+body, input, textarea, select{font-family: var(--primary-font);}
+h1, h2, h3, h4, h5, h6, .heading{font-family: var(--primary-font);}
 
 
 /* Forms
@@ -68,7 +79,7 @@ label{margin-bottom:5px;}
 
 /* Generalise
 --------------------------------------------------------------------------------------------------------------- */
-h1, h2, h3, h4, h5, h6, .heading{margin:0 0 20px 0; font-size:1.4rem; line-height:normal; font-weight:normal; text-transform:capitalize;}
+h1, h2, h3, h4, h5, h6, .heading{margin:0 0 20px 0; font-size:1.4rem; line-height:normal; font-weight:normal;}
 .heading.nospace{margin:0;}
 
 address{font-style:normal; font-weight:normal;}

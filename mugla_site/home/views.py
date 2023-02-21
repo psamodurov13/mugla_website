@@ -27,5 +27,6 @@ def view_home(request):
                             'url': city.get_absolute_url()}
             cities_coords.append(city_info)
     context['cities_coords'] = cities_coords
+    context['articles'] = Post.objects.filter(important=True)
     print(context['cities_coords'])
     return render(request, 'home/index.html', context)

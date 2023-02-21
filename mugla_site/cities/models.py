@@ -44,3 +44,13 @@ class CityGallery(CustomGallery):
 def show_cities():
     cities = City.objects.all()
     return cities
+
+
+def get_regions():
+    regions = Region.objects.all()
+    return regions
+
+
+def filter_cities_by_region(region):
+    cities_by_region = City.objects.filter(region=region)
+    return cities_by_region

@@ -1,11 +1,18 @@
 {% load mptt_tags %}
 <nav id="mainav">
     <ul class="clear">
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a class="drop" href="#">Cities</a>
+        <li><a href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a class="drop" href="{% url 'regions' %}">Города</a>
             <ul>
-                {% for item in cities %}
-                <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
+                {% for region in cities_by_regions %}
+                <li>
+                    <a class="drop" href="{{ region.name.get_absolute_url }}">{{ region.name.title }}</a>
+                    <ul class="children">
+                    {% for city in region.cities %}
+                        <li><a href="{{ city.get_absolute_url }}">{{ city.title }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </li>
                 {% endfor %}
             </ul>
         </li>
@@ -57,8 +64,6 @@
                 {% endrecursetree %}
             </ul>
         </li>
-        <li><a href="#">Link Text</a></li>
-        <li><a href="#">Link Text</a></li>
         <li><a href="{% url 'feedback' %}">Обратная связь</a></li>
     </ul>
 </nav>
