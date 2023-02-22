@@ -109,8 +109,12 @@ class CityGalleryPage(ListView):
     paginate_by = 4
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        self.object_list = self.object_list.filter(city=City.objects.get(slug=self.kwargs["slug"]).id)
         context = super().get_context_data(**kwargs)
         context['city'] = City.objects.get(slug=self.kwargs['slug'])
+        context['region'] = context['city'].region
+        # object_list = CityGallery.objects.filter(city=context['city'].id)
+
         return context
 
     # def get(self, request, *args, **kwargs):

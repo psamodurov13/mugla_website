@@ -58,7 +58,7 @@ class CompanyAdmin(ImageCroppingMixin, BaseAdmin):
               'location',
               'type', 'content', 'description', 'photo', 'cropping', 'cropping_thumb',
               'get_photo', 'site', 'phone', 'whatsapp', 'telegram', 'note', 'russian_speak', 'english_speak',
-              'is_published', 'tags', 'cities', 'views', 'created_at', 'author')
+              'is_published', 'tags', 'cities', 'views', 'created_at', 'author', 'from_internet')
     readonly_fields = ('get_photo', 'views', 'created_at')
     inlines = [GalleryInline, ]
 

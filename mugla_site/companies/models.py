@@ -62,6 +62,8 @@ class Company(BaseModel, models.Model):
     # address = map_fields.AddressField(max_length=200)
     # geolocation = map_fields.GeoLocationField(max_length=100)
     location = models_loc.PointField(help_text="Use map widget for point the house location", blank=True, null=True)
+    from_internet = models.BooleanField(default=False, verbose_name='Добавлено из интернета (загружено и автоматически '
+                                                                    'переведено)')
 
     def get_absolute_url(self):
         return reverse('company', kwargs={'slug': self.slug})

@@ -3,7 +3,18 @@
 {% load cropping %}
 {% load tags_list_tag %}
 
-{% block title %}{{ city.title }} - {{ block.super }}{% endblock %}
+{% block title %}Галерея города {{ city }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+  <ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="{% url 'regions' %}">Регионы</a></li>
+    <li><a href="{{ region.get_absolute_url }}">{{ region }}</a></li>
+    <li><a href="{{ city.get_absolute_url }}">{{ city }}</a></li>
+    <li>Галерея города {{ city }}</li>
+
+  </ul>
+{% endblock %}
 
 {% block h1 %}Галерея города {{ city }}{% endblock %}
 

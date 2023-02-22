@@ -36,7 +36,9 @@
               <h6 class="heading">{{ company.title }}</h6>
               <p>{{ company.description }}</p>
               <div class="clear">
-                <footer class=" fl_right"><a href="{{ company.get_absolute_url }}">Читать далее</a></footer>
+                <footer class=" fl_right">
+                  <a href="{{ company.get_absolute_url }}">Читать далее</a>
+                </footer>
                 <div class="created">{{ company.created_at }}</div>
                 <ul class="nospace meta fl_left">
                   <li><i class="fa fa-user"></i> <a href="#">{{ company.author.username }}</a></li>
@@ -45,9 +47,12 @@
                     {% show_post_tags company %}
                   </li>
                   {% endif %}
+                  {% if company.from_internet %}
+                  <li class="from-internet"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADI0lEQVR4nO1ZSWsUQRjtqKBG3BAXPCoueDMnl5sRFyIu0fwDt4NRQjJMvdcDdYhxQfEXRAVJxCQuBwU3NHoXiehBPRkjGs1JYnJwiVIygfJL91TP9GRssR/UZfrVV+9NLV39fZ6XIkWKskNrPQPAKZKD+XaysbFxupc0aK0Xaa2n2L81NTXNBPCY5E+7Aeg1xmxuQ0PDVBPjbwifR7KNZLt8BuCiFG+ZOC/5JC+YWCZmRcSTrAMwRHIsl8utEs+2hokfb77vb7b7AFhjYuVjbp804VrraQBOmMHyYu4KShWAFy4DJJ8ZrjB+L//MxG4zS6vs4kleE8uhXojYFUH876aU2mH3BbBPcHrKZsJsUgAdQvyw2axCxJ2oBgDcCtj4w4J3SR4QJYHkuQARXTYnk8ksJfm9CAPfWlpalohxegJ4Z2KJB1BrrXk78AEx+OGo4sNiADgUwBtTSm0rSXw2m51Lsj9o8Fwut0IYuFGCget2DKXUyhDeO6XU/JJMpEjxP4JkjWPz7bb5AC4Xu4Gt1inG3uPg1zgNADjmCLJO8CfcPIs4iXrtWL7vb3D0ORrFQHehIEqpZYL/OsYMvBIGljv4f7xAA0Gyz2FggTAwFMPAoIi10MF/GsXAQKEgzc3Ns8SgwzGW0Gc7ViaTme3o0x/FwGihIPKWaO41MWbga8CttxB/1GkAwEiCDXyJYuBtUpcQgDdOA2ajJHgTP4lioKtSxyiAl8UcowCuxH6RKaXWC8OPYszAQzH2Rgf/SOyrhHndC35njBnoEAbqC/Gz2exap4EUKVK4P+rNB7hXoY96kgMlf9T7vr8JwI+AoAcjpERcbb8rhhnbaPDigOTZyUhsAVjsSmyRPO2VAVUmjS4EjGitq4WA20X8+zftvlrranNRm5TUopWZvioG2GtzlFI7izBQVyi5C6C77BlqExDAcWtPTEivk3weQXyfTK8DuD++5km2ll28DZOrJPkpX5RYLZ5tibD+a0MKHB9NgcSr1BGbn42wklGYgfYQfqvWeo6XoCJfb8A//yAxRT4XTEk1X476AOC9KRslssyaIoX37+MXAcw7wNpWrAkAAAAASUVORK5CYII=" title="Данные из открытых источников. Вы можете предложить изменение или дополнение"></li>
+                  {% endif %}
                 </ul>
               </div>
-            </div>
+            </>
           </article>
         {% endfor %}
       </div>
