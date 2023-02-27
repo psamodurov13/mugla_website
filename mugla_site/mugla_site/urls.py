@@ -28,6 +28,7 @@ urlpatterns = [
     path('maps/', include('maps.urls')),
     path('feedback/', include('feedback.urls')),
     path('subscription/', include('subscription.urls')),
+    path('collect-data/', include('collect_data.urls')),
     path('', include('home.urls')),
 ]
 

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "maps.apps.MapsConfig",
     "feedback.apps.FeedbackConfig",
     "subscription.apps.SubscriptionConfig",
+    "collect_data.apps.CollectDataConfig",
     'ckeditor',
     'ckeditor_uploader',
     'debug_toolbar',
@@ -307,4 +308,7 @@ MAP_WIDGETS = {
     ),
     "GOOGLE_MAP_API_KEY": GOOGLE_MAPS_API_KEY
 }
+
+from loguru import logger
+logger.add('debug.log', format='{time} {level} {message}', level="INFO", rotation="15 MB", compression="zip")
 
