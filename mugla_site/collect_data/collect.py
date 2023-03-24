@@ -143,7 +143,7 @@ def collect_data(keyword, location):
             except NoSuchElementException:
                 subtitle = ''
             category = driver.find_element(By.CSS_SELECTOR, 'button[jsaction="pane.rating.category"]').text
-            location = re.findall(r'\d{2}.\d{7}', href)
+            location = re.findall(r'\d{2}.\d{2,7}', href)
             try:
                 address = driver.find_element(
                     By.CSS_SELECTOR, 'button[data-item-id="address"]'

@@ -6,7 +6,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mugla_site.settings")
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 from django.contrib.auth.models import User
-
+from django.contrib.gis.db import models as models_loc
+from django.contrib.gis.geos import Point
 
 from transliterate import slugify
 
@@ -73,6 +74,12 @@ def load_companies(res):
                                          type=Type.objects.get(title='Образование'),
                                          slug=slug)
         company.title = i['title']
+        # company.type = Type.objects.get(title=i['category'])
+        # company.subtitle = i['subtitle']
+        latitude = float(i['location'][1])
+        longitude = float(i['location'][0])
+        location_data = Point((latitude, longitude))
+        company.location = location_data
         # company.type = 1
         company.content = ''
         # company.author = User.objects.get_by_natural_key('psamodurov13')
