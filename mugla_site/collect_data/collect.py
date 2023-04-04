@@ -48,8 +48,8 @@ options.add_argument(f'user-agent={headers["User-Agent"]}')
 # driver.fullscreen_window()
 
 
-def collect_data(keyword, location):
-    notification(f'Старт парсинга - {keyword}')
+def collect_data(url, city_name):
+    notification(f'Старт парсинга - {city_name} / {url}')
     # url = f'https://www.google.com.tr/maps/search/{keyword.replace(" ", "+")}/@{location},13z'
     # response = rq.get(url, headers=headers)
     # logger.info(f'RESPONSE - {response}')
@@ -57,7 +57,8 @@ def collect_data(keyword, location):
     # logger.info(f'SOUP - {soup}')
     # with open('html.html', 'w') as file:
     #     file.write(response.text)
-    driver.get(f'https://www.google.com.tr/maps/search/{keyword.replace(" ", "+")}/@{location},13z')
+    # driver.get(f'https://www.google.com.tr/maps/search/{keyword.replace(" ", "+")}/@{location},13z')
+    driver.get(url)
     # driver.get('https://sweethomedress.ru/')
     time.sleep(2)
     #
@@ -138,12 +139,14 @@ def collect_data(keyword, location):
             driver.get(href)
             time.sleep(1)
             title = driver.find_element(By.CSS_SELECTOR, '.DUwDvf').text
+            city = city_name
             try:
                 subtitle = driver.find_element(By.CSS_SELECTOR, '.bwoZTb').text
             except NoSuchElementException:
                 subtitle = ''
             category = driver.find_element(By.CSS_SELECTOR, 'button[jsaction="pane.rating.category"]').text
-            location = re.findall(r'\d{2}.\d{2,7}', href)
+            location = re.findall(r'\d{2}\.\d{2,7}', href)
+            logger.info(f'LOCATION - {location}')
             try:
                 address = driver.find_element(
                     By.CSS_SELECTOR, 'button[data-item-id="address"]'
@@ -205,7 +208,7 @@ def collect_data(keyword, location):
                 photos_urls = []
             res[href] = {'title': title, 'subtitle': subtitle, 'category': category, 'location': location,
                          'address': address, 'phone': phone, 'website': website, 'open_hours': open_hours, 'tags': tags,
-                         'photos_urls': photos_urls}
+                         'photos_urls': photos_urls, 'city': city}
             for k, v in res[href].items():
                 logger.info(f'{k} - {v}')
         except Exception:
@@ -218,7 +221,9 @@ def collect_data(keyword, location):
 
 
 if __name__ == '__main__':
-    collect_data('anaokulu marmaris', '36.8611888,28.2643651')
+    # collect_data('anaokulu marmaris', '36.8611888,28.2643651')
+    collect_data('https://www.google.com/maps/search/anaokulu+marmaris/@36.8660487,28.2396632,14z/data=!3m1!4b1',
+                 'Мармарис')
     # collect_data('restaurants marmaris', '36.8611888,28.2643651')
     # collect_data('', '')
     logger.info('DONE')

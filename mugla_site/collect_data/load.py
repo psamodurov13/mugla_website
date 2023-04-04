@@ -1,17 +1,17 @@
-# from django.conf import settings
-#
-# settings.configure()
+# from mugla_site.wsgi import *
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mugla_site.settings")
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
 from django.contrib.auth.models import User
-from django.contrib.gis.db import models as models_loc
 from django.contrib.gis.geos import Point
+from mugla_site.settings import MEDIA_ROOT, MEDIA_URL
 
 from transliterate import slugify
 
-from companies.models import Company, Type
+from companies.models import Company, Type, CompanyTags, CompanyGallery
+from cities.models import City
+from telegram_notifications.tg_notification import notification
+from download_files import download_image
+from datetime import date
+from loguru import logger
 
 
 res = {
@@ -23,7 +23,8 @@ res = {
                    '48700 '
                    'Marmaris/Muğla ',
         'category': 'Детский '
-                    'сад',
+                    'сад 2',
+        'city': 'Кёйджегиз',
         'location': ['36.8569963',
                      '28.2629144'],
         'open_hours': {'воскресенье': 'Закрыто',
@@ -59,33 +60,100 @@ res = {
                     'Marmaris '
                     'Pinokyo '
                     'Anaokulu',
-        'tags': [],
+        'tags': ['Для детей', 'Для туристов', 'Тестовая'],
         'title': 'Ozel Marmaris Pinokyo Anaokulu',
         'website': ''},
 }
 
 
-def load_companies(res):
-    for i in res.values():
-        last_id = Company.objects.order_by('id').last().id
-        slug = slugify(i['title'], language_code='ru') + str(last_id + 1)
+def load_companies(res, query, city):
+    notification(f'Началась закрузка компаний по запросу "{query}" / {city}. Всего - {len(res)}')
+    total = 0
+    errors = 0
+    for item in res:
+        try:
+            i = res[item]
+            last_id = Company.objects.order_by('id').last().id
+            slug = slugify(i['title'], language_code='ru') + str(last_id + 1)
+            if Type.objects.filter(title=i['category']).exists():
+                company_type = Type.objects.get(title=i['category'])
+            else:
+                last_id_type = Type.objects.order_by('id').last().id
+                company_type = Type.objects.create(title=i['category'],
+                                                   slug=slugify(i['category'],
+                                                                language_code='ru') + str(last_id_type + 1))
+            company = Company.objects.create(author=User.objects.get_by_natural_key('psamodurov13'),
+                                             type=company_type,
+                                             slug=slug)
+            company.title = i['title']
+            company.cities.add(City.objects.get(title=i['city']))
+            # company.type = Type.objects.get(title=i['category'])
+            # company.subtitle = i['subtitle']
+            latitude = float(i['location'][1])
+            longitude = float(i['location'][0])
+            location_data = Point((latitude, longitude))
+            company.location = location_data
+            company.address = i['address']
+            company.phone = i['phone']
+            company.site = i['website']
+            try:
+                company.open_hours = f'ПН: {i["open_hours"]["понедельник"]}\n' \
+                             f'ВТ: {i["open_hours"]["вторник"]}\n' \
+                             f'СР: {i["open_hours"]["среда"]}\n' \
+                             f'ЧТ: {i["open_hours"]["четверг"]}\n' \
+                             f'ПТ: {i["open_hours"]["пятница"]}\n' \
+                             f'СБ: {i["open_hours"]["суббота"]}\n' \
+                             f'ВС: {i["open_hours"]["воскресенье"]}\n'
+            except KeyError:
+                company.open_hours = ''
+            for tag in i['tags']:
+                if CompanyTags.objects.filter(title=tag).exists():
+                    company.tags.add(CompanyTags.objects.get(title=tag))
+                else:
+                    last_id = CompanyTags.objects.order_by('id').last().id
+                    slug = slugify(tag, language_code='ru') + str(last_id + 1)
+                    new_tag = CompanyTags.objects.create(title=tag, slug=slug)
+                    notification(f'Создан тег - {tag}')
+                    company.tags.add(new_tag)
+            company.from_internet = True
 
-        company = Company.objects.create(author=User.objects.get_by_natural_key('psamodurov13'),
-                                         type=Type.objects.get(title='Образование'),
-                                         slug=slug)
-        company.title = i['title']
-        # company.type = Type.objects.get(title=i['category'])
-        # company.subtitle = i['subtitle']
-        latitude = float(i['location'][1])
-        longitude = float(i['location'][0])
-        location_data = Point((latitude, longitude))
-        company.location = location_data
-        # company.type = 1
-        company.content = ''
-        # company.author = User.objects.get_by_natural_key('psamodurov13')
-        company.save()
+            count = 1
+            path = f'photo/{date.today().strftime("%Y/%m/%d")}/'
+            logger.info(f'ROOT {MEDIA_ROOT}{path}')
+            if len(i['photos_urls']) > 0:
+                if not os.path.exists(f'{MEDIA_ROOT}/{path}'):
+                    os.makedirs(f'{MEDIA_ROOT}/{path}')
+            gallery_path = f'company_gallery/{date.today().strftime("%Y/%m/%d")}/'
+            if len(i['photos_urls']) > 1:
+                if not os.path.exists(f'{MEDIA_ROOT}/{gallery_path}'):
+                    os.makedirs(f'{MEDIA_ROOT}/{gallery_path}')
+            for img in i['photos_urls']:
+                name = str(company.pk) + '-' + str(count)
+                if count == 1:
+                    logger.info(f'PATH - {path}')
+                    link = path + download_image(img, name, f'{MEDIA_ROOT}/{path}')
+                    logger.info(f'LINK - {link}')
+                    company.photo = link
+                    logger.info(f'Добавлено главное фото {link}')
+                else:
+                    gallery_link = gallery_path + download_image(img, name, f'{MEDIA_ROOT}/{gallery_path}')
+                    CompanyGallery.objects.create(image=gallery_link,
+                                                  company=company, is_published=True)
+                    logger.info(f'Добавлено в галерею {gallery_link}')
+                count += 1
+
+            company.content = ''
+            company.is_published = True
+            company.google_link = item
+            company.save()
+            total += 1
+        except Exception:
+            logger.exception(f'Ошибка при загрузке компании {Exception}')
+            errors += 1
+    notification(f'Загрузка компаний по запросу "{query}" / {city} завершена.\n'
+                 f'Всего - {len(res)}\nЗагружено - {total}\nОшибок - {errors}')
 
 
 if __name__ == '__main__':
-    load_companies(res)
+    load_companies(res, 'запрос', 'город')
 

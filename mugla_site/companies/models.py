@@ -64,6 +64,9 @@ class Company(BaseModel, models.Model):
     location = models_loc.PointField(help_text="Use map widget for point the house location", blank=True, null=True)
     from_internet = models.BooleanField(default=False, verbose_name='Добавлено из интернета (загружено и автоматически '
                                                                     'переведено)')
+    address = models.CharField(max_length=255, blank=True, verbose_name='Адрес')
+    open_hours = models.TextField(max_length=1000, blank=True, verbose_name='Часы работы')
+    google_link = models.URLField(max_length=500, blank=True, verbose_name='Ссылка на компанию в Google')
 
     def get_absolute_url(self):
         return reverse('company', kwargs={'slug': self.slug})

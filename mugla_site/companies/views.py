@@ -22,6 +22,7 @@ from jsonview.decorators import json_view
 from django.template.context_processors import csrf
 from image_cropping.utils import get_backend
 from mugla_site.tasks import send_html_email_to_user
+from loguru import logger
 
 
 class CompaniesList(ListView):
@@ -130,8 +131,10 @@ class CompanyPage(FormMixin, DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
+        logger.info(f'KWARGS - {City.objects.filter(companies=self.object.id)}')
         context['gallery'] = CompanyGallery.objects.filter(Q(company=self.object.id) & Q(is_published=True))
         context['comments'] = CompanyComments.objects.filter(Q(company__slug=self.kwargs['slug']) & Q(active=True))
+        context['cities'] = City.objects.filter(companies=self.object.id)
         context['add_photo_form'] = AddCompanyPhoto()
         context['change_company_form'] = ChangeCompanyForm()
         breadcrumbs = self.object.type.get_ancestors(ascending=False, include_self=True)

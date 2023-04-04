@@ -18,6 +18,8 @@ class CustomStr():
             return self.title
         elif self.name:
             return self.name
+        elif self.query:
+            return self.query
         else:
             return self
 
