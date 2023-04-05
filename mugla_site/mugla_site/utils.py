@@ -10,6 +10,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.safestring import mark_safe
 
 from mugla_site.settings import FROM_EMAIL
+from PIL import Image
 
 
 class CustomStr():
@@ -114,3 +115,23 @@ def get_subcategories(all_categories, head_category):
     subcategories_id = [i.id for i in all_categories.filter(parent=head_category_id)]
     subcategories_id.append(head_category_id)
     return all_categories.filter(parent__in=subcategories_id)
+
+
+def crop_image(pil_img, crop_width: int, crop_height: int):
+    img_width, img_height = pil_img.size
+    return f'{str(round((img_width - crop_width) // 2))},' \
+           f'{str(round((img_height - crop_height) // 2))},' \
+           f'{str(round((img_width + crop_width) // 2))},' \
+           f'{str(round((img_height + crop_height) // 2))}'
+
+
+def format_image_size(path, img_format):
+    img = Image.open(path)
+    width, height = img.size
+    if width / height > img_format:
+        h = height
+        w = height * img_format
+    else:
+        w = width
+        h = width / img_format
+    return crop_image(img, w, h)

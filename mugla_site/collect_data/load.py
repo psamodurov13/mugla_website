@@ -12,6 +12,7 @@ from telegram_notifications.tg_notification import notification
 from download_files import download_image
 from datetime import date
 from loguru import logger
+from mugla_site.utils import crop_image, format_image_size
 
 
 res = {
@@ -35,7 +36,8 @@ res = {
                        'суббота': 'Закрыто',
                        'четверг': '07:30–17:30'},
         'phone': '05321709812',
-        'photos_urls': ['https://lh5.googleusercontent.com/p/AF1QipMTt4E8Cq_Ayp49rtwWZAD6qzyd_b5p0RWOLve-=s878-k-no',
+        'photos_urls': ['https://sweethomedress.ru/image/cache/catalog/supplier1/ck_cb6_0zwf91vg6xsnl1df7wa82sx1x416am01-1000x1500.webp',
+                        'https://lh5.googleusercontent.com/p/AF1QipMTt4E8Cq_Ayp49rtwWZAD6qzyd_b5p0RWOLve-=s878-k-no',
                         'https://lh5.googleusercontent.com/p/AF1QipNKy568pJTq6wsm5iR3jsSNDOJkISnPhGRRwsyu=s1105-k-no',
                         'https://lh5.googleusercontent.com/p/AF1QipOZ_LreYSc8g5vYNQGXMD1337nuCB-Hywrx6dEV=s1031-k-no',
                         'https://lh5.googleusercontent.com/p/AF1QipMFcWSL7XWnhZ-EY48V8lrhxg8cmfH6ctFY94HB=s1031-k-no',
@@ -135,13 +137,15 @@ def load_companies(res, query, city):
                     logger.info(f'LINK - {link}')
                     company.photo = link
                     logger.info(f'Добавлено главное фото {link}')
+                    cropping_thumb = format_image_size(f'{MEDIA_ROOT}/{link}', 4 / 3)
+                    logger.info(f'CROPPING {cropping_thumb}')
+                    company.cropping_thumb = cropping_thumb
                 else:
                     gallery_link = gallery_path + download_image(img, name, f'{MEDIA_ROOT}/{gallery_path}')
                     CompanyGallery.objects.create(image=gallery_link,
                                                   company=company, is_published=True)
                     logger.info(f'Добавлено в галерею {gallery_link}')
                 count += 1
-
             company.content = ''
             company.is_published = True
             company.google_link = item
@@ -155,5 +159,5 @@ def load_companies(res, query, city):
 
 
 if __name__ == '__main__':
-    load_companies(res, 'запрос', 'город')
+    load_companies(res, 'anaokulu marmaris', 'Мармарис')
 
