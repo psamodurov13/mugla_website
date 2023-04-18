@@ -34,13 +34,13 @@
         <div class="row">
           <div class="col-sm-12 col-md-6 text-center">
             <article>
-              <h6 class="heading"><a href="#">Население</a></h6>
+              <h6 class="heading">Население</h6>
               <p class="nospace">{{ city.populate }} чел.</p>
             </article>
           </div>
           <div class="col-sm-12 col-md-6 text-center">
             <article>
-              <h6 class="heading"><a href="#">До аэропорта</a></h6>
+              <h6 class="heading">До аэропорта</h6>
               <p class="nospace">{{ city.distance_to_airport }} км</p>
             </article>
           </div>
@@ -147,8 +147,8 @@
     <div class="row overview services">
       {% for article in articles %}
       <div class="col-sm-12 col-md-4 text-center p-3">
-        <article><a href="#"><i class="fa fa-500px"></i></a>
-          <h6 class="heading"><a href="#">{{ article.title }}</a></h6>
+        <article>
+          <h6 class="heading"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h6>
           <p>{{ article.description }}</p>
           <footer><a href="{{ article.get_absolute_url }}">Читать подробнее &raquo;</a></footer>
         </article>
@@ -171,10 +171,10 @@
     </div>
 
     <div class="latest row row-cols-1 row-cols-md-2">
-        {% for company in companies|slice:4 %}
+        {% for company in companies|slice:8 %}
           <article class="col mb-5">
             <a href="{{ company.get_absolute_url }}">
-              {% if post.photo %}
+              {% if company.photo %}
                 <img src="{% cropped_thumbnail company 'cropping_thumb' %}">
               {% else %}
                 <img src="https://free4kwallpapers.com/uploads/originals/2015/10/07/beautifull-painting.jpg">
@@ -216,7 +216,7 @@
       <h6 class="heading">Галерея</h6>
     </div>
     <div class="row m-3">
-      {% for img in gallery|slice:4 %}
+      {% for img in gallery|slice:8 %}
             <div class="col-sm-12 col-md-3 p-3"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></div>
       {% endfor %}
       </div>
@@ -235,7 +235,7 @@
     </div>
 
     <div class="latest row row-cols-1 row-cols-md-2">
-        {% for post in posts|slice:4 %}
+        {% for post in posts|slice:8 %}
           <article class="col mb-5">
             <a href="{{ post.get_absolute_url }}">
               {% if post.photo %}

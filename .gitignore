@@ -1,0 +1,14 @@
+/mugla_site/media/
+
+/mugla_site/mugla_site/configs.py
+*.pyc
+*.log
+*.idea
+*.djcache
+
+/mugla_site/mugla_site/prod_settings.py
+/mugla_site/mugla_site/local_settings.py
+
+/mugla_site/config/
+
+venv

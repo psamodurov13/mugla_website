@@ -60,7 +60,7 @@ def collect_data(url, city_name):
     # driver.get(f'https://www.google.com.tr/maps/search/{keyword.replace(" ", "+")}/@{location},13z')
     driver.get(url)
     # driver.get('https://sweethomedress.ru/')
-    time.sleep(2)
+    time.sleep(5)
     #
     # footer = driver.find_element(By.CSS_SELECTOR, "div.dS8AEf")
     # delta_y = footer.rect['y']
@@ -97,7 +97,7 @@ def collect_data(url, city_name):
     while True:
         # driver.execute_script("document.getElementsByClassName('m6QErb').scrollTop = document.getElementsByClassName('m6QErb').scrollHeight;")
         time.sleep(rd.randint(1, 4))
-        left_side = driver.find_element(By.CSS_SELECTOR, '.XltNde')
+        # left_side = driver.find_element(By.CSS_SELECTOR, '.XltNde')
         all_companies = driver.find_elements(By.CSS_SELECTOR, 'div.THOPZb')
         action.move_to_element(all_companies[0])
         action.perform()
@@ -160,7 +160,9 @@ def collect_data(url, city_name):
             except NoSuchElementException:
                 phone = ''
             try:
-                website = driver.find_element(By.CSS_SELECTOR, '.ITvuef .Io6YTe').text
+                website = driver.find_element(
+                    By.CSS_SELECTOR, 'a[data-tooltip="Перейти на сайт"]').get_attribute('href')
+                logger.info(f'WEBSITE {website}')
             except NoSuchElementException:
                 website = ''
             try:
@@ -190,6 +192,7 @@ def collect_data(url, city_name):
                 tags = []
             try:
                 photos = driver.find_element(By.CSS_SELECTOR, 'button.ofKBgf[aria-label="Все"]')
+                time.sleep(2)
                 driver.execute_script('arguments[0].scrollIntoView(true);', photos)
                 photos.click()
                 time.sleep(5)
@@ -222,7 +225,7 @@ def collect_data(url, city_name):
 
 if __name__ == '__main__':
     # collect_data('anaokulu marmaris', '36.8611888,28.2643651')
-    collect_data('https://www.google.com/maps/search/anaokulu+marmaris/@36.8660487,28.2396632,14z/data=!3m1!4b1',
+    collect_data('https://www.google.com/maps/search/restaurants+marmaris/@36.8491159,28.2459951,14z',
                  'Мармарис')
     # collect_data('restaurants marmaris', '36.8611888,28.2643651')
     # collect_data('', '')

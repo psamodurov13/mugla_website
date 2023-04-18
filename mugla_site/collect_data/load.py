@@ -36,7 +36,8 @@ res = {
                        'суббота': 'Закрыто',
                        'четверг': '07:30–17:30'},
         'phone': '05321709812',
-        'photos_urls': ['https://sweethomedress.ru/image/cache/catalog/supplier1/ck_cb6_0zwf91vg6xsnl1df7wa82sx1x416am01-1000x1500.webp',
+        'photos_urls': ['http://127.0.0.1:8000/media/photo/2023/04/17/465-1.jpg',
+                        'https://sweethomedress.ru/image/cache/catalog/supplier1/ck_cb6_0zwf91vg6xsnl1df7wa82sx1x416am01-1000x1500.webp',
                         'https://lh5.googleusercontent.com/p/AF1QipMTt4E8Cq_Ayp49rtwWZAD6qzyd_b5p0RWOLve-=s878-k-no',
                         'https://lh5.googleusercontent.com/p/AF1QipNKy568pJTq6wsm5iR3jsSNDOJkISnPhGRRwsyu=s1105-k-no',
                         'https://lh5.googleusercontent.com/p/AF1QipOZ_LreYSc8g5vYNQGXMD1337nuCB-Hywrx6dEV=s1031-k-no',
@@ -75,7 +76,10 @@ def load_companies(res, query, city):
     for item in res:
         try:
             i = res[item]
-            last_id = Company.objects.order_by('id').last().id
+            try:
+                last_id = Company.objects.order_by('id').last().id
+            except AttributeError:
+                last_id = 0
             slug = slugify(i['title'], language_code='ru') + str(last_id + 1)
             if Type.objects.filter(title=i['category']).exists():
                 company_type = Type.objects.get(title=i['category'])
@@ -138,8 +142,11 @@ def load_companies(res, query, city):
                     company.photo = link
                     logger.info(f'Добавлено главное фото {link}')
                     cropping_thumb = format_image_size(f'{MEDIA_ROOT}/{link}', 4 / 3)
-                    logger.info(f'CROPPING {cropping_thumb}')
+                    logger.info(f'CROPPING TH {cropping_thumb}')
                     company.cropping_thumb = cropping_thumb
+                    cropping = format_image_size(f'{MEDIA_ROOT}/{link}', 1950 / 687)
+                    logger.info(f'CROPPING TH {cropping}')
+                    company.cropping = cropping
                 else:
                     gallery_link = gallery_path + download_image(img, name, f'{MEDIA_ROOT}/{gallery_path}')
                     CompanyGallery.objects.create(image=gallery_link,

@@ -29,22 +29,54 @@
                 <img class="company-img" src="{% cropped_thumbnail company 'cropping_thumb' %}">
             </div>
             <div class="media-body px-3">
+                {% if company.description %}
                 <p class="text-secondary"><span class="param-name">Описание</span>: {{ company.description }}</p>
+                {% endif %}
                 <p class="text-secondary"><span class="param-name">Тип</span>: <a href="{{ company.type.get_absolute_url }}">{{ company.type }}</a></p>
+                {% if company.site %}
                 <p class="text-secondary"><span class="param-name">web-site</span>: <a href="{{ company.site }}">
                     {{ company.site }}</a></p>
+                {% endif %}
+                {% if company.cities %}
                 <p class="text-secondary"><span class="param-name">Город</span>:
                     {% for city in cities %}
                     <a href="{{ city.get_absolute_url }}">{{ city }}</a>
                     {% endfor %}
                 </p>
+                {% endif %}
+                {% if company.phone %}
                 <p class="text-secondary"><span class="param-name">Phone</span>: <a target="_blank" href="tel:{{ company.phone|stringformat:'s'|slice:'1:'}}">{{ company.phone }}</a></p>
+                {% endif %}
+                {% if company.whatsapp %}
                 <p class="text-secondary"><span class="param-name">WhatsApp</span>: <a target="_blank" href="https://api.whatsapp.com/send?phone={{ company.whatsapp|stringformat:'s'|slice:'1:'}}">{{ company.whatsapp }}</a></p>
+                {% endif %}
+                {% if company.telegram %}
                 <p class="text-secondary"><span class="param-name">Telegram</span>: <a target="_blank" href="http://t.me/{{ company.telegram }}">{{ company.telegram }}</a></p>
+                {% endif %}
+                <p class="text-secondary"><span class="param-name">Есть руccкоговорящий персонал: </span>
+                    {% if company.russian_speak %}
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    {% else %}
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    {% endif %}
+                </p>
+                <p class="text-secondary"><span class="param-name">Есть англоговорящий персонал: </span>
+                    {% if company.english_speak %}
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    {% else %}
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    {% endif %}
+                </p>
+
+                {% if company.note %}
+                <p class="text-secondary">{{ company.note }}</p>
+                {% endif %}
             </div>
         </div>
 
         {% if company.location %}
+        <div class="content py-4">
+            <div class="h2">Расположение на карте</div>
         <div id="map"></div>
         <script>
 
@@ -76,19 +108,26 @@
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap">
         </script>
+        </div>
         {% endif %}
 
-
+        {% if company.content %}
+        <div class="content py-4">
+            <div class="h2">Описание организации</div>
         {{ company.content|safe }}
-        <figcaption class="sectiontitle">
-            <h6 class="heading">Purus vehicula pulvinar</h6>
-            <p>Imperdiet vel duis aliquet urna vel urna molestie sit amet</p>
-        </figcaption>
+        </div>
+        {% endif %}
+
+        {% if gallery %}
+        <div class="content py-4">
+        <div class="h2">Фото организации</div>
         <ul class="gallery nospace group overview">
             {% for img in gallery %}
             <li class="one_third"><a href="{{ img.image.url }}" class="fancybox"><img src="{% cropped_thumbnail img 'cropping_gallery' %}" alt=""></a></li>
             {% endfor %}
         </ul>
+        </div>
+        {% endif %}
         <!-- Button trigger modal -->
 
         <div class="edit-btn p-3">

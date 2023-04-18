@@ -15,11 +15,11 @@ from PIL import Image
 
 class CustomStr():
     def __str__(self):
-        if self.title:
+        if hasattr(self, 'title'):
             return self.title
-        elif self.name:
+        elif hasattr(self, 'name'):
             return self.name
-        elif self.query:
+        elif hasattr(self, 'query'):
             return self.query
         else:
             return self

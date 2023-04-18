@@ -14,7 +14,7 @@ from cities.models import City
 
 class Type(BaseModel, MPTTModel):
     title = models.CharField(max_length=50, verbose_name='Тип организации')
-    parent = TreeForeignKey('self', blank=True, null=True, on_delete=models.PROTECT, related_name='children')
+    parent = TreeForeignKey('self', blank=True, null=True, on_delete=models.CASCADE, related_name='children')
 
     def get_absolute_url(self):
         return reverse('type', kwargs={'slug': self.slug})
@@ -83,7 +83,7 @@ class CompanyGallery(CustomGallery):
 
 
 class ChangeCompany(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name='changes', verbose_name='Компания')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='changes', verbose_name='Компания')
     title = models.CharField(max_length=255, blank=True, verbose_name='Название компании')
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='changes', verbose_name='Автор')
     content = models.TextField(verbose_name='Контент', blank=True)

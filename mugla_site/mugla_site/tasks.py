@@ -23,7 +23,7 @@ def send_html_email_to_user(user_email, subject, html_message):
 @app.task
 def load_companies_task(url, city, query, id):
     try:
-        # res = collect_data(url, city)
+        res = collect_data(url, city)
         load_companies(res, query, city)
         obj = CollectData.objects.get(id=id)
         obj.collect_status = 'Выполнен'

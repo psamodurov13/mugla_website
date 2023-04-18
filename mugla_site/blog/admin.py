@@ -28,7 +28,7 @@ class PostAdmin(ImageCroppingMixin, BaseAdmin):
     list_filter = ('is_published', 'category', 'author', 'cities')
     fields = ('title', 'slug', 'category', 'content', 'description', 'photo', 'cropping', 'cropping_thumb',
               'get_photo', 'is_published', 'tags', 'cities', 'views', 'created_at', 'author', 'important')
-    readonly_fields = ('get_photo', 'views', 'created_at', 'author')
+    readonly_fields = ('get_photo', 'views', 'created_at')
 
     def save_model(self, request, obj, form, change):
         if 'is_published' in form.changed_data and obj.is_published == True:

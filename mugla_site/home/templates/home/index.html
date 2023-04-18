@@ -12,7 +12,14 @@
     <article>
       <h3 class="heading">{{ title }}</h3>
       <p>{{ page.description }}</p>
-      <footer><a class="btn" href="#">Turpis egestas</a></footer>
+      {% if request.user.is_authenticated %}
+      <footer>
+        <a class="btn" href="{% url 'create_company_ajax' %}">Добавить организацию</a>
+        <a class="btn" href="{% url 'create_post_ajax' %}">Добавить публикацию</a>
+      </footer>
+      {% else %}
+      <footer><a class="btn" href="{% url 'register' %}">Зарегистрироваться</a></footer>
+      {% endif %}
     </article>
   </div>
 </div>
@@ -135,8 +142,8 @@
     <div class="row overview services">
       {% for article in articles %}
       <div class="col-sm-12 col-md-4 text-center p-3">
-        <article><a href="#"><i class="fa fa-500px"></i></a>
-          <h6 class="heading"><a href="#">{{ article.title }}</a></h6>
+        <article>
+          <h6 class="heading"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h6>
           <p>{{ article.description }}</p>
           <footer><a href="{{ article.get_absolute_url }}">Читать подробнее &raquo;</a></footer>
         </article>
